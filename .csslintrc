@@ -1,0 +1,3 @@
+--errors=display-property-grouping,duplicate-properties,known-properties
+--warnings=box-model,empty-rules
+--ignore=font-faces,font-sizes,ids,qualified-headings,unique-headings,floats

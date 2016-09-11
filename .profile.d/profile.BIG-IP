@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# BigIP specific profile stuff
+
+alias chpass='sudo passwd'
+alias pkgchk='echo Sorry, I do not know how...'
+alias pkginfo='echo Sorry, I do not know how...'
+#for some reason, ps cann't be executed by mere mortals on BIG-IP...
+alias psa='sudo ps axo "user,pid,ppid,%cpu,%mem,tty,start,state,command"'
+alias psmem='sudo ps axo "user,pid,ppid,vsz,command" |sort -rnk4|head '
+alias pscpu='sudo ps axo "user,pid,ppid,%cpu,command" |sort -rnk4|head '
+

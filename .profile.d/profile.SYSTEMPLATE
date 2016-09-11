@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Template for system specific profile
+alias chpass=''
+alias pkgchk=''
+alias pkginfo=''
+alias ps=''
+alias psef=''
+alias psa=''
+alias psz=''
+alias psmem=''
+alias pscpu=''
+

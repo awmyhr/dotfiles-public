@@ -1,0 +1,119 @@
+[global_config]
+  borderless  = False
+  focus       = sloppy
+  dbus        = True
+
+  inactive_color_offset   = 0.7
+  title_inactive_bg_color = "#073642"
+  title_inactive_fg_color = "#eee8d5"
+  title_receive_bg_color  = "#dc322f"
+  title_receive_fg_color  = "#073642"
+  title_transmit_bg_color = "#268bd2"
+  title_transmit_fg_color = "#073642"
+  enabled_plugins         = CustomCommandsMenu, TerminalShot
+[keybindings]
+  cycle_next  = <Ctrl>Page_Down
+  cycle_prev  = <Ctrl>Page_Up
+  go_down     = <Ctrl><Shift>j
+  go_left     = <Ctrl><Shift>h
+  go_right    = <Ctrl><Shift>l
+  go_up       = <Ctrl><Shift>k
+  new_window  = <Ctrl><Shift>e
+  next_tab    = <Ctrl>Tab
+  prev_tab    = <Ctrl><Shift>Tab
+  split_vert  = <Ctrl><Shift>i
+[profiles]
+  [[default]]
+    # solarized-dark
+    use_system_font   = False
+    font              = Liberation Mono 12
+    cursor_color      = "#eee8d5"
+    background_color  = "#002b36"
+    foreground_color  = "#eee8d5"
+    palette           = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#586e75:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    background_image  = None
+    xterm             = xterm-256color
+    colorterm         = gnome-256color
+    custom_command    = /usr/bin/zsh
+    copy_on_selection = True
+  [[solarized-dark]]
+    font              = Liberation Mono 12
+    use_system_font   = False
+    palette           = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#586e75:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    foreground_color  = "#eee8d5"
+    background_color  = "#002b36"
+    cursor_color      = "#eee8d5"
+  [[solarized-light]]
+    font              = Liberation Mono 12
+    use_system_font   = False
+    palette           = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    background_color  = "#eee8d5"
+    foreground_color  = "#002b36"
+    cursor_color      = "#002b36"
+[layouts]
+  [[default]]
+    [[[window0]]]
+      type     = Window
+      parent   = ""
+      order    = 0
+      position = 1:25
+      size     = 965, 990
+    [[[child1]]]
+      labels   = None, None, None
+      type     = Notebook
+      order    = 0
+      parent   = window0
+    [[[child2]]]
+      position = 481
+      ratio    = 0.5
+      type     = VPaned
+      order    = 0
+      parent   = child1
+    [[[child3]]]
+      position = 240
+      ratio    = 0.5
+      type     = VPaned
+      order    = 0
+      parent   = child2
+    [[[child7]]]
+      position = 481
+      type     = VPaned
+      order    = 1
+      parent   = child1
+    [[[terminal10]]]
+      order = 2
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = 9226d89b-b2be-4201-8c8c-e03cbd2c8a0a
+    [[[terminal4]]]
+      order = 0
+      parent = child3
+      profile = default
+      type = Terminal
+      uuid = 5c58ed8d-9b85-4c98-b9b0-23cbfc238ed2
+    [[[terminal5]]]
+      order = 1
+      parent = child3
+      profile = default
+      type = Terminal
+      uuid = 9101688e-38c3-4cb2-8db6-37bafe6dd567
+    [[[terminal6]]]
+      order = 1
+      parent = child2
+      profile = default
+      type = Terminal
+      uuid = 0e4fda6d-5dec-4028-92e9-53b8aec0a274
+    [[[terminal8]]]
+      order = 0
+      parent = child7
+      profile = default
+      type = Terminal
+      uuid = 4dac332c-10c8-4518-8d90-552264a30362
+    [[[terminal9]]]
+      order = 1
+      parent = child7
+      profile = default
+      type = Terminal
+      uuid = 3472a181-936e-44e6-b3be-7aec6d65caf9
+[plugins]

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# CygWin specific profile stuff
+
+alias chpass='echo Silly rabbit, passwords are meaningless in cygwin...'
+alias pkgchk='cygcheck -c | grep -i'
+alias pkginfo='cygcheck -l'
+#Cygwin doesn't support picking display options
+alias psa='ps -al'
+alias psmem='echo Sorry, cygwin can not do this...'
+alias pscpu='echo Sorry, cygwin can not do this...'
+
+if [[ "$TERM" = "cygwin" ]]; then
+	CYGEXIST=`grep ^cygwin /etc/termcap`
+	if [[ "$CYGEXIST" = "" ]]; then
+		export TERM='ansi'
+	fi
+fi
+
+

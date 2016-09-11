@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# SunOS specific profile stuff
+alias chpass='sudo passwd'
+alias pkgchk='pkginfo | grep -i'
+alias pkginfo='pkginfo -l'
+alias psa='ps -A -o "user,pid,ppid,pcpu,pmem,tty,stime,s,comm"'
+alias psmem='ps -A -o "user,pid,ppid,vsz,args"|sort -rnk4|head '
+alias pscpu='ps -A -o "user,pid,ppid,pcpu,args"|sort -rnk4|head '
+

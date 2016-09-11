@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# subversion specific aliases
+
+# base command
+alias v='svn'
+# create new repo
+alias vnew='svn '
+# add 
+alias va='svn add'
+# copy
+alias vcp='svn copy'
+# move
+alias vmv='svn move'
+# remove
+alias vrm='svn delete'
+# mkdir
+alias vmkdir='svn mkdir'
+# list
+alias vl='svn list'
+# status
+alias vs='svn status -q'
+# status full
+alias vss='svn status -v'
+# pull
+alias vg='svn update'
+# push
+alias vp='svn commit'
+# commit
+alias vc='svn commit'
+# commit with message
+alias vcm='svn commit -m'
+# diff
+alias vd='svn diff'
+

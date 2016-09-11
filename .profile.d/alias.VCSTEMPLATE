@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#  specific aliases
+
+# base command
+alias v=''
+# create new repo
+alias vnew=''
+# add 
+alias va=''
+# copy
+alias vcp=''
+# move
+alias vmv=''
+# remove
+alias vrm=''
+# mkdir
+alias vmkdir=''
+# list
+alias vl=''
+# status
+alias vs=''
+# status full
+alias vss=''
+# pull
+alias vg=''
+# push
+alias vp=''
+# commit
+alias vc=''
+# commit with message
+alias vcm=''
+# diff
+alias vd=''
+

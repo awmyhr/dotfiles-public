@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Template for system specific profile
+alias chpass=''
+alias pkgchk=''
+alias pkginfo=''
+alias ps=''
+alias psef=''
+alias psa=''
+alias psz=''
+alias psmem=''
+alias pscpu=''
+alias l='ls $LS_OPTS -la'
+alias l.='ls $LS_OPTS -d .*'
+alias lS='ls $LS_OPTS -1Ss'
+alias la='ls $LS_OPTS -lA'
+alias ll='ls $LS_OPTS -l'
+alias ls='ls $LS_OPTS'
+alias lsa='ls $LS_OPTS -la'
+alias lln='ls $LS_OPTS -na'
+alias latr='ls $LS_OPTS -lAtr'
+
+
+PATH=$PATH:/etc
+export PATH
+

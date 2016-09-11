@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# HP-UX specific profile stuff
+
+alias chpass='sudo /usr/lbin/modprpw -x'
+alias pkgchk='swlist | grep -i'
+alias pkginfo='swlist -v'
+#UNIX95 needs to be set in order to use XPG4 behavior of ps command
+#export UNIX95=1
+#even better, use the format "UNIX95= " commmand (note the space)
+alias psa='UNIX95= ps -A -o "user,pid,ppid,pcpu,tty,stime,state,comm"'
+alias psmem='UNIX95= ps -e -o "user,pid,ppid,vsz,args"|sort -rnk4|head '
+alias pscpu='UNIX95= ps -e -o "user,pid,ppid,pcpu,args"|sort -rnk4|head '
+
+if [[ "$TERM" = "unknown" ]]; then
+	if [[ "$UNAMES" = "HP-UX" ]]; then
+		eval `ttytype -s`
+	fi
+fi
+

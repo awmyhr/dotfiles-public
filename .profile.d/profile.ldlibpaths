@@ -1,0 +1,17 @@
+/lib
+/usr/lib
+/usr/local/lib
+/usr/share/lib
+/opt/gcc/lib
+/usr/contrib/lib
+/usr/contrib/X11R6/lib
+/sbin/lib
+/usr/ucblib
+/usr/openwin/lib
+/etc/lib
+/usr/platform/$PLATFORM/lib
+/usr/X11R6/lib
+/usr/contrib/lib
+/usr/X11R6/lib
+/var/lib
+
