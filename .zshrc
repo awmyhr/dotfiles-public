@@ -10,6 +10,8 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 ###############################################################################
 ### If this is not an interactive shell, exit here
 [[ $- = *i* ]] || return
+# fix SHELL variable
+export SHELL=$0
 
 ###############################################################################
 ### zsh specific variables (common are set in .profile)
@@ -24,16 +26,11 @@ export SHELLD=$HOME/.zshrc.d
 
 ###############################################################################
 ### Load in ancillary if they exist
-for i in $SHELLD/*.zsh; do
-    if [ -r "$i" ]; then
-        if [ "$PS1" ]; then
-            . "$i"
-        else
-            . "$i" >/dev/null
-        fi
-    fi
-done
-unset i
+# this does not appear to be working if there are no files. grrr.
+# for i in $SHELLD/*.zsh; do
+#     [ -r "$i" ] && source "$i"
+# done
+# unset i
 
 ###############################################################################
 ### Uncomment the following line to display red dots whilst waiting for completion.
