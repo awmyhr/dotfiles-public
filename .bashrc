@@ -10,6 +10,8 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 ###############################################################################
 ### If this is not an interactive shell, exit here
 [[ $- = *i* ]] || return
+# fix SHELL variable
+export SHELL=$0
 
 ###############################################################################
 ### Ancillary file directory set and create if necessary
@@ -45,9 +47,6 @@ unset i
 ###############################################################################
 ### This gives us darcs completion in bash if it exists
 [[ -f /usr/local/share/darcs_completion ]] && source /usr/local/share/darcs_completion
-
-# fix SHELL variable
-export SHELL=$0
 
 # User configuration -- NOTE: a lot of fuctions depend on my .profile!
 if [[ -r "$HOME/.profile" ]]; then

@@ -4,6 +4,10 @@
 # 20160908 NOTE: May have broken compatibility w/non-bash/zsh shells
 #
 
+###############################################################################
+### If this is not an interactive shell, exit here
+[[ $- = *i* ]] || return
+###############################################################################
 PD="$HOME/.profile.d"
 # Set this to perfered version control system
 # current possible values: git svn 
