@@ -9,17 +9,24 @@
 [[ $- = *i* ]] || return
 ###############################################################################
 ### Set some configurations
-PD="$HOME/.profile.d"
+export PD="$HOME/.profile.d"
 # Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
-DEFAULT_TIMESTAMP='+%Y%m%d-%H%M'
+export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M'
 # Set this to perfered version control system current possible values: git svn 
-DEFAULT_VCS="git"
+export DEFAULT_VCS="git"
 # Set this to false to ignore untracked files, which can speed up repo checks
-VCS_IGNORE_UNTRACKED_FILES="false"
+export VCS_IGNORE_UNTRACKED_FILES="false"
 # Set this to false to ignore submodule files, which can speed up repo checks
-VCS_IGNORE_SUBMODULES="true"
-
-export PD DEFAULT_TIMESTAMP DEFAULT_VCS VCS_IGNORE_UNTRACKED_FILES VCS_IGNORE_SUBMODULES
+export VCS_IGNORE_SUBMODULES="true"
+# File extensions to ignore when doing name completion
+export FIGNORE='~':'.o':'.bak':'.tmp'
+# Some history-related settings
+export HISTSIZE=500
+export HISTFILESIZE=5000
+export SAVEHIST=${HISTFILESIZE}
+export HISTCONTROL=ignoreboth
+# This is specifically for 'hh' (installed via package 'hrst')
+export HH_CONFIG=hicolor
 ###############################################################################
 ### Set up PATH
 
@@ -234,9 +241,6 @@ umask 022
 trap "echo 'logout'" 0
 # removed '-o nounset' as it caused problems w/bash autocomplete
 set -o noclobber -o vi -o notify
-FIGNORE='~':'.o':'.bak':'.tmp'
-HISTSIZE=1000
-HISTCONTROL=ignoreboth
 
 ###############################################################################
 ### Shell dependent settings
