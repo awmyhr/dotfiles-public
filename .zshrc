@@ -15,9 +15,8 @@ export SHELL=$0
 
 ###############################################################################
 ### zsh specific variables (common are set in .profile)
-HIST_STAMPS="yyyy-mm-dd"
-HISTFILE=$SHELLD/.zsh_history
-SAVEHIST=2000
+export HIST_STAMPS="yyyy-mm-dd"
+export HISTFILE=$SHELLD/.zsh_history
 
 ###############################################################################
 ### Ancillary file directory set and create if necessary
@@ -37,7 +36,7 @@ export SHELLD=$HOME/.zshrc.d
 COMPLETION_WAITING_DOTS="true"
 # Save the location of the current completion dump file.
 if [ -z "$ZSH_COMPDUMP" ]; then
-  ZSH_COMPDUMP="${SHELLD}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
+  export ZSH_COMPDUMP="${SHELLD}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
 fi
 
 ###############################################################################
@@ -60,29 +59,25 @@ if [[ -r "$HOME/.profile" ]]; then
     # %{ and %} tell zsh to not count characters inbetween
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
-    PROMPT='%{$reset_color%}
+    export PROMPT='%{$reset_color%}
 %{%K{${c_black}}%}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E$reset_color
 %{%K{${c_black}}%}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#%{$reset_color%} '
-    RPROMPT=''
+    export RPROMPT=''
 
 else
     echo "WARNING: missing $HOME/.profile!!"
     export MANPATH="/usr/local/man:$MANPATH"
     
-    PROMPT="┌$(uname -s) \u@\h:\w \n└!\! \$ "
-    RPROMPT=''
+    export PROMPT="┌$(uname -s) \u@\h:\w \n└!\! \$ "
+    export RPROMPT=''
 fi
-export PROMPT RPROMPT PS1
 
 # Use VIM bindings
 bindkey -v
 # Set Ctrl-R to search history
 bindkey '^R' history-incremental-search-backward
-
-# Save the location of the current completion dump file.
-if [ -z "$ZSH_COMPDUMP" ]; then
-  ZSH_COMPDUMP="${SHELLD:-${HOME}}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
-fi
+# bind hh to Ctrl-r (for Vi mode check doc)
+#bindkey -s "\C-r" "\eqhh\n"
 
 # Set up auto completion, etc...
 setopt auto_cd multios prompt_subst
