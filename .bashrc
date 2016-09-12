@@ -10,6 +10,8 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 ###############################################################################
 ### If this is not an interactive shell, exit here
 [[ $- = *i* ]] || return
+# fix SHELL variable
+export SHELL=$0
 
 ###############################################################################
 ### bash specific variables (common are set in .profile)
@@ -24,35 +26,20 @@ export SHELLD=$HOME/.bashrc.d
 ###############################################################################
 ### Load in system profiles if they exist
 for i in /etc/profile.d/*.sh; do
-    if [ -r "$i" ]; then
-        if [ "$PS1" ]; then
-            . "$i"
-        else
-            . "$i" >/dev/null
-        fi
-    fi
+    [ -r "$i" ] && source "$i"
 done
 unset i
 
 ###############################################################################
 ### Load in ancillary if they exist
 for i in $SHELLD/*.sh; do
-    if [ -r "$i" ]; then
-        if [ "$PS1" ]; then
-            . "$i"
-        else
-            . "$i" >/dev/null
-        fi
-    fi
+    [ -r "$i" ] && source "$i"
 done
 unset i
 
 ###############################################################################
 ### This gives us darcs completion in bash if it exists
 [[ -f /usr/local/share/darcs_completion ]] && source /usr/local/share/darcs_completion
-
-# fix SHELL variable
-export SHELL=$0
 
 # User configuration -- NOTE: a lot of fuctions depend on my .profile!
 if [[ -r "$HOME/.profile" ]]; then
