@@ -12,6 +12,11 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 [[ $- = *i* ]] || return
 
 ###############################################################################
+### bash specific variables (common are set in .profile)
+HISTFILE=$SHELLD/.bash_history
+HISTFILESIZE=2000
+
+###############################################################################
 ### Ancillary file directory set and create if necessary
 export SHELLD=$HOME/.bashrc.d
 [[ ! -d $SHELLD ]] && mkdir $SHELLD && chmod 700 $SHELLD
@@ -72,10 +77,6 @@ else
     PS1="(`uname -s`) \u@\h:\w \n\041\! \$ "
 fi
 export PS1
-
-# bash specific variables (common are set in .profile)
-HISTFILE=$SHELLD/.bash_history
-HISTFILESIZE=2000
 
 # Turn on parallel history
 shopt -s histappend

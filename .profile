@@ -10,9 +10,14 @@
 ###############################################################################
 ### Set some configurations
 PD="$HOME/.profile.d"
-# Set this to perfered version control system
-# current possible values: git svn 
-VCS="git"
+# Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
+DEFAULT_TIMESTAMP='+%Y%m%d-%H%M'
+# Set this to perfered version control system current possible values: git svn 
+DEFAULT_VCS="git"
+# Set this to false to ignore untracked files, which can speed up repo checks
+VCS_IGNORE_UNTRACKED_FILES="false"
+# Set this to false to ignore submodule files, which can speed up repo checks
+VCS_IGNORE_SUBMODULES="true"
 
 ###############################################################################
 ### Set up PATH
@@ -202,8 +207,8 @@ c_DEBUG="${c_blue}"
 ###############################################################################
 ### load general aliases
 [[ -r "${PD}/alias.general" ]] && source "${PD}/alias.general"
-#   load VCS aliases
-[[ -r "${PD}/alias.${VCS}" && -x `which $VCS 2>/dev/null` ]] && source "${PD}/alias.${VCS}"
+#   load default VCS aliases
+[[ -r "${PD}/alias.${DEFAULT_VCS}" && -x `which $DEFAULT_VCS 2>/dev/null` ]] && source "${PD}/alias.${DEFAULT_VCS}"
 #   load platform aliases
 [[ -r "${PD}/alias.${UNAMES}" ]] && source "${PD}/alias.${UNAMES}"
 
@@ -227,13 +232,6 @@ set -o noclobber -o nounset -o vi -o notify
 FIGNORE='~':'.o':'.bak':'.tmp'
 HISTSIZE=1000
 HISTCONTROL=ignoreboth
-
-###############################################################################
-### Some maintnence variables
-# Set this to false to ignore untracked files, which can speed up repo checks
-VCS_IGNORE_UNTRACKED_FILES="false"
-# Set this to false to ignore submodule files, which can speed up repo checks
-VCS_IGNORE_SUBMODULES="true"
 
 ###############################################################################
 ### Shell dependent settings
@@ -278,7 +276,8 @@ echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n
     ${c_white}${c_bold}System:${c_norm} ${c_purple}$UNAMES ($UNAMER)
     ${c_white}${c_bold}Shell:${c_norm}  ${c_purple}$SHELLSTRING
     ${c_white}${c_bold}Pager:${c_norm}  ${c_purple}$PAGER
-    ${c_white}${c_bold}Editor:${c_norm} ${c_purple}$EDITOR"
+    ${c_white}${c_bold}Editor:${c_norm} ${c_purple}$EDITOR
+    ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}$DEFAULT_VCS"
 
 DDATE=`which ddate 2>/dev/null`
 if [[ -x $DDATE ]]; then

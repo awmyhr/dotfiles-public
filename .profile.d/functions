@@ -53,6 +53,12 @@ else
 fi
 
 ###############################################################################
+### Functions for general use
+
+function timestamp() {
+    date $DEFAULT_TIMESTAMP
+}
+###############################################################################
 ### Functions for prompts
 
 # need a solid, quick way to detect svn/fossil/darcs repos (copied and modified from some zsh thing)

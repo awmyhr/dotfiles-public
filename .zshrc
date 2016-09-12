@@ -12,6 +12,12 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 [[ $- = *i* ]] || return
 
 ###############################################################################
+### zsh specific variables (common are set in .profile)
+HIST_STAMPS="yyyy-mm-dd"
+HISTFILE=$SHELLD/.zsh_history
+SAVEHIST=2000
+
+###############################################################################
 ### Ancillary file directory set and create if necessary
 export SHELLD=$HOME/.zshrc.d
 [[ ! -d $SHELLD ]] && mkdir $SHELLD && chmod 700 $SHELLD
@@ -72,11 +78,6 @@ export PS1
 bindkey -v
 # Set Ctrl-R to search history
 bindkey '^R' history-incremental-search-backward
-
-# zsh specific variables (common are set in .profile)
-HIST_STAMPS="yyyy-mm-dd"
-HISTFILE=$SHELLD/.zsh_history
-SAVEHIST=2000
 
 # Save the location of the current completion dump file.
 if [ -z "$ZSH_COMPDUMP" ]; then
