@@ -15,8 +15,7 @@ export SHELL=$0
 
 ###############################################################################
 ### bash specific variables (common are set in .profile)
-HISTFILE=$SHELLD/.bash_history
-HISTFILESIZE=2000
+export HISTFILE=$SHELLD/.bash_history
 
 ###############################################################################
 ### Ancillary file directory set and create if necessary
@@ -69,5 +68,7 @@ shopt -s histappend
 history -a
 # Turn on checkwinsize
 shopt -s checkwinsize
+# bind hh to Ctrl-r (for Vi mode check doc)
+bind '"\C-r": "\C-a hh \C-j"'
 
 # Clean up
