@@ -146,6 +146,28 @@ if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-
         c_white=$BASE2
         c_black=$BASE03
     fi
+elif [[ "$TERM" == linux ]]; then
+    tput sgr0
+    c_bold=$(tput bold)
+    c_norm=$(tput sgr0)
+    BASE03=$(tput setaf 8)
+    BASE02=$(tput setaf 0)
+    BASE01=$(tput setaf 10)
+    BASE00=$(tput setaf 11)
+    BASE0=$(tput setaf 12)
+    BASE1=$(tput setaf 14)
+    BASE2=$(tput setaf 7)
+    BASE3=$(tput setaf 15)
+    c_orange=$(tput setaf 9)
+    c_magenta=$(tput setaf 5)
+    c_yellow=$(tput setaf 3)
+    c_red=$(tput setaf 1)
+    c_purple=$(tput setaf 13)
+    c_blue=$(tput setaf 4)
+    c_cyan=$(tput setaf 6)
+    c_green=$(tput setaf 2)
+    c_white=$BASE2
+    c_black=$BASE03
 else
     tset -Q -e ${ERASE:-\^h} $TERM
     [[ $UNAMES = "SCO_SV" ]] && TERM=xterm
