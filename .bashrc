@@ -21,7 +21,7 @@ HISTFILESIZE=2000
 ###############################################################################
 ### Ancillary file directory set and create if necessary
 export SHELLD=$HOME/.bashrc.d
-[[ ! -d $SHELLD ]] && mkdir $SHELLD && chmod 700 $SHELLD
+[[ ! -d "$SHELLD" ]] && mkdir "$SHELLD" && chmod 700 "$SHELLD"
 
 ###############################################################################
 ### Load in system profiles if they exist
@@ -58,10 +58,9 @@ if [[ -r "$HOME/.profile" ]]; then
     PS1="${c_ALERT}\$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h:${c_yellow}\w${c_norm} \n${c_pDEBUG}\041\! [\l] \$(_vcs_prompt_char) \$${c_norm} "
 else
     echo "WARNING: missing $HOME/.profile!!"
-    export PATH="~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin"
     export MANPATH="/usr/local/man:$MANPATH"
 
-    PS1="(`uname -s`) \u@\h:\w \n\041\! \$ "
+    PS1="$(uname -s) \u@\h:\w \n\041\! \$ "
 fi
 export PS1
 
