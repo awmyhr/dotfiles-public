@@ -269,7 +269,7 @@ esac
 
 ###############################################################################
 # FWIW:
-# tcsh   - $version  - set to tcsh version number
+# tcsh   - $version  - set to tcsh version number (also: set prompt='%n@%m %~ ')
 # bash   - $BASH     - set to bash path
 # [t]csh - $shell    - set to 'csh' or 'tcsh'
 # zsh    - $ZSH_NAME - set to 'zsh'
