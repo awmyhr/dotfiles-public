@@ -22,7 +22,7 @@ SAVEHIST=2000
 ###############################################################################
 ### Ancillary file directory set and create if necessary
 export SHELLD=$HOME/.zshrc.d
-[[ ! -d $SHELLD ]] && mkdir $SHELLD && chmod 700 $SHELLD
+[[ ! -d "$SHELLD" ]] && mkdir "$SHELLD" && chmod 700 "$SHELLD"
 
 ###############################################################################
 ### Load in ancillary if they exist
@@ -40,7 +40,8 @@ if [ -z "$ZSH_COMPDUMP" ]; then
   ZSH_COMPDUMP="${SHELLD}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
 fi
 
-# User configuration -- NOTE: a lot of fuctions depend on my .profile!
+###############################################################################
+### User configuration -- NOTE: a lot of fuctions depend on my .profile!
 if [[ -r "$HOME/.profile" ]]; then
     . "$HOME/.profile"
     # zsh needs special formating for prompt colors
@@ -66,10 +67,12 @@ if [[ -r "$HOME/.profile" ]]; then
 
 else
     echo "WARNING: missing $HOME/.profile!!"
-    export PATH="~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin"
     export MANPATH="/usr/local/man:$MANPATH"
+    
+    PROMPT="┌$(uname -s) \u@\h:\w \n└!\! \$ "
+    RPROMPT=''
 fi
-export PS1
+export PROMPT RPROMPT PS1
 
 # Use VIM bindings
 bindkey -v
