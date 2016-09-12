@@ -19,47 +19,50 @@ VCS_IGNORE_UNTRACKED_FILES="false"
 # Set this to false to ignore submodule files, which can speed up repo checks
 VCS_IGNORE_SUBMODULES="true"
 
+export PD DEFAULT_TIMESTAMP DEFAULT_VCS VCS_IGNORE_UNTRACKED_FILES VCS_IGNORE_SUBMODULES
 ###############################################################################
 ### Set up PATH
 
 if [[ -r "${PD}/profile.paths" ]]; then
-     for pathc in `cat $PD/profile.paths` ; do
-          if [[ -d $pathc ]]; then
-               PATH=$PATH':'$pathc
-          fi
-     done
+    while read line 
+    do
+        if [[ -d $line ]]; then
+            PATH=$PATH':'$line
+        fi
+    done <"$PD/profile.paths"
 fi
+unset line
 
 export PATH
 
 ###############################################################################
 ### Set up helper variables
-UNAMES=`uname -s`
-UNAMER=`uname -r`
-PLATFORM=`uname -p`
-HOSTNAME=`uname -n`
+UNAMES=$(uname -s)
+UNAMER=$(uname -r)
+PLATFORM=$(uname -p)
+HOSTNAME=$(uname -n)
 export UNAMES UNAMER PLATFORM HOSTNAME
 
 # Set up the shell variables:
 RSYNC_RSH=ssh
-SYSTEM=`hostname`
+SYSTEM=$(hostname)
 
-NVIM=`which nvim 2>/dev/null`
-VIM=`which vim 2>/dev/null`
-SUBL=`which sublime_text 2>/dev/null || which subl 2>/dev/null`
+NVIM=$(which nvim 2>/dev/null)
+VIM=$(which vim 2>/dev/null)
+SUBL=$(which sublime_text 2>/dev/null || which subl 2>/dev/null)
 if [[ -x $SUBL ]]; then
     EDITOR="$SUBL -w "
     VISUAL=$SUBL
-    alias st=$SUBL
-    alias vi=`which vim`
+    alias st="$SUBL"
+    alias vi="$VIM"
 elif [[ -x $NVIM ]]; then
     EDITOR=$NVIM
     VISUAL=$NVIM
-    alias vi=$NVIM
+    alias vi="$NVIM"
 elif [[ -x $VIM ]]; then
 	EDITOR=$VIM
 	VISUAL=$VIM
-	alias vi=$VIM
+	alias vi="$VIM"
 else
 	EDITOR=vi
 	VISUAL=vi
@@ -83,11 +86,12 @@ export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
 ### MANPATH ###
 if [[ -e "${PD}/profile.manpaths" ]]; then
     MANPATH=''
-     for pathc in `cat $PD/profile.manpaths` ; do
-          if [[ -d $pathc ]]; then
-               MANPATH=${pathc}${MANPATH:+:$MANPATH}
-          fi
-     done
+    while read line 
+    do
+        if [[ -d $line ]]; then
+            PATH=$PATH':'$line
+        fi
+    done <"$PD/profile.manpaths"
 fi
 
 [[ -d $HOME'/man' ]] && MANPATH=$MANPATH':'$HOME'/man'
@@ -99,12 +103,12 @@ export MANPATH
 if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-256color >/dev/null 2>&1; then
     TERM=gnome-256color
     if [[ -x /usr/bin/dircolors ]]; then
-        if [[ -r $HOME/.dirColors/dircolors.256dark ]]; then
-            eval "$(dircolors -b $HOME/.dirColors/dircolors.256dark)"
-        elif [[ -r $HOME/.dirColors ]]; then
-            eval "$(dircolors -b $HOME/.dirColors)"
+        if [[ -r "$HOME/.dirColors/dircolors.256dark" ]]; then
+            eval $(dircolors -b "$HOME/.dirColors/dircolors.256dark")
+        elif [[ -r "$HOME/.dirColors" ]]; then
+            eval $(dircolors -b "$HOME/.dirColors")
         else
-            eval "$(dircolors -b)"
+            eval $(dircolors -b)
         fi
 
         LS_OPTS="--color=auto" && export LS_OPTS
@@ -176,7 +180,7 @@ elif [[ "$TERM" == linux ]]; then
 else
     tset -Q -e ${ERASE:-\^h} $TERM
     [[ $UNAMES = "SCO_SV" ]] && TERM=xterm
-    [[ -x `which tset` ]] && eval `tset -s -Q`
+    [[ -x $(which tset) ]] && eval `tset -s -Q`
     # std Linux console colors. These are NOT Solarized values
     c_norm="\e[0m"
     c_bold="\e[1m"
@@ -208,7 +212,7 @@ c_DEBUG="${c_blue}"
 ### load general aliases
 [[ -r "${PD}/alias.general" ]] && source "${PD}/alias.general"
 #   load default VCS aliases
-[[ -r "${PD}/alias.${DEFAULT_VCS}" && -x `which $DEFAULT_VCS 2>/dev/null` ]] && source "${PD}/alias.${DEFAULT_VCS}"
+[[ -r "${PD}/alias.${DEFAULT_VCS}" && -x $(which $DEFAULT_VCS 2>/dev/null) ]] && source "${PD}/alias.${DEFAULT_VCS}"
 #   load platform aliases
 [[ -r "${PD}/alias.${UNAMES}" ]] && source "${PD}/alias.${UNAMES}"
 
@@ -292,9 +296,9 @@ echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n
     ${c_white}${c_bold}Editor:${c_norm} ${c_purple}$EDITOR
     ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}$DEFAULT_VCS"
 
-DDATE=`which ddate 2>/dev/null`
+DDATE=$(which ddate 2>/dev/null)
 if [[ -x $DDATE ]]; then
-    DDAY=`ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H'`
+    DDAY=$($DDATE +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')
     echo -e "${c_cyan}$DDAY"
 fi
 
