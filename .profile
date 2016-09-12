@@ -249,7 +249,7 @@ bash.exe | -bash.exe | */bash.exe )
 
 ksh*     | -ksh*     | */ksh* | \
 ksh*.exe | -ksh*.exe | */ksh*.exe )
-    SHELLSTRING="$SHELL"
+    SHELLSTRING="$SHELL ($KSH_VERSION)"
     export PS1='$c_bold$USER@$HOSTNAME ($UNAMES): $c_norm $PWD
 ! $ '
     ;;
@@ -266,6 +266,18 @@ sh.exe | -sh.exe | */sh.exe )
     export PS1='$ '
     ;;
 esac
+
+###############################################################################
+# FWIW:
+# tcsh   - $version  - set to tcsh version number
+# bash   - $BASH     - set to bash path
+# [t]csh - $shell    - set to 'csh' or 'tcsh'
+# zsh    - $ZSH_NAME - set to 'zsh'
+# ksh has $PS3 & $PS4 set (normal Bourne shell (sh) only has $PS1 & $PS2 set).
+#   This generally seems like the hardest to distinguish - the ONLY difference
+#   in entire set of envionmental variables between sh and ksh installed on
+#   Solaris: $ERRNO, $FCEDIT, $LINENO, $PPID, $PS3, $PS4, $RANDOM, $SECONDS, $TMOUT
+###############################################################################
 
 type whereis >/dev/null 2>&1 || {
 	alias whereis='type -all'
