@@ -1,17 +1,23 @@
-#this is from http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal
-# Use Vi, not Emacs, style editing
-set editing-mode vi
-
+###############################################################################
+### General settings
+# Allow the command prompt to wrap to the next line
+set horizontal-scroll-mode Off
 # Show all completions as soon as I press tab, even if there's more than one
 set show-all-if-ambiguous on
 # Ignore case
 set completion-ignore-case on
-# on menu-complete, first display the common prefix, then cycle through the
-# options when hitting TAB
-menu-complete-display-prefix on
+# Show files type in completions
+set colored-stats on
+# on menu-complete, 1st display common prefix, then cycle through options w/TAB
+set menu-complete-display-prefix on
 
-###########################################################
-# Keymaps for when we're in command mode (e.g., after hitting ESC)
+###############################################################################
+### Use Vi, not Emacs, style editing
+###     from http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal
+set editing-mode vi
+
+###############################################################################
+### Keymaps for when we're in command mode (e.g., after hitting ESC)
 set keymap vi-command
 
 # Insert the arguments from the last command
@@ -28,12 +34,12 @@ set keymap vi-command
 "\e\e[A": history-search-backward
 "\e\e[B": history-search-forward
 
-###########################################################
-# Keymaps for when we're in insert (i.e., typing stuff in) mode
+###############################################################################
+### Keymaps for when we're in insert (i.e., typing stuff in) mode
 set keymap vi-insert
 
-# Pressing tab will list all completions & select the first one. Pressing it
-# again will cycle through available completions.
+# Pressing tab will list all completions & select the first one.
+# Pressing it again will cycle through available completions.
 TAB: menu-complete
 # Shift-TAB cycles completions backward
 "\e[Z": menu-complete-backward
