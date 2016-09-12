@@ -228,7 +228,8 @@ c_DEBUG="${c_blue}"
 ### Set up the shell environment
 umask 022
 trap "echo 'logout'" 0
-set -o noclobber -o nounset -o vi -o notify
+# removed '-o nounset' as it caused problems w/bash autocomplete
+set -o noclobber -o vi -o notify
 FIGNORE='~':'.o':'.bak':'.tmp'
 HISTSIZE=1000
 HISTCONTROL=ignoreboth
