@@ -194,13 +194,13 @@ bindsym $mod+b exec midori
 
 # Launch on startup
 
-exec terminator --layout=BasicWork
 exec /usr/local/bin/sublime_text
+exec terminator --layout=BasicWork
 #exec --no-startup-id nm-applet
 #exec --no-startup-id abrt-applet
 # dunst is a notificaiton daemon
 exec --no-startup-id dunst
-exec --no-startup-id clipit
+# exec --no-startup-id clipit
 ## Update dmenu cache
 exec --no-startup-id dmenu_path >/dev/null&
 
