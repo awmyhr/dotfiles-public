@@ -11,7 +11,7 @@
 ### Set some configurations
 export PD="$HOME/.profile.d"
 # Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
-export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M'
+export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'
 # Set this to perfered version control system current possible values: git svn 
 export DEFAULT_VCS="git"
 # Set this to false to ignore untracked files, which can speed up repo checks
