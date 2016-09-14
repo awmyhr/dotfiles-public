@@ -14,14 +14,14 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 export SHELL=$0
 
 ###############################################################################
-### zsh specific variables (common are set in .profile)
-export HIST_STAMPS="yyyy-mm-dd"
-export HISTFILE=$SHELLD/.zsh_history
-
-###############################################################################
 ### Ancillary file directory set and create if necessary
 export SHELLD=$HOME/.zshrc.d
 [[ ! -d "$SHELLD" ]] && mkdir "$SHELLD" && chmod 700 "$SHELLD"
+
+###############################################################################
+### zsh specific variables (common are set in .profile)
+export HIST_STAMPS="yyyy-mm-dd"
+export HISTFILE=$SHELLD/.zsh_history
 
 ###############################################################################
 ### Load in ancillary if they exist

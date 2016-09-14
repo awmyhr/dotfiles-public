@@ -27,6 +27,9 @@ export SAVEHIST=${HISTFILESIZE}
 export HISTCONTROL=ignoreboth
 # This is specifically for 'hh' (installed via package 'hrst')
 export HH_CONFIG=hicolor
+# Set autojump completion for commands
+export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
+
 ###############################################################################
 ### Set up PATH
 
@@ -82,13 +85,6 @@ elif [ -x /usr/bin/more ]; then
 fi
 
 export EDITOR VISUAL PAGER RSYNC_RSH SYSTEM
-
-# Compilation flags
-export ARCHFLAGS="-arch $PLATFORM"
-
-# Set autojump completion for commands
-export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-
 ###############################################################################
 ### MANPATH ###
 if [[ -e "${PD}/profile.manpaths" ]]; then
