@@ -1,0 +1,41 @@
+// vim:ts=4:sw=4:et
+{
+    "border": "none",
+    "current_border_width": 0,
+    "floating": "auto_off",
+    "geometry": {
+        "height": 450,
+        "width": 814,
+        "x": 0,
+        "y": 0
+    },
+    "name": "Terminator",
+    "percent": 0.5,
+    "swallows": [
+       {
+        "class": "^Terminator$"
+       }
+    ],
+    "type": "con"
+}
+
+{
+    "border": "none",
+    "current_border_width": 0,
+    "floating": "auto_off",
+    "geometry": {
+        "height": 1059,
+        "width": 960,
+        "x": 1689,
+        "y": 103
+    },
+    "name": "Sublime Text",
+    "percent": 0.5,
+    "swallows": [
+       {
+        "class": "^Sublime_text$"
+       }
+    ],
+    "type": "con"
+}
+
