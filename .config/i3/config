@@ -92,43 +92,48 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+1 workspace Main
+bindsym $mod+2 workspace II
+bindsym $mod+3 workspace III
+bindsym $mod+4 workspace IV
+bindsym $mod+5 workspace V
+bindsym $mod+6 workspace VI
+bindsym $mod+7 workspace VII
+bindsym $mod+8 workspace VIII
+bindsym $mod+9 workspace Diffuse
+bindsym $mod+0 workspace Cluster
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace Main
+bindsym $mod+Shift+2 move container to workspace II
+bindsym $mod+Shift+3 move container to workspace III
+bindsym $mod+Shift+4 move container to workspace IV
+bindsym $mod+Shift+5 move container to workspace V
+bindsym $mod+Shift+6 move container to workspace VI
+bindsym $mod+Shift+7 move container to workspace VII
+bindsym $mod+Shift+8 move container to workspace VIII
+bindsym $mod+Shift+9 move container to workspace Diffuse
+bindsym $mod+Shift+0 move container to workspace Cluster
 
+## move this to the mode_system menu
 # reload the configuration file
-bindsym $mod+Shift+c reload
+#bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+#bindsym $mod+Shift+r restart
 
+## Normally running this on a VM, so don't need suspend/hibernate
 # shutdown menu taken from https://wiki.archlinux.org/index.php/i3
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+#set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+set $mode_system System (l) lock, (e) logout, (c) reload i3, (Shift+c) restart i3, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3exit lock, mode "default"
-    bindsym e exec --no-startup-id i3exit logout, mode "default"
-    bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    bindsym r exec --no-startup-id i3exit reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"  
+    bindsym l exec --no-startup-id i3lock, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym c reload
+    bindsym Shift+c restart
+    #bindsym s exec --no-startup-id i3lock && /usr/bin/systemctl suspend, mode "default"
+    #bindsym h exec --no-startup-id i3lock && /usr/bin/systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id /usr/bin/systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id /usr/bin/systemctl poweroff -i, mode "default"  
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -165,6 +170,7 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+        strip_workspace_numbers yes
         status_command i3status --config ~/.config/i3/i3status.conf
         colors {
             separator #dc322f
@@ -187,22 +193,19 @@ client.urgent #d33682 #d33682 #fdf6e3 #dc322f
 # My shortcuts & settings
 hide_edge_borders both
 new_window none
-assign [class="Eclipse"] 3
-assign [class="Midori"]  2
 bindsym $mod+g exec /usr/local/bin/sublime_text
-bindsym $mod+b exec midori
+
+# Assign apps to specific workspaces
+assign [class="Diffuse"]  Diffuse
 
 # Launch on startup
 
-exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/awmyhr/.config/i3/term-st.json'"
+exec --no-startup-id i3-msg 'workspace Main; append_layout /home/awmyhr/.config/i3/term-st.json'
 
-exec /usr/local/bin/sublime_text
-exec terminator --layout=BasicWork
-#exec --no-startup-id nm-applet
-#exec --no-startup-id abrt-applet
-# dunst is a notificaiton daemon
-exec --no-startup-id dunst
-# exec --no-startup-id clipit
+exec --no-startup-id i3-msg 'workspace Main; exec /usr/local/bin/sublime_text'
+exec --no-startup-id i3-msg 'workspace Main; exec terminator --layout=BasicWork'
+exec --no-startup-id dunst          # dunst is a notificaiton daemon
+
 ## Update dmenu cache
 exec --no-startup-id dmenu_path >/dev/null&
 
