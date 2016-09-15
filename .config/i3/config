@@ -10,8 +10,8 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 # Misc settings
-set $HOME   "/home/awmyhr"
-set $CONFIG "/home/awmyhr/.config/i3"
+set $HOME   /home/awmyhr
+set $CONFIG /home/awmyhr/.config/i3
 
 hide_edge_borders both
 new_window none
@@ -39,8 +39,8 @@ set $cyan    #2aa198
 set $green   #859900
 
 # color.class           border   backgr.  text    indicator child_border
-client.focused          $green   $green   $base3  $green 
-client.focused_inactive $basez2  $basez2  $base2  $violet
+client.focused          $green   $green   $base3  $blue 
+client.focused_inactive $cyan    $cyan    $base2  $violet
 client.unfocused        $basez2  $basez2  $base1  $basez1
 client.urgent           $magenta $magenta $base3  $red   
 client.placeholder      #000000  $basez3  $base2 
@@ -189,10 +189,9 @@ bindsym $mod+r mode "resize"
 ################################################################################
 ### Shutdown Menu binding mode
 #   NOTE: originally taken from https://wiki.archlinux.org/index.php/i3
-set $mode_system System (l) lock, (e) logout, (c) reload i3, (Shift+c) restart i3, (r) reboot, (Shift+s) shutdown
+set $mode_system System (l) logout, (c) reload i3, (Shift+c) restart i3, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3lock, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym l exit
     bindsym c reload
     bindsym Shift+c restart
     bindsym r exec --no-startup-id /usr/bin/systemctl reboot, mode "default"
@@ -212,18 +211,18 @@ bar {
     status_command i3status --config $CONFIG/i3status.conf
     colors {
         background         $basez3 
-        separator          $red   
-        statusline         $blue
+        separator          $blue   
+        statusline         $base2
         # Note: for multi-monitor
         #focused_background $basez3 
         #focused_statusline $blue
         #focused_seperator  $red   
         # colorclass       border   backgrd  text
-        active_workspace   $base3   $violet  $base3 
-        binding_mode       $magenta $magenta $base3 
-        focused_workspace  $base3   $green   $base3 
-        inactive_workspace $basez1  $base1   $basez3 
-        urgent_workspace   $magenta $magenta $base3 
+        active_workspace   $cyan    $cyan    $base3 
+        binding_mode       $violet  $violet  $basez3 
+        focused_workspace  $blue    $blue    $basez2 
+        inactive_workspace $basez2  $basez2  $base2 
+        urgent_workspace   $red     $red     $basez3 
     }
 }
 
@@ -244,13 +243,16 @@ exec --no-startup-id i3-msg 'workspace Main; exec /usr/local/bin/sublime_text'
 exec --no-startup-id i3-msg 'workspace Main; exec terminator --layout=BasicWork'
 exec --no-startup-id dunst          # dunst is a notificaiton daemon
 
+exec --no-startup-id xsetroot -solid "$basez2"
 ################################################################################
 ### And finally...
 # Update dmenu cache
 exec --no-startup-id dmenu_path >/dev/null&
 
-# lxappearance should float
+# These apps should float
 for_window [class="Lxappearance"] floating enable
+for_window [class="feh"] floating enable
+for_window [title="Terminator Preferences"] floating enable
 
 ################################################################################
 ### useful notes
