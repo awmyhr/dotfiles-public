@@ -52,7 +52,6 @@ client.background       $basez3
 ################################################################################
 ### Keybindings
 set $mod Mod1
-set $win Mod4
 
 # start a terminal
 bindsym $mod+Return exec terminator
@@ -62,7 +61,8 @@ bindsym $mod+Shift+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec dmenu_run -b -i -nf "$base2" -nb "$basez3" -sf "$basez2" -sb "$blue" -fn "-misc-liberation mono-medium-r-normal--0-0-0-0-m-0-iso8859-1"
+#bindsym $mod+d exec dmenu_run
 # show only apps with a .desktop file (wrapper around dmenu)
 bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop
 
@@ -130,9 +130,7 @@ bindsym $mod+Shift+space floating toggle
 floating_modifier $mod
 
 # Take a screenshot upon pressing $mod+x (select an area)
-#   Note: this requires somekinf of screenshot program installed
-#bindsym --release $mod+x exec --no-startup-id import /tmp/latest-screenshot.png
-#bindsym --release Print exec --no-startup-id import /tmp/latest-screenshot.png
+bindsym --release Print exec "scrot -s 'screenshot_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/'"
 
 ################################################################################
 ### Workspaces
@@ -144,7 +142,7 @@ bindsym $mod+4 workspace IV
 bindsym $mod+5 workspace V
 bindsym $mod+6 workspace VI
 bindsym $mod+7 workspace VII
-bindsym $mod+8 workspace VIII
+bindsym $mod+8 workspace Haroopad
 bindsym $mod+9 workspace Diffuse
 bindsym $mod+0 workspace Cluster
 
@@ -156,7 +154,7 @@ bindsym $mod+Shift+4 move container to workspace IV
 bindsym $mod+Shift+5 move container to workspace V
 bindsym $mod+Shift+6 move container to workspace VI
 bindsym $mod+Shift+7 move container to workspace VII
-bindsym $mod+Shift+8 move container to workspace VIII
+bindsym $mod+Shift+8 move container to workspace Haroopad
 bindsym $mod+Shift+9 move container to workspace Diffuse
 bindsym $mod+Shift+0 move container to workspace Cluster
 
@@ -288,3 +286,5 @@ for_window [class="(?i)firefox"] title_format "<span foreground='red'>%title</sp
 #con_mark     * Marks set for this container, see [vim_like_marks]. A match is made if any of the container’s marks matches the specified mark.
 #con_id         i3-internal container ID, which you can get via the IPC interface. Handy for scripting
 #   * These can use regular expressions (PCRE)
+
+
