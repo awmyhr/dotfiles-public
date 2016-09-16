@@ -1,17 +1,14 @@
 {
-	"always_show_minimap_viewport": true,
-	"color_scheme": "Packages/Solarized (dark).tmTheme",
-	"font_face": "Liberation Mono",
-	"font_size": 12,
-	"ignored_packages":
-	[
-		"Vintage"
-	],
-	"margin": 2,
-	"match_brackets_angle": true,
-	"show_encoding": true,
-	"theme": "Soda SolarizedDark.sublime-theme",
-    "word_wrap": "false",
+    "color_scheme": "Packages/Solarized (dark).tmTheme",
+    "theme": "Soda SolarizedDark.sublime-theme",
+    "font_face": "Liberation Mono",
+    "font_size": 12,
+    "ignored_packages": ["Vintage"],
+    "always_show_minimap_viewport": true,
+    "margin": 2,
+    "match_brackets_angle": true,
     "rulers": [80],
-	"translate_tabs_to_spaces": true
+    "show_encoding": true,
+    "translate_tabs_to_spaces": true,
+    "word_wrap": "false"
 }

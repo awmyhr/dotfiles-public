@@ -1,0 +1,19 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Cheatsheet",
+		"Dockerfile Syntax Highlighting",
+		"Git",
+		"GitGutter",
+		"LogView",
+		"Package Control",
+		"SublimeLinter",
+		"SublimeLinter-json",
+		"SublimeLinter-shellcheck",
+		"Theme - Soda SolarizedDark"
+	]
+}
