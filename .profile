@@ -29,7 +29,8 @@ export HISTCONTROL=ignoreboth
 export HH_CONFIG=hicolor
 # Set autojump completion for commands
 export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-
+# Set .config directory for XDG
+export XDG_CONFIG_HOME="$HOME/.config"
 ###############################################################################
 ### Set up PATH
 
