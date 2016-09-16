@@ -30,6 +30,9 @@ for_window [title="Terminator Preferences"] floating enable
 ### Assign apps to specific workspaces
 assign [class="Diffuse"]  diff
 assign [class="Meld"]  diff
+assign [class="Surf"]  browse
+assign [class="Uzbl-tabbed"]  browse
+assign [class="chromium-browser"]  browse
 
 ################################################################################
 ### Colorz - Solarized theme settings
