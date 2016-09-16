@@ -31,6 +31,10 @@ export HH_CONFIG=hicolor
 export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
 # Set .config directory for XDG
 export XDG_CONFIG_HOME="$HOME/.config"
+# Set this to perfered version control system
+# current possible values: git svn 
+export VCS="git"
+
 ###############################################################################
 ### Set up PATH
 
