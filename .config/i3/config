@@ -20,11 +20,23 @@ new_window none
 font pango:Liberation Mono 10
 
 ################################################################################
+### These apps should float
+for_window [class="Lxappearance"] floating enable
+for_window [class="Lightdm-gtk-greeter-settings"] floating enable
+for_window [class="feh"] floating enable
+for_window [title="Terminator Preferences"] floating enable
+
+################################################################################
+### Assign apps to specific workspaces
+assign [class="Diffuse"]  diff
+assign [class="Meld"]  diff
+
+################################################################################
 ### Colorz - Solarized theme settings
 set $basez3  #002b36
 set $basez2  #073642
 set $basez1  #586e75
-set $base00  #657b83
+set $basez0  #657b83
 set $base0   #839496
 set $base1   #93a1a1
 set $base2   #eee8d5
@@ -64,7 +76,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec dmenu_run -b -i -nf "$base2" -nb "$basez3" -sf "$basez2" -sb "$blue" -fn "-misc-liberation mono-medium-r-normal--0-0-0-0-m-0-iso8859-1"
 #bindsym $mod+d exec dmenu_run
 # show only apps with a .desktop file (wrapper around dmenu)
-bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu='dmenu -b -i -nf "$base2" -nb "$basez3" -sf "$basez2" -sb "$blue" -fn "-misc-liberation mono-medium-r-normal--0-0-0-0-m-0-iso8859-1"'
 
 # change focus
 bindsym $mod+h focus left
@@ -143,7 +155,7 @@ bindsym $mod+5 workspace V
 bindsym $mod+6 workspace VI
 bindsym $mod+7 workspace VII
 bindsym $mod+8 workspace Haroopad
-bindsym $mod+9 workspace Diffuse
+bindsym $mod+9 workspace diff
 bindsym $mod+0 workspace Cluster
 
 # move focused container to workspace
@@ -155,7 +167,7 @@ bindsym $mod+Shift+5 move container to workspace V
 bindsym $mod+Shift+6 move container to workspace VI
 bindsym $mod+Shift+7 move container to workspace VII
 bindsym $mod+Shift+8 move container to workspace Haroopad
-bindsym $mod+Shift+9 move container to workspace Diffuse
+bindsym $mod+Shift+9 move container to workspace diff
 bindsym $mod+Shift+0 move container to workspace Cluster
 
 ################################################################################
@@ -203,6 +215,9 @@ bindsym $mod+Pause mode "$mode_system"
 
 ################################################################################
 ### Start workspace bar (shows occupied workspaces other i3status info per config)
+# If ever want to use dzen2 for status bar, this is for future ref: 
+#   status_command i3status --config="~/.config/i3/i3status-dzen2.conf"| dzen2 -fg "$base2" -bg "$basez3" -fn "-misc-liberation mono-medium-r-normal--10-0-0-0-m-0-iso8859-1"
+
 bar {
     tray_padding 0
     strip_workspace_numbers yes
@@ -230,27 +245,19 @@ bindsym $mod+Control+0 exec $HOME/bin/load_clusters.sh
 bindsym $mod+g exec /usr/local/bin/sublime_text
 
 ################################################################################
-### Assign apps to specific workspaces
-assign [class="Diffuse"]  Diffuse
-
-################################################################################
 ### Launch on startup
 exec --no-startup-id i3-msg 'workspace Main; append_layout $CONFIG/term-st.json'
 
 exec --no-startup-id i3-msg 'workspace Main; exec /usr/local/bin/sublime_text'
 exec --no-startup-id i3-msg 'workspace Main; exec terminator --layout=BasicWork'
-exec --no-startup-id dunst          # dunst is a notificaiton daemon
+# dunst is a notificaiton daemon
+exec --no-startup-id dunst
 
 exec --no-startup-id xsetroot -solid "$basez2"
 ################################################################################
 ### And finally...
 # Update dmenu cache
 exec --no-startup-id dmenu_path >/dev/null&
-
-# These apps should float
-for_window [class="Lxappearance"] floating enable
-for_window [class="feh"] floating enable
-for_window [title="Terminator Preferences"] floating enable
 
 ################################################################################
 ### useful notes
@@ -260,20 +267,20 @@ for_window [title="Terminator Preferences"] floating enable
 #for_window [window_role="task_dialog"] floating enable
 # Generically
 #for_window [<criteria>="<value>"] floating enable
-
+#
 # Not just for floating - Make all urxvts use a 1-pixel border:
 #for_window [class="urxvt"] border pixel 1
-
+#
 # makes the window floating as soon as I change directory to ~/work
 #for_window [title="x200: ~/work"] floating enable
 # print all window titles bold
-for_window [class=".*"] title_format "<b>%title</b>"
-
+#for_window [class=".*"] title_format "<b>%title</b>"
+#
 # print window titles of firefox windows red
-for_window [class="(?i)firefox"] title_format "<span foreground='red'>%title</span>"
-
-
-# Common criteria (many of these can be found via xprop)
+#for_window [class="(?i)firefox"] title_format "<span foreground='red'>%title</span>"
+#
+################################################################################
+### Common criteria (many of these can be found via xprop)
 #   (Use the special value __focused__ to match all windows having the same window instance as the currently focused window)
 #class        * Window class (the second part of WM_CLASS)
 #instance     * Window instance (the first part of WM_CLASS)
@@ -286,5 +293,6 @@ for_window [class="(?i)firefox"] title_format "<span foreground='red'>%title</sp
 #con_mark     * Marks set for this container, see [vim_like_marks]. A match is made if any of the container’s marks matches the specified mark.
 #con_id         i3-internal container ID, which you can get via the IPC interface. Handy for scripting
 #   * These can use regular expressions (PCRE)
+################################################################################
 
 
