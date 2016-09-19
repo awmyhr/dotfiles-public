@@ -117,10 +117,10 @@
     separator_height = 2
     
     # Padding between text and separator.
-    padding = 5
+    padding = 2
     
     # Horizontal padding.
-    horizontal_padding = 5
+    horizontal_padding = 1
     
     # Define a color for the separator.
     # possible values are:
@@ -142,7 +142,7 @@
     browser = /usr/bin/firefox -new-tab
 
     # Align icons left/right/off
-    icon_position = left
+    icon_position = right
 
     # Paths to default icons.
     icon_folders = /usr/share/icons/HighContrast/16x16/status/:/usr/share/icons/HighContrast/16x16/devices/
