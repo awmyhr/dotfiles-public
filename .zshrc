@@ -80,8 +80,9 @@ bindkey '^R' history-incremental-search-backward
 #bindkey -s "\C-r" "\eqhh\n"
 
 # Set up auto completion, etc...
-setopt auto_cd multios prompt_subst
-setopt appendhistory autocd extendedglob correctall histignorealldups
+# First set 'nocorrectall' than 'correct' to keep zsh from correcting args
+setopt auto_cd multios prompt_subst nocorrectall 
+setopt appendhistory autocd extendedglob histignorealldups correct
 zstyle :compinstall filename '/home/awmyhr/.zshrc'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
