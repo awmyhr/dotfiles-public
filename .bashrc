@@ -52,9 +52,15 @@ if [[ -r "$HOME/.profile" ]]; then
     export c_pNOTICE="${c_NOTICE}"
     export c_pINFO="${c_INFO}"
     export c_pDEBUG="${c_DEBUG}"
-
+    
+    if [[ ! -z ${SSH_TTY} ]]; then
+        TTY=${SSH_TTY}
+    elif [[ -z ${TTY} ]]; then
+        TTY=$(tty)
+    fi
+    TTY=${TTY#/dev/}
     # \j = # of jobs ; \l basname of terminal device
-    PS1="${c_ALERT}\$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h:${c_yellow}\w${c_norm} \n${c_pDEBUG}\041\! [\l] \$(_vcs_prompt_char) \$${c_norm} "
+    PS1="${c_ALERT}\$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h:${c_yellow}\w${c_norm} \n${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_norm} "
 else
     echo "WARNING: missing $HOME/.profile!!"
     export MANPATH="/usr/local/man:$MANPATH"
