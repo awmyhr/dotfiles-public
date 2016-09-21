@@ -83,13 +83,14 @@ else
 	VISUAL=vi
 fi
 
-if [ -x /usr/bin/less ]; then
-    PAGER="/usr/bin/less -ins"
-elif [ -x /usr/bin/more ]; then
-    PAGER="/usr/bin/more -s"
+if [[ -x $(which less 2>/dev/null) ]]; then
+    PAGER='less -FIMRSw -z-2'
+    LESS='-FIMRSw -z-2'
+elif [[ -x $(which more 2>/dev/null) ]]; then
+    PAGER="more -s"
 fi
 
-export EDITOR VISUAL PAGER RSYNC_RSH SYSTEM
+export EDITOR VISUAL PAGER LESS RSYNC_RSH SYSTEM
 ###############################################################################
 ### MANPATH ###
 if [[ -e "${PD}/profile.manpaths" ]]; then
@@ -109,7 +110,6 @@ export MANPATH
 ###############################################################################
 ### color TERM settings
 if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-256color >/dev/null 2>&1; then
-    TERM=gnome-256color
     if [[ -x /usr/bin/dircolors ]]; then
         if [[ -r "$HOME/.dirColors/dircolors.256dark" ]]; then
             eval $(dircolors -b "$HOME/.dirColors/dircolors.256dark")
@@ -246,34 +246,35 @@ set -o noclobber -o vi -o notify
 ###############################################################################
 ### Shell dependent settings
 case "$SHELL" in
-zsh      | -zsh      | */zsh  | \
-zsh.exe  | -zsh.exe  | */zsh.exe )
-    SHELLSTRING="$SHELL ($ZSH_VERSION)"
-    ;;
+    *zsh* )
+        SHELLSTRING="$SHELL ($ZSH_VERSION)"
+        ;;
 
-bash     | -bash     | */bash | \
-bash.exe | -bash.exe | */bash.exe )
-    SHELLSTRING="$SHELL ($BASH_VERSION)"
-    ;;
+    *bash* )
+        SHELLSTRING="$SHELL ($BASH_VERSION)"
+        ;;
 
-ksh*     | -ksh*     | */ksh* | \
-ksh*.exe | -ksh*.exe | */ksh*.exe )
-    SHELLSTRING="$SHELL ($KSH_VERSION)"
-    export PS1='$c_bold$USER@$HOSTNAME ($UNAMES): $c_norm $PWD
+    *ksh* )
+        SHELLSTRING="$SHELL ($KSH_VERSION)"
+        export PS1='$c_bold$USER@$HOSTNAME ($UNAMES): $c_norm $PWD
 ! $ '
-    ;;
-sh     | -sh     | */sh | \
-sh.exe | -sh.exe | */sh.exe )
-    # Set a simple prompt
-    SHELLSTRING="$SHELL"
-    export PS1='$USER@$HOSTNAME $ '
-    ;;
-* )
-    # Sorry, unknown shell??
-    SHELLSTRING="UNKNOWN"
+        ;;
+    *csh )
+        # Set a simple prompt
+        SHELLSTRING="$shell"
+        export PS1='$USER@$HOSTNAME $ '
+        ;;
+    *sh )
+        # Set a simple prompt
+        SHELLSTRING="$SHELL"
+        export PS1='$USER@$HOSTNAME $ '
+        ;;
+    * )
+        # Sorry, unknown shell??
+        SHELLSTRING="UNKNOWN"
 
-    export PS1='$ '
-    ;;
+        export PS1='$ '
+        ;;
 esac
 
 ###############################################################################
@@ -301,9 +302,13 @@ echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n
     ${c_white}${c_bold}Editor:${c_norm} ${c_purple}$EDITOR
     ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}$DEFAULT_VCS"
 
-DDATE=$(which ddate 2>/dev/null)
-if [[ -x $DDATE ]]; then
-    DDAY=$($DDATE +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')
-    echo -e "${c_cyan}$DDAY"
+# Print the Discordian date.
+if [[ -x $(which ddate 2>/dev/null) ]]; then
+    echo -e "${c_cyan}$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')"
+fi
+
+# Print a random, hopefully interesting, adage.
+if [[ -x $(which fortune 2>/dev/null) ]]; then
+    echo -e "${c_purple}"; fortune -s
 fi
 
