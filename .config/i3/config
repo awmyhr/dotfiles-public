@@ -24,6 +24,7 @@ font pango:Liberation Mono 10
 for_window [class="Lxappearance"] floating enable
 for_window [class="Lightdm-gtk-greeter-settings"] floating enable
 for_window [class="feh"] floating enable
+for_window [class="cool-retro-term"] floating enable
 for_window [title="Event Tester"] floating enable
 for_window [title="Terminator Preferences"] floating enable
 
@@ -73,13 +74,13 @@ set $mod Mod1
 bindsym $mod+Return exec terminator
 bindsym $mod+Shift+Return exec i3-sensible-terminal
 
-# kill focused window
-bindsym $mod+Shift+q kill
-
 # start dmenu (a program launcher)
 bindsym $mod+space exec dmenu_run -b -i -nf "$base2" -nb "$basez3" -sf "$basez2" -sb "$blue" -fn "-misc-liberation mono-medium-r-normal--0-0-0-0-m-0-iso8859-1"
 # show only apps with a .desktop file (wrapper around dmenu)
 bindsym $mod+Shift+space exec --no-startup-id i3-dmenu-desktop --dmenu='dmenu -b -i -nf "$base2" -nb "$basez3" -sf "$basez2" -sb "$blue" -fn "-misc-liberation mono-medium-r-normal--0-0-0-0-m-0-iso8859-1"'
+
+# kill focused window
+bindsym $mod+Shift+q kill
 
 # change focus
 bindsym $mod+h focus left
@@ -255,7 +256,9 @@ exec --no-startup-id i3-msg 'workspace Main; exec terminator --layout=BasicWork'
 # dunst is a notificaiton daemon
 exec --no-startup-id dunst
 
-exec --no-startup-id xsetroot -solid "$basez2"
+# set background (1st is a pic, second a solid color)
+exec --no-startup-id feh --image-bg black --bg-center '/home/awmyhr/Documents/Pictures/background.png'
+#exec --no-startup-id xsetroot -solid "$basez2"
 ################################################################################
 ### And finally...
 # Update dmenu cache
