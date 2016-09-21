@@ -32,12 +32,20 @@ export HISTFILE=$SHELLD/.zsh_history
 # unset i
 
 ###############################################################################
-### Uncomment the following line to display red dots whilst waiting for completion.
+### Completion schtuff
+# Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 # Save the location of the current completion dump file.
 if [ -z "$ZSH_COMPDUMP" ]; then
   export ZSH_COMPDUMP="${SHELLD}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
 fi
+
+{
+  # Compile the completion dump to increase startup speed.
+  if [[ -s "$ZSH_COMPDUMP" && (! -s "${ZSH_COMPDUMP}.zwc" || "$ZSH_COMPDUMP" -nt "${ZSH_COMPDUMP}.zwc") ]]; then
+    zcompile "$ZSH_COMPDUMP"
+  fi
+} &!
 
 ###############################################################################
 ### User configuration -- NOTE: a lot of fuctions depend on my .profile!
@@ -86,5 +94,7 @@ setopt appendhistory autocd extendedglob histignorealldups correct
 zstyle :compinstall filename '/home/awmyhr/.zshrc'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+# SSH autocomplete
+zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 autoload -U colors && colors
 autoload -Uz compinit && compinit
