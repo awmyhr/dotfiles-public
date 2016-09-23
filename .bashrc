@@ -44,15 +44,16 @@ unset i
 if [[ -r "$HOME/.profile" ]]; then
     . "$HOME/.profile"
     # Because zsh needed special variables, we set them here as well
-    export c_pEMERG="${c_EMERG}"
-    export c_pALERT="${c_ALERT}"
-    export c_pCRIT="${c_CRIT}"
-    export c_pERR="${c_ERR}"
-    export c_pWARNING="${c_WARNING}"
-    export c_pNOTICE="${c_NOTICE}"
-    export c_pINFO="${c_INFO}"
-    export c_pDEBUG="${c_DEBUG}"
-    
+    export c_pEMERG="\[${c_EMERG}\]"
+    export c_pALERT="\[${c_ALERT}\]"
+    export c_pCRIT="\[${c_CRIT}\]"
+    export c_pERR="\[${c_ERR}\]"
+    export c_pWARNING="\[${c_WARNING}\]"
+    export c_pNOTICE="\[${c_NOTICE}\]"
+    export c_pINFO="\[${c_INFO}\]"
+    export c_pDEBUG="\[${c_DEBUG}\]"
+    export c_pnorm="\[${c_norm}\]"
+
     if [[ ! -z ${SSH_TTY} ]]; then
         TTY=${SSH_TTY}
     elif [[ -z ${TTY} ]]; then
@@ -60,7 +61,7 @@ if [[ -r "$HOME/.profile" ]]; then
     fi
     TTY=${TTY#/dev/}
     # \j = # of jobs ; \l basname of terminal device
-    PS1="${c_ALERT}\$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h:${c_yellow}\w${c_norm} \n${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_norm} "
+    PS1="${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h:${c_yellow}\w${c_pnorm} \n${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_pnorm} "
 else
     echo "WARNING: missing $HOME/.profile!!"
     export MANPATH="/usr/local/man:$MANPATH"
