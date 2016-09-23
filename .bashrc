@@ -71,18 +71,23 @@ export PS1
 
 ###############################################################################
 ### Let's set some shoptions...
-# histappend   - Turn on parallel history
-# cdspell      - autocorrect typos in path names when using cd
 # autocd       - type 'directoryname' instead of 'cd directoryname'
+# cdspell      - autocorrect typos in path names when using cd
 # checkwinsize - keeps bash updated on window size
+# cmdhist      - save multi-line commands to history as one command
+# dirspell     - correct spelling of directories
+# histappend   - Turn on parallel history
 # Some shoptions are not available in every version of Bash, so check first
-for i in autocd cdspell checkwinsize histappend; do
+for i in autocd cdspell checkwinsize cmdhist dirspell histappend; do
     shopt -s "${i}"
 done
 unset i
 
 # Append to history file
 history -a
+export HISTCONTROL=ignoreboth:erasedups
+# Record each line of history right away instead of at the end of the session
+PROMPT_COMMAND="${PROMPT_COMMAND};history -a"
 
 # bind hh to Ctrl-r (for Vi mode check doc)
 bind '"\C-r": "\C-a hh \C-j"'
