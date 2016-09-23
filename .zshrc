@@ -22,6 +22,7 @@ export SHELLD=$HOME/.zshrc.d
 ### zsh specific variables (common are set in .profile)
 export HIST_STAMPS="yyyy-mm-dd"
 export HISTFILE=$SHELLD/.zsh_history
+export HISTIGNORE="(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)"
 
 ###############################################################################
 ### Load in ancillary if they exist
@@ -71,7 +72,6 @@ if [[ -r "$HOME/.profile" ]]; then
 %{%K{${c_black}}%}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
 %{%K{${c_black}}%}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
     export RPROMPT=''
-
 else
     echo "WARNING: missing $HOME/.profile!!"
     export MANPATH="/usr/local/man:$MANPATH"
@@ -91,8 +91,8 @@ bindkey '^R' history-incremental-search-backward
 
 # Set up auto completion, etc...
 # First set 'nocorrectall' than 'correct' to keep zsh from correcting args
-setopt auto_cd multios prompt_subst nocorrectall 
-setopt appendhistory autocd extendedglob histignorealldups correct
+setopt autocd multios prompt_subst nocorrectall correct extendedglob
+setopt appendhistory histignorespace histignorealldups histreduceblanks histverify
 zstyle :compinstall filename '/home/awmyhr/.zshrc'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
