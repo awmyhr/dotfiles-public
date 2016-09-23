@@ -121,60 +121,62 @@ if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-
 
         LS_OPTS="--color=auto" && export LS_OPTS
     fi
-    tput sgr0
     c_bold=$(tput bold)
     c_norm=$(tput sgr0)
+    c_undr=$(tput smul)
+    c_hide=$(tput invis)
+    c_blik=$(tput blink)
+    c_revr=$(tput smso)
     if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
-        BASE03=$(tput setaf 234)
-        BASE02=$(tput setaf 235)
-        BASE01=$(tput setaf 240)
-        BASE00=$(tput setaf 241)
-        BASE0=$(tput setaf 244)
-        BASE1=$(tput setaf 245)
-        BASE2=$(tput setaf 254)
-        BASE3=$(tput setaf 230)
-        c_orange=$(tput setaf 166)
-        c_magenta=$(tput setaf 125)
-        c_yellow=$(tput setaf 136)
-        c_red=$(tput setaf 160)
-        c_purple=$(tput setaf 61)
+        c_BASE03=$(tput setaf 234)
+        c_BASE02=$(tput setaf 235)
+        c_BASE01=$(tput setaf 240)
+        c_BASE00=$(tput setaf 241)
+        c_BASE0=$(tput setaf 244)
+        c_BASE1=$(tput setaf 245)
+        c_BASE2=$(tput setaf 254)
+        c_BASE3=$(tput setaf 230)
         c_blue=$(tput setaf 33)
         c_cyan=$(tput setaf 37)
         c_green=$(tput setaf 64)
-        c_white=$BASE2
-        c_black=$BASE03
+        c_magenta=$(tput setaf 125)
+        c_orange=$(tput setaf 166)
+        c_purple=$(tput setaf 61)
+        c_red=$(tput setaf 160)
+        c_yellow=$(tput setaf 136)
     else
-        BASE03=$(tput setaf 8)
-        BASE02=$(tput setaf 0)
-        BASE01=$(tput setaf 10)
-        BASE00=$(tput setaf 11)
-        BASE0=$(tput setaf 12)
-        BASE1=$(tput setaf 14)
-        BASE2=$(tput setaf 7)
-        BASE3=$(tput setaf 15)
-        c_orange=$(tput setaf 9)
-        c_magenta=$(tput setaf 5)
-        c_yellow=$(tput setaf 3)
-        c_red=$(tput setaf 1)
-        c_purple=$(tput setaf 13)
+        c_BASE03=$(tput setaf 8)
+        c_BASE02=$(tput setaf 0)
+        c_BASE01=$(tput setaf 10)
+        c_BASE00=$(tput setaf 11)
+        c_BASE0=$(tput setaf 12)
+        c_BASE1=$(tput setaf 14)
+        c_BASE2=$(tput setaf 7)
+        c_BASE3=$(tput setaf 15)
         c_blue=$(tput setaf 4)
         c_cyan=$(tput setaf 6)
         c_green=$(tput setaf 2)
-        c_white=$BASE2
-        c_black=$BASE03
+        c_magenta=$(tput setaf 5)
+        c_orange=$(tput setaf 9)
+        c_purple=$(tput setaf 13)
+        c_red=$(tput setaf 1)
+        c_yellow=$(tput setaf 3)
     fi
 elif [[ "$TERM" == linux ]]; then
-    tput sgr0
     c_bold=$(tput bold)
     c_norm=$(tput sgr0)
-    BASE03=$(tput setaf 8)
-    BASE02=$(tput setaf 0)
-    BASE01=$(tput setaf 10)
-    BASE00=$(tput setaf 11)
-    BASE0=$(tput setaf 12)
-    BASE1=$(tput setaf 14)
-    BASE2=$(tput setaf 7)
-    BASE3=$(tput setaf 15)
+    c_undr=$(tput smul)
+    c_hide=$(tput invis)
+    c_blik=$(tput blink)
+    c_revr=$(tput smso)
+    c_BASE03=$(tput setaf 8)
+    c_BASE02=$(tput setaf 0)
+    c_BASE01=$(tput setaf 10)
+    c_BASE00=$(tput setaf 11)
+    c_BASE0=$(tput setaf 12)
+    c_BASE1=$(tput setaf 14)
+    c_BASE2=$(tput setaf 7)
+    c_BASE3=$(tput setaf 15)
     c_orange=$(tput setaf 9)
     c_magenta=$(tput setaf 5)
     c_yellow=$(tput setaf 3)
@@ -183,38 +185,55 @@ elif [[ "$TERM" == linux ]]; then
     c_blue=$(tput setaf 4)
     c_cyan=$(tput setaf 6)
     c_green=$(tput setaf 2)
-    c_white=$BASE2
-    c_black=$BASE03
 else
     tset -Q -e ${ERASE:-\^h} $TERM
     [[ $UNAMES = "SCO_SV" ]] && TERM=xterm
     [[ -x $(which tset) ]] && eval `tset -s -Q`
-    # std Linux console colors. These are NOT Solarized values
-    c_norm="\e[0m"
-    c_bold="\e[1m"
-    c_black="\e[0;30m"
-    c_blue="\e[0;34m"
-    c_brown="\e[0;33m"
-    c_cyan="\e[0;36m"
-    c_dark_gray="\e[1;30m"
-    c_green="\e[0;32m"
-    c_magenta="\e[0;31m"
-    c_purple="\e[0;35m"
-    c_orange="\e[0;33m"
-    c_red="\e[0;31m"
-    c_white="\e[1;37m"
-    c_yellow="\e[1;33m"
+    # ANSI escapes for 8 color
+    c_norm='\e[0m'
+    c_bold='\e[1m'
+    c_undr='\e[4m'
+    c_blik='\e[5m'
+    c_revr='\e[7m'
+    c_hide='\e[8m'
+    c_BASE03='\e[30m'
+    c_BASE02='\e[34m'
+    c_BASE01='\e[37m'
+    c_BASE00='\e[37m'
+    c_BASE0='\e[36m'
+    c_BASE1='\e[34m'
+    c_BASE2='\e[37m'
+    c_BASE3='\e[37m'
+    c_blue='\e[34m'
+    c_cyan='\e[36m'
+    c_green='\e[32m'
+    c_magenta='\e[35m'
+    c_purple='\e[35m'
+    c_orange='\e[33m'
+    c_red='\e[31m'
+    c_yellow='\e[33m'
 fi
 
+c_white="${c_BASE3}"
+c_black="${c_BASE03}"
+
+#export all the colors
+export c_BASE03 c_BASE02  c_BASE01 c_BASE00
+export c_BASE0  c_BASE1   c_BASE2  c_BASE3
+export c_orange c_magenta c_yellow c_red
+export c_purple c_blue    c_cyan   c_green
+export c_white  c_black   c_bold   c_norm
+export c_undr   c_hide    c_blik   c_revr
+
 # Combos for various alert based on kernel alert levels
-c_EMERG="${c_bold}${c_magenta}"
-c_ALERT="${c_bold}${c_red}"
-c_CRIT="${c_red}"
-c_ERR="${c_bold}${c_yellow}"
-c_WARNING="${c_yellow}"
-c_NOTICE="${c_white}"
-c_INFO="${c_green}"
-c_DEBUG="${c_blue}"
+export c_EMERG="${c_bold}${c_magenta}"
+export c_ALERT="${c_bold}${c_red}"
+export c_CRIT="${c_red}"
+export c_ERR="${c_bold}${c_yellow}"
+export c_WARNING="${c_yellow}"
+export c_NOTICE="${c_white}"
+export c_INFO="${c_green}"
+export c_DEBUG="${c_blue}"
 
 ###############################################################################
 ### load general aliases
