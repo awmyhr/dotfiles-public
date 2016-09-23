@@ -69,11 +69,21 @@ else
 fi
 export PS1
 
-# Turn on parallel history
-shopt -s histappend
+###############################################################################
+### Let's set some shoptions...
+# histappend   - Turn on parallel history
+# cdspell      - autocorrect typos in path names when using cd
+# autocd       - type 'directoryname' instead of 'cd directoryname'
+# checkwinsize - keeps bash updated on window size
+# Some shoptions are not available in every version of Bash, so check first
+for i in autocd cdspell checkwinsize histappend; do
+    shopt -s "${i}"
+done
+unset i
+
+# Append to history file
 history -a
-# Turn on checkwinsize
-shopt -s checkwinsize
+
 # bind hh to Ctrl-r (for Vi mode check doc)
 bind '"\C-r": "\C-a hh \C-j"'
 
