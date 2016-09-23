@@ -24,7 +24,7 @@ export FIGNORE='~':'.o':'.bak':'.tmp'
 export HISTSIZE=500
 export HISTFILESIZE=5000
 export SAVEHIST=${HISTFILESIZE}
-export HISTCONTROL=ignoreboth
+export HISTIGNORE="&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd.."
 # This is specifically for 'hh' (installed via package 'hrst')
 export HH_CONFIG=hicolor
 # Set autojump completion for commands
