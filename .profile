@@ -186,7 +186,7 @@ elif [[ "$TERM" == linux ]]; then
     c_cyan=$(tput setaf 6)
     c_green=$(tput setaf 2)
 else
-    tset -Q -e ${ERASE:-\^h} $TERM
+    tset -Q -e "${ERASE:-\^h}" "$TERM"
     [[ $UNAMES = "SCO_SV" ]] && TERM=xterm
     [[ -x $(which tset) ]] && eval `tset -s -Q`
     # ANSI escapes for 8 color
@@ -314,20 +314,20 @@ type whereis >/dev/null 2>&1 || {
 
 ###############################################################################
 ### Display some useful information
-echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:
-    ${c_white}${c_bold}System:${c_norm} ${c_purple}$UNAMES ($UNAMER)
-    ${c_white}${c_bold}Shell:${c_norm}  ${c_purple}$SHELLSTRING
-    ${c_white}${c_bold}Pager:${c_norm}  ${c_purple}$PAGER
-    ${c_white}${c_bold}Editor:${c_norm} ${c_purple}$EDITOR
-    ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}$DEFAULT_VCS"
+echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}
+    ${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}
+    ${c_white}${c_bold}Shell:${c_norm}  ${c_purple}${SHELLSTRING}${c_norm}
+    ${c_white}${c_bold}Pager:${c_norm}  ${c_purple}${PAGER}${c_norm}
+    ${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR}${c_norm}
+    ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}${DEFAULT_VCS}${c_norm}"
 
 # Print the Discordian date.
 if [[ -x $(which ddate 2>/dev/null) ]]; then
-    echo -e "${c_cyan}$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')"
+    echo -e "${c_cyan}$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')${c_norm}"
 fi
 
 # Print a random, hopefully interesting, adage.
 if [[ -x $(which fortune 2>/dev/null) ]]; then
-    echo -e "${c_purple}"; fortune -s
+    echo -e "${c_purple}$(fortune -s)${c_norm}"
 fi
 
