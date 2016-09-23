@@ -60,16 +60,16 @@ if [[ -r "$HOME/.profile" ]]; then
     c_pNOTICE="%{${c_NOTICE}%}"
     c_pINFO="%{${c_INFO}%}"
     c_pDEBUG="%{${c_DEBUG}%}"
-
+    c_pnorm="%{$reset_color%}"
     # %B sets bold, %b turns it off
     # %F{color} sets forground color, %f turns it off
     # %K(color} sets background color, $k turns it off
     # %{ and %} tell zsh to not count characters inbetween
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
-    export PROMPT='%{$reset_color%}
-%{%K{${c_black}}%}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E$reset_color
-%{%K{${c_black}}%}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#%{$reset_color%} '
+    export PROMPT='${c_pnorm}
+%{%K{${c_black}}%}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
+%{%K{${c_black}}%}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
     export RPROMPT=''
 
 else
@@ -82,6 +82,8 @@ fi
 
 # Use VIM bindings
 bindkey -v
+# also do history expansion on space
+bindkey ' ' magic-space
 # Set Ctrl-R to search history
 bindkey '^R' history-incremental-search-backward
 # bind hh to Ctrl-r (for Vi mode check doc)
