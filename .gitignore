@@ -1,4 +1,11 @@
+*.bak
+*.old
 *.swp
-*~
-.DS_Store
 *.tmp
+*~
+.directory
+.DS_Store
+.kdev4
+.user
+Thumbs.db
+/build
