@@ -1,17 +1,19 @@
 [global_config]
-  borderless  = False
-  focus       = sloppy
-  dbus        = True
-  handle_size = 3
+  # On a tiled WM use borderless=True & focus=mouse
+  borderless              = False
+  focus                   = sloppy
+  dbus                    = True
+  enabled_plugins         = CustomCommandsMenu, TerminalShot
+  handle_size             = 3
   inactive_color_offset   = 0.8
+  suppress_multiple_term_dialog = True
+  title_font              = Liberation Mono 9
   title_inactive_bg_color = "#073642"
   title_inactive_fg_color = "#839496"
   title_receive_bg_color  = "#cb4b16"
   title_receive_fg_color  = "#93a1a1"
   title_transmit_bg_color = "#268bd2"
   title_transmit_fg_color = "#eee8d5"
-  title_font              = Liberation Mono 9
-  enabled_plugins         = CustomCommandsMenu, TerminalShot
 [keybindings]
   cycle_next  = <Ctrl>Page_Down
   cycle_prev  = <Ctrl>Page_Up
@@ -26,102 +28,80 @@
 [profiles]
   [[default]]
     # solarized-dark
-    use_system_font   = False
-    font              = Liberation Mono 12
-    use_theme_colors  = False
-    cursor_color      = "#eee8d5"
-    background_color  = "#002b36"
-    foreground_color  = "#839496"
-    palette           = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    use_system_font     = False
+    font                = Liberation Mono 12
+    use_theme_colors    = False
+    cursor_color        = "#eee8d5"
+    background_color    = "#002b36"
+    foreground_color    = "#839496"
+    palette             = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
     background_darkness = 0.75
-    background_image  = None
-    background_type   = transparent
-    xterm             = xterm-256color
-    colorterm         = gnome-256color
-    use_custom_command = False
-    custom_command    = /usr/bin/zsh
-    copy_on_selection = True
-    login_shell       = True
-    scroll_on_output  = False
-    scrollback_lines  = 1000
-  [[solarized-dark]]
-    font              = Liberation Mono 12
-    use_system_font   = False
-    palette           = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
-    foreground_color  = "#eee8d5"
-    background_color  = "#002b36"
-    cursor_color      = "#eee8d5"
-  [[solarized-light]]
-    font              = Liberation Mono 12
-    use_system_font   = False
-    palette           = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
-    background_color  = "#eee8d5"
-    foreground_color  = "#002b36"
-    cursor_color      = "#002b36"
+    background_image    = None
+    background_type     = transparent
+    use_custom_command  = False
+    custom_command      = /usr/bin/zsh
+    copy_on_selection   = True
+    login_shell         = True
+    scroll_on_output    = False
+    scrollback_lines    = 1000
 [layouts]
   [[default]]
+  # This should give three tabs, the 1st w/3 terms, the 2nd w/2 & 3rd w/1
     [[[window0]]]
       type     = Window
       parent   = ""
       order    = 0
       position = 1:25
       size     = 965, 990
-    [[[child1]]]
+      title    = Terminator
+    [[[notebook0]]]
       labels   = None, None, None
       type     = Notebook
       order    = 0
       parent   = window0
-    [[[child2]]]
-      position = 481
+    [[[tab1]]]
+      order    = 0
+      parent   = notebook0
       ratio    = 0.5
       type     = VPaned
-      order    = 0
-      parent   = child1
-    [[[child3]]]
-      position = 240
-      ratio    = 0.5
-      type     = VPaned
-      order    = 0
-      parent   = child2
-    [[[child7]]]
-      position = 481
-      type     = VPaned
+    [[[tab2]]]
       order    = 1
-      parent   = child1
-    [[[terminal10]]]
-      order = 2
-      parent = child1
+      parent   = notebook0
+      ratio    = 0.5
+      type     = VPaned
+    [[[tab3]]]
+      order    = 2
+      parent   = notebook0
+      ratio    = 0.5
+      type     = VPaned
+    [[[tab1_term0]]]
+      order   = 0
+      parent  = tab1
       profile = default
-      type = Terminal
-      uuid = 9226d89b-b2be-4201-8c8c-e03cbd2c8a0a
-    [[[terminal4]]]
-      order = 0
-      parent = child3
+      type    = Terminal
+    [[[tab1_term1]]]
+      order   = 1
+      parent  = tab1
       profile = default
-      type = Terminal
-      uuid = 5c58ed8d-9b85-4c98-b9b0-23cbfc238ed2
-    [[[terminal5]]]
-      order = 1
-      parent = child3
+      type    = Terminal
+    [[[tab1_term2]]]
+      order   = 2
+      parent  = tab1
       profile = default
-      type = Terminal
-      uuid = 9101688e-38c3-4cb2-8db6-37bafe6dd567
-    [[[terminal6]]]
-      order = 1
-      parent = child2
+      type    = Terminal
+    [[[tab2_term0]]]
+      order   = 0
+      parent  = tab2
       profile = default
-      type = Terminal
-      uuid = 0e4fda6d-5dec-4028-92e9-53b8aec0a274
-    [[[terminal8]]]
-      order = 0
-      parent = child7
+      type    = Terminal
+    [[[tab2_term1]]]
+      order   = 1
+      parent  = tab2
       profile = default
-      type = Terminal
-      uuid = 4dac332c-10c8-4518-8d90-552264a30362
-    [[[terminal9]]]
-      order = 1
-      parent = child7
+      type    = Terminal
+    [[[tab3_term0]]]
+      order   = 0
+      parent  = tab3
       profile = default
-      type = Terminal
-      uuid = 3472a181-936e-44e6-b3be-7aec6d65caf9
+      type    = Terminal
 [plugins]
