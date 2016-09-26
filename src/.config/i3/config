@@ -252,7 +252,7 @@ bindsym $mod+g exec /usr/local/bin/sublime_text
 exec --no-startup-id i3-msg 'workspace Main; append_layout $CONFIG/term-st.json'
 
 exec --no-startup-id i3-msg 'workspace Main; exec /usr/local/bin/sublime_text'
-exec --no-startup-id i3-msg 'workspace Main; exec terminator --layout=BasicWork'
+exec --no-startup-id i3-msg 'workspace Main; exec terminator'
 # dunst is a notificaiton daemon
 exec --no-startup-id dunst
 
