@@ -18,50 +18,52 @@
 #     REVISION: 2016-09-28
 #===============================================================================
 #----------------------------------------------------------------------
-# Notes/known bugs/other issues
+#-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
-umask 022
+#----------------------------------------------------------------------
+#-- Set sane path, check for debug, and exit if not an interactive shell
+#----------------------------------------------------------------------
+export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
+[[ "${TRACE}" ]]  && set -x  # Run in debug mode if called for
+[[ $- =~ .*i*. ]] || return  # Exit if not an interactive shell
 
 #----------------------------------------------------------------------
-#  set a reasonable default path
+#-- "Baby, baby, baby, let's do it interactive"
 #----------------------------------------------------------------------
-PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
-[[ -d $HOME'/bin' ]] && PATH=$HOME'/bin:'$PATH
+export BASHD="${HOME}/.bashrc.d"  # Bash shell files
+export SHELLD="${HOME}/.shell.d"  # Common shell files
+export SHELL="${BASH}"            # fix SHELL variable
+[[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
+[[ -d "${HOME}'/bin'" ]] && PATH="${HOME}'/bin:'${PATH}"
 
 #----------------------------------------------------------------------
-#  If this is not an interactive shell, exit here
+# From /etc/profile.d/256term.sh on Fedora 24:
 #----------------------------------------------------------------------
-[[ $- = *i* ]] || return
-# fix SHELL variable
-export SHELL='bash'
-
+# Set this variable in your local shell config (such as ~/.bashrc)
+# if you want remote xterms connecting to this system, to be sent 256 colors.
+# This must be set before reading global initialization such as /etc/bashrc.
+export SEND_256_COLORS_TO_REMOTE=1
 #----------------------------------------------------------------------
-### Ancillary file directory set and create if necessary
-#----------------------------------------------------------------------
-export BASHD=$HOME/.bashrc.d
-[[ ! -d "$BASHD" ]] && mkdir "$BASHD" && chmod 700 "$BASHD"
-
-#----------------------------------------------------------------------
-### bash specific variables (common are set in .profile)
-#----------------------------------------------------------------------
-export HISTFILE=$BASHD/.bash_history
-
-#----------------------------------------------------------------------
-### Load in system profiles if they exist
+#-- Load in system profiles if they exist
 #----------------------------------------------------------------------
 for i in /etc/profile.d/*.sh; do
-    [ -r "$i" ] && source "$i"
-done
-unset i
+    [[ -r "$i" ]] && source "$i"
+done; unset i
 
 #----------------------------------------------------------------------
-### Load in ancillary if they exist
+#-- Load/Initilize/Override settings
 #----------------------------------------------------------------------
-for i in $BASHD/*.sh; do
-    [ -r "$i" ] && source "$i"
-done
-unset i
+[[ -r "${SHELLD}/settings" ]] && source "${SHELLD}/settings"
+
+export HISTFILE="${BASHD}/.bash_history"
+
+#----------------------------------------------------------------------
+#-- Load ancillary bash configs if they exist
+#----------------------------------------------------------------------
+for i in ${BASHD}/*.bash; do
+    [[ -r "$i" ]] && source "$i"
+done; unset i
 
 #----------------------------------------------------------------------
 ### This gives us darcs completion in bash if it exists
@@ -89,12 +91,12 @@ if [[ -r "$HOME/.profile" ]]; then
     fi
     TTY=${TTY#/dev/}
     # \j = # of jobs ; \l basname of terminal device
-    PS1="${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h:${c_yellow}\w${c_pnorm} \n${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_pnorm} "
+    PS1="B${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h:${c_yellow}\w${c_pnorm} \nB${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_pnorm} "
 else
     echo "WARNING: missing $HOME/.profile!!"
     export MANPATH="/usr/local/man:$MANPATH"
 
-    PS1="$(uname -s) \u@\h:\w \n\041\! \$ "
+    PS1="B$(uname -s) \u@\h:\w \nB\041\! \$ "
 fi
 export PS1
 
@@ -117,13 +119,10 @@ unset i
 history -a
 export HISTCONTROL=ignoreboth:erasedups
 # Record each line of history right away instead of at the end of the session
-if [[ "${PROMPT_COMMAND}" ]]; then
-    PROMPT_COMMAND="${PROMPT_COMMAND};history -a"
-else
-    PROMPT_COMMAND="history -a"
-fi
+PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 
-# bind hh to Ctrl-r (for Vi mode check doc)
-bind '"\C-r": "\C-a hh \C-j"'
+
+# bind hh to Ctrl-r
+[[ $(type -t hh) == file ]] && bind '"\C-r": "\C-a hh \C-j"'
 
 # Clean up

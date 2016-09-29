@@ -9,6 +9,8 @@
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: autojump (via 'autojump')
+#               hh (via 'hsrt')
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
@@ -19,34 +21,130 @@
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
+umask 022
 
 #----------------------------------------------------------------------
 #-- Static settings
 #----------------------------------------------------------------------
 # Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
 export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'
+# File extensions to ignore when doing name completion
+export FIGNORE='~':'.o':'.bak':'.tmp'
+# Set .config directory for XDG
+export XDG_CONFIG_HOME="$HOME/.config"
+# Some history-related settings
+export HISTSIZE=500
+export HISTFILESIZE=5000
+export SAVEHIST="${HISTFILESIZE}"
+if [ "${SHELL}" = zsh ]; then # zsh has a slightly different format
+    export HISTIGNORE='(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)'
+else
+    export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
+fi
+
+#----------------------------------------------------------------------
+#-- Optional program settings
+#----------------------------------------------------------------------
+# Make hh colorful, use keyword search, use blacklist file if it exists
+if [ -r "${HOME}/.hh_blacklist" ]; then
+    export HH_CONFIG="hicolor,keywords,blacklist"
+else
+    export HH_CONFIG="hicolor,keywords"
+fi
+# Set autojump completion for commands
+export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
+
+#----------------------------------------------------------------------
+#-- VCS Settings
+#----------------------------------------------------------------------
 # Set this to perfered version control system current possible values: git svn 
 export DEFAULT_VCS='git'
 # Set this to false to ignore untracked files, which can speed up repo checks
 export VCS_IGNORE_UNTRACKED_FILES='false'
 # Set this to false to ignore submodule files, which can speed up repo checks
 export VCS_IGNORE_SUBMODULES='true'
-# File extensions to ignore when doing name completion
-export FIGNORE='~':'.o':'.bak':'.tmp'
-# Some history-related settings
-export HISTSIZE=500
-export HISTFILESIZE=5000
-export SAVEHIST="${HISTFILESIZE}"
-export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
-# This is specifically for 'hh' (installed via package 'hrst')
-export HH_CONFIG=hicolor
-# Set autojump completion for commands
-export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-# Set .config directory for XDG
-export XDG_CONFIG_HOME="$HOME/.config"
-# Set this to perfered version control system
-# current possible values: git svn 
-export VCS='git'
+
+#----------------------------------------------------------------------
+# From /etc/profile.d/256term.sh on Fedora 24:
+#----------------------------------------------------------------------
+# Set this variable in your local shell config (such as ~/.bashrc)
+# if you want remote xterms connecting to this system, to be sent 256 colors.
+# This must be set before reading global initialization such as /etc/bashrc.
+export SEND_256_COLORS_TO_REMOTE=1
+
+#----------------------------------------------------------------------
+#-- Set up PATH
+#----------------------------------------------------------------------
+
+if [ -r "${PROFILED}/profile.paths" ]; then
+    while read line 
+    do
+        if [ -d $line ]; then
+            PATH=$PATH':'$line
+        fi
+    done <"${PROFILED}/profile.paths"
+fi
+unset line
+
+export PATH
+
+#----------------------------------------------------------------------
+#-- Set up helper variables
+#----------------------------------------------------------------------
+UNAMES=$(uname -s)
+UNAMER=$(uname -r)
+PLATFORM=$(uname -p)
+export UNAMES UNAMER PLATFORM
+export RSYNC_RSH='ssh'
+
+[ -z "${HOSTNAME}" ] && HOSTNAME=$(hostname -s) && export HOSTNAME
+
+NVIM=$(which nvim 2>/dev/null)
+VIM=$(which vim 2>/dev/null)
+SUBL=$(which sublime_text 2>/dev/null || which subl 2>/dev/null)
+if [ -x $SUBL ]; then
+    EDITOR="$SUBL -w "
+    VISUAL=$SUBL
+    alias st="$SUBL"
+    alias vi="$VIM"
+elif [ -x $NVIM ]; then
+    EDITOR=$NVIM
+    VISUAL=$NVIM
+    alias vi="$NVIM"
+elif [ -x $VIM ]; then
+    EDITOR=$VIM
+    VISUAL=$VIM
+    alias vi="$VIM"
+else
+    EDITOR=vi
+    VISUAL=vi
+fi
+
+if [ -x $(which less 2>/dev/null) ]; then
+    PAGER='less -FIMRSw -z-2'
+    LESS='-FIMRSw -z-2'
+elif [ -x $(which more 2>/dev/null) ]; then
+    PAGER="more -s"
+fi
+
+export EDITOR VISUAL PAGER LESS RSYNC_RSH
+
+#----------------------------------------------------------------------
+#-- MANPATH
+#----------------------------------------------------------------------
+if [ -e "${PROFILED}/profile.manpaths" ]; then
+    MANPATH=''
+    while read line 
+    do
+        if [ -d $line ]; then
+            PATH=$PATH':'$line
+        fi
+    done <"${PROFILED}/profile.manpaths"
+fi
+
+[ -d $HOME'/man' ] && MANPATH=$MANPATH':'$HOME'/man'
+
+export MANPATH
 
 #----------------------------------------------------------------------
 #-- Dynamic settings
