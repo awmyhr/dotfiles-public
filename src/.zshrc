@@ -1,39 +1,66 @@
-#!/bin/zsh
+#!/usr/bin/zsh
+#===============================================================================
+#
+#         FILE: .zshrc
+#
+#        USAGE: (automagically loaded by zsh interactive shell)
+#
+#  DESCRIPTION: My personalized zsh profile, based on tons of things I've
+#              found/learned over the years.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: ZSH shell
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 2.0.0
+#      CREATED: ????-??-??
+#     REVISION: 2016-09-28
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
 
 umask 022
 
-###############################################################################
-### set a reasonable default path
+#----------------------------------------------------------------------
+#-- set a reasonable default path
+#----------------------------------------------------------------------
 PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 [[ -d $HOME'/bin' ]] && PATH=$HOME'/bin:'$PATH
 
-###############################################################################
-### If this is not an interactive shell, exit here
+#----------------------------------------------------------------------
+#-- If this is not an interactive shell, exit here
+#----------------------------------------------------------------------
 [[ $- = *i* ]] || return
 # fix SHELL variable
 export SHELL='zsh'
 
-###############################################################################
-### Ancillary file directory set and create if necessary
+#----------------------------------------------------------------------
+#-- Ancillary file directory set and create if necessary
+#----------------------------------------------------------------------
 export ZSHD=$HOME/.zshrc.d
 [[ ! -d "$ZSHD" ]] && mkdir "$ZSHD" && chmod 700 "$ZSHD"
 
-###############################################################################
-### zsh specific variables (common are set in .profile)
+#----------------------------------------------------------------------
+#-- zsh specific variables (common are set in .profile)
+#----------------------------------------------------------------------
 export HIST_STAMPS="yyyy-mm-dd"
 export HISTFILE=$ZSHD/.zsh_history
 export HISTIGNORE="(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)"
 
-###############################################################################
-### Load in ancillary if they exist
+#----------------------------------------------------------------------
+#-- Load in ancillary if they exist
+#----------------------------------------------------------------------
 # this does not appear to be working if there are no files. grrr.
 # for i in $ZSHD/*.zsh; do
 #     [ -r "$i" ] && source "$i"
 # done
 # unset i
 
-###############################################################################
-### Completion schtuff
+#----------------------------------------------------------------------
+#-- Completion schtuff
+#----------------------------------------------------------------------
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 # Save the location of the current completion dump file.
@@ -48,8 +75,9 @@ fi
   fi
 } &!
 
-###############################################################################
-### User configuration -- NOTE: a lot of fuctions depend on my .profile!
+#----------------------------------------------------------------------
+#-- User configuration -- NOTE: a lot of fuctions depend on my .profile!
+#----------------------------------------------------------------------
 if [[ -r "$HOME/.profile" ]]; then
     . "$HOME/.profile"
     # zsh needs special formating for prompt colors
