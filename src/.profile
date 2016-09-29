@@ -21,99 +21,50 @@
 #-- Notes/known bugs/other issues
 #       20160908 May have broken compatibility w/non-bash/zsh shells
 #----------------------------------------------------------------------
-[[ "$TRACE" ]] && set -x     # Run in debug mode if called for
-[[ $- = *i* ]] || return     # If this is not an interactive shell, exit here
-#----------------------------------------------------------------------
-#-- Set some configurations
-#----------------------------------------------------------------------
-export PROFILED="$HOME/.profile.d"
-export SHELLD="$HOME/.shell.d"
-
-[[ -r "${SHELLD}/settings" ]] && source  "${SHELLD}/settings"
 
 #----------------------------------------------------------------------
-#-- Set up PATH
+#  Set sane path, check for debug, and exit if not an interactive shell
 #----------------------------------------------------------------------
-
-if [[ -r "${PROFILED}/profile.paths" ]]; then
-    while read line 
-    do
-        if [[ -d $line ]]; then
-            PATH=$PATH':'$line
-        fi
-    done <"${PROFILED}/profile.paths"
-fi
-unset line
-
-export PATH
+export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
+[ "${TRACE}" ]  && set -x    # Run in debug mode if called for
+[ -z "${PS1}" ] || return    # Exit if not an interactive shell
 
 #----------------------------------------------------------------------
-#-- Set up helper variables
+#-- "Baby, baby, baby, let's do it interactive"
 #----------------------------------------------------------------------
-UNAMES=$(uname -s)
-UNAMER=$(uname -r)
-PLATFORM=$(uname -p)
-HOSTNAME=$(uname -n)
-export UNAMES UNAMER PLATFORM HOSTNAME
+export PROFILED="${HOME}/.profile.d"   # sh shell files
+export SHELLD="${HOME}/.shell.d"       # Common shell files
+export SHELL="${0}"                    # fix SHELL variable
+[ ! -d "${PROFILED}" ] && mkdir "${PROFILED}" && chmod 700 "${PROFILED}"
+[ -d "${HOME}'/bin'" ] && PATH="${HOME}'/bin:'${PATH}"
 
-# Set up the shell variables:
-RSYNC_RSH=ssh
-SYSTEM=$(hostname)
-
-NVIM=$(which nvim 2>/dev/null)
-VIM=$(which vim 2>/dev/null)
-SUBL=$(which sublime_text 2>/dev/null || which subl 2>/dev/null)
-if [[ -x $SUBL ]]; then
-    EDITOR="$SUBL -w "
-    VISUAL=$SUBL
-    alias st="$SUBL"
-    alias vi="$VIM"
-elif [[ -x $NVIM ]]; then
-    EDITOR=$NVIM
-    VISUAL=$NVIM
-    alias vi="$NVIM"
-elif [[ -x $VIM ]]; then
-	EDITOR=$VIM
-	VISUAL=$VIM
-	alias vi="$VIM"
-else
-	EDITOR=vi
-	VISUAL=vi
-fi
-
-if [[ -x $(which less 2>/dev/null) ]]; then
-    PAGER='less -FIMRSw -z-2'
-    LESS='-FIMRSw -z-2'
-elif [[ -x $(which more 2>/dev/null) ]]; then
-    PAGER="more -s"
-fi
-
-export EDITOR VISUAL PAGER LESS RSYNC_RSH SYSTEM
 #----------------------------------------------------------------------
-#-- MANPATH
+# From /etc/profile.d/256term.sh on Fedora 24:
 #----------------------------------------------------------------------
-if [[ -e "${PROFILED}/profile.manpaths" ]]; then
-    MANPATH=''
-    while read line 
-    do
-        if [[ -d $line ]]; then
-            PATH=$PATH':'$line
-        fi
-    done <"${PROFILED}/profile.manpaths"
-fi
+# Set this variable in your local shell config (such as ~/.bashrc)
+# if you want remote xterms connecting to this system, to be sent 256 colors.
+# This must be set before reading global initialization such as /etc/bashrc.
+export SEND_256_COLORS_TO_REMOTE=1
+#----------------------------------------------------------------------
+#-- Load in system profiles if they exist
+#----------------------------------------------------------------------
+for i in /etc/profile.d/*.sh; do
+    [ -r "$i" ] && . "$i"
+done; unset i
 
-[[ -d $HOME'/man' ]] && MANPATH=$MANPATH':'$HOME'/man'
-
-export MANPATH
+#----------------------------------------------------------------------
+#-- Load/Initilize/Override settings
+#----------------------------------------------------------------------
+[ -r "${SHELLD}/settings" ] && . "${SHELLD}/settings"
 
 #----------------------------------------------------------------------
 #-- color TERM settings
 #----------------------------------------------------------------------
-if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-256color >/dev/null 2>&1; then
-    if [[ -x /usr/bin/dircolors ]]; then
-        if [[ -r "$HOME/.dirColors/dircolors.256dark" ]]; then
+if [ "$COLORTERM" == gnome-* && "$TERM" == xterm* ] && /usr/bin/infocmp gnome-256color >/dev/null 2>&1; then
+    if [ -x /usr/bin/dircolors ]; then
+        if [ -r "$HOME/.dirColors/dircolors.256dark" ]; then
             eval $(dircolors -b "$HOME/.dirColors/dircolors.256dark")
-        elif [[ -r "$HOME/.dirColors" ]]; then
+        elif [ -r "$HOME/.dirColors" ]; then
             eval $(dircolors -b "$HOME/.dirColors")
         else
             eval $(dircolors -b)
@@ -127,7 +78,7 @@ if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-
     c_hide=$(tput invis)
     c_blik=$(tput blink)
     c_revr=$(tput smso)
-    if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+    if [ $(tput colors) -ge 256 ] 2>/dev/null; then
         c_BASE03=$(tput setaf 234)
         c_BASE02=$(tput setaf 235)
         c_BASE01=$(tput setaf 240)
@@ -162,7 +113,7 @@ if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-
         c_red=$(tput setaf 1)
         c_yellow=$(tput setaf 3)
     fi
-elif [[ "$TERM" == linux ]]; then
+elif [ "$TERM" == linux ]; then
     c_bold=$(tput bold)
     c_norm=$(tput sgr0)
     c_undr=$(tput smul)
@@ -187,8 +138,8 @@ elif [[ "$TERM" == linux ]]; then
     c_green=$(tput setaf 2)
 else
     tset -Q -e "${ERASE:-\^h}" "$TERM"
-    [[ $UNAMES = "SCO_SV" ]] && TERM=xterm
-    [[ -x $(which tset) ]] && eval `tset -s -Q`
+    [ $UNAMES = "SCO_SV" ] && TERM=xterm
+    [ -x $(which tset) ] && eval `tset -s -Q`
     # ANSI escapes for 8 color
     c_norm='\e[0m'
     c_bold='\e[1m'
@@ -238,30 +189,29 @@ export c_DEBUG="${c_blue}"
 #----------------------------------------------------------------------
 #-- load general aliases
 #----------------------------------------------------------------------
-[[ -r "${PROFILED}/alias.general" ]] && source "${PROFILED}/alias.general"
+[ -r "${PROFILED}/alias.general" ] && . "${PROFILED}/alias.general"
 #   load default VCS aliases
-[[ -r "${PROFILED}/alias.${DEFAULT_VCS}" && -x $(which $DEFAULT_VCS 2>/dev/null) ]] && source "${PROFILED}/alias.${DEFAULT_VCS}"
+[ -r "${PROFILED}/alias.${DEFAULT_VCS}" ] && [ -x "$(which $DEFAULT_VCS 2>/dev/null)" ] && . "${PROFILED}/alias.${DEFAULT_VCS}"
 #   load platform aliases
-[[ -r "${PROFILED}/alias.${UNAMES}" ]] && source "${PROFILED}/alias.${UNAMES}"
+[ -r "${PROFILED}/alias.${UNAMES}" ] && . "${PROFILED}/alias.${UNAMES}"
 
 #----------------------------------------------------------------------
 #-- platform-specific stuff goes in these files.
 #----------------------------------------------------------------------
-[[ -r "${PROFILED}/profile.${UNAMES}" ]] && source "${PROFILED}/profile.${UNAMES}"
+[ -r "${PROFILED}/profile.${UNAMES}" ] && . "${PROFILED}/profile.${UNAMES}"
 
 #This will most likely only execute on Mac OS X systems w/Fink
 #  but it's here like this in case I emulate the system elsewhere
-[[ -x /sw/bin/init.sh ]] && source /sw/bin/init.sh
+[ -x /sw/bin/init.sh ] && . /sw/bin/init.sh
 
 #----------------------------------------------------------------------
 #-- Load functions
 #----------------------------------------------------------------------
-[[ -r "${SHELLD}/functions/general" ]] && source "${SHELLD}/functions/general"
+[ -r "${SHELLD}/functions/general" ] && . "${SHELLD}/functions/general"
 
 #----------------------------------------------------------------------
 #-- Set up the shell environment
 #----------------------------------------------------------------------
-umask 022
 trap "echo 'logout'" 0
 # removed '-o nounset' as it caused problems w/bash autocomplete
 set -o noclobber -o vi -o notify
@@ -320,7 +270,7 @@ type whereis >/dev/null 2>&1 || {
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}
+echo -e "${c_white}You're logged into ${c_bold}$HOSTNAME${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}
     ${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}
     ${c_white}${c_bold}Shell:${c_norm}  ${c_purple}${SHELLSTRING}${c_norm}
     ${c_white}${c_bold}Pager:${c_norm}  ${c_purple}${PAGER}${c_norm}
@@ -328,12 +278,12 @@ echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n
     ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}${DEFAULT_VCS}${c_norm}"
 
 # Print the Discordian date.
-if [[ -x $(which ddate 2>/dev/null) ]]; then
+if [ -x $(which ddate 2>/dev/null) ]; then
     echo -e "${c_cyan}$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')${c_norm}"
 fi
 
 # Print a random, hopefully interesting, adage.
-if [[ -x $(which fortune 2>/dev/null) ]]; then
+if [ -x $(which fortune 2>/dev/null) ]; then
     echo -e "${c_purple}$(fortune -s)${c_norm}"
 fi
 

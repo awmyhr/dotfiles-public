@@ -21,33 +21,46 @@
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
-umask 022
+#----------------------------------------------------------------------
+#-- Set sane path, check for debug, and exit if not an interactive shell
+#----------------------------------------------------------------------
+export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
+[[ "${TRACE}" ]]  && set -x  # Run in debug mode if called for
+[[ $- =~ .*i*. ]] || return  # Exit if not an interactive shell
 
 #----------------------------------------------------------------------
-#-- set a reasonable default path
+#-- "Baby, baby, baby, let's do it interactive"
 #----------------------------------------------------------------------
-PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
-[[ -d $HOME'/bin' ]] && PATH=$HOME'/bin:'$PATH
+export ZSHD="${HOME}/.zshrc.d"    # ZSH shell files
+export SHELLD="${HOME}/.shell.d"  # Common shell files
+export SHELL="${ZSH_NAME}"        # fix SHELL variable
+[[ ! -d "${ZSHD}" ]]     && mkdir "${ZSHD}" && chmod 700 "${ZSHD}"
+[[ -d "${HOME}'/bin'" ]] && PATH="${HOME}'/bin:'${PATH}"
 
 #----------------------------------------------------------------------
-#-- If this is not an interactive shell, exit here
+# From /etc/profile.d/256term.sh on Fedora 24:
 #----------------------------------------------------------------------
-[[ $- = *i* ]] || return
-# fix SHELL variable
-export SHELL='zsh'
+# Set this variable in your local shell config (such as ~/.bashrc)
+# if you want remote xterms connecting to this system, to be sent 256 colors.
+# This must be set before reading global initialization such as /etc/bashrc.
+export SEND_256_COLORS_TO_REMOTE=1
+#----------------------------------------------------------------------
+#-- Load in system profiles if they exist - currently not enabled for zsh
+#----------------------------------------------------------------------
+#for i in /etc/profile.d/*.sh; do
+#    [[ -r "$i" ]] && . "$i"
+#done; unset i
 
 #----------------------------------------------------------------------
-#-- Ancillary file directory set and create if necessary
+#-- Load/Initilize/Override settings
 #----------------------------------------------------------------------
-export ZSHD=$HOME/.zshrc.d
-[[ ! -d "$ZSHD" ]] && mkdir "$ZSHD" && chmod 700 "$ZSHD"
+[[ -r "${SHELLD}/settings" ]] && source "${SHELLD}/settings"
 
-#----------------------------------------------------------------------
-#-- zsh specific variables (common are set in .profile)
-#----------------------------------------------------------------------
-export HIST_STAMPS="yyyy-mm-dd"
-export HISTFILE=$ZSHD/.zsh_history
-export HISTIGNORE="(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)"
+export HIST_STAMPS='yyyy-mm-dd'
+export HISTFILE="${ZSHD}/.zsh_history"
+export HISTIGNORE='(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)'
+# Uncomment the following line to display red dots whilst waiting for completion.
+export COMPLETION_WAITING_DOTS="true"
 
 #----------------------------------------------------------------------
 #-- Load in ancillary if they exist
@@ -61,8 +74,6 @@ export HISTIGNORE="(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)
 #----------------------------------------------------------------------
 #-- Completion schtuff
 #----------------------------------------------------------------------
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
 # Save the location of the current completion dump file.
 if [ -z "$ZSH_COMPDUMP" ]; then
   export ZSH_COMPDUMP="${ZSHD}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
@@ -97,14 +108,14 @@ if [[ -r "$HOME/.profile" ]]; then
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
     export PROMPT='${c_pnorm}
-%{%K{${c_black}}%}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
-%{%K{${c_black}}%}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
+%{%K{${c_black}}%}Z${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
+%{%K{${c_black}}%}Z!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
     export RPROMPT=''
 else
     echo "WARNING: missing $HOME/.profile!!"
     export MANPATH="/usr/local/man:$MANPATH"
     
-    export PROMPT="┌$(uname -s) \u@\h:\w \n└!\! \$ "
+    export PROMPT="Z$(uname -s) \u@\h:\w \nZ!\! \$ "
     export RPROMPT=''
 fi
 
@@ -112,10 +123,14 @@ fi
 bindkey -v
 # also do history expansion on space
 bindkey ' ' magic-space
-# Set Ctrl-R to search history
-bindkey '^R' history-incremental-search-backward
-# bind hh to Ctrl-r (for Vi mode check doc)
-#bindkey -s "\C-r" "\eqhh\n"
+# Bind Ctrl-r to history search
+if [[ $(type -t hh) == file ]]; then
+    function _hh { hh }      # Create hh widget first
+    zle -N _hh
+    bindkey '^R' _hh
+else
+    bindkey '^R' history-incremental-search-backward
+fi
 
 # Set up auto completion, etc...
 # First set 'nocorrectall' than 'correct' to keep zsh from correcting args
