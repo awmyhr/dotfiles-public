@@ -1,60 +1,38 @@
-#!/bin/bash
+#!/usr/bin/bash
 #===============================================================================
 #
-# FILE: .profile
+#         FILE: .profile
 #
-# USAGE: (automagically loaded by shell)
+#        USAGE: (automagically loaded by shell)
 #
-# DESCRIPTION: My personalized .profile, based on tons of things I've
-#              found/learned over the years.
+#  DESCRIPTION: My personalized shell profile, based on tons of things I've
+#               found/learned over the years.
 #
-# OPTIONS: ---
-# REQUIREMENTS: ----
-# BUGS: ---
-# NOTES: ---
-# AUTHOR: awmyhr, awmyhr@gmail.com
-# VERSION: 3.0.0
-# CREATED: ????-??-??
-# REVISION: 2016-09-28
+#      OPTIONS: ---
+# REQUIREMENTS: POSIX compatible shell
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 3.0.0
+#      CREATED: ????-??-??
+#     REVISION: 2016-09-28
 #===============================================================================
 #----------------------------------------------------------------------
-# Notes/known bugs/other issues
-#   20160908 May have broken compatibility w/non-bash/zsh shells
+#-- Notes/known bugs/other issues
+#       20160908 May have broken compatibility w/non-bash/zsh shells
 #----------------------------------------------------------------------
 [[ "$TRACE" ]] && set -x     # Run in debug mode if called for
 [[ $- = *i* ]] || return     # If this is not an interactive shell, exit here
 #----------------------------------------------------------------------
-# Set some configurations
+#-- Set some configurations
 #----------------------------------------------------------------------
 export PROFILED="$HOME/.profile.d"
 export SHELLD="$HOME/.shell.d"
-# Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
-export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'
-# Set this to perfered version control system current possible values: git svn 
-export DEFAULT_VCS="git"
-# Set this to false to ignore untracked files, which can speed up repo checks
-export VCS_IGNORE_UNTRACKED_FILES="false"
-# Set this to false to ignore submodule files, which can speed up repo checks
-export VCS_IGNORE_SUBMODULES="true"
-# File extensions to ignore when doing name completion
-export FIGNORE='~':'.o':'.bak':'.tmp'
-# Some history-related settings
-export HISTSIZE=500
-export HISTFILESIZE=5000
-export SAVEHIST=${HISTFILESIZE}
-export HISTIGNORE="&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd.."
-# This is specifically for 'hh' (installed via package 'hrst')
-export HH_CONFIG=hicolor
-# Set autojump completion for commands
-export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-# Set .config directory for XDG
-export XDG_CONFIG_HOME="$HOME/.config"
-# Set this to perfered version control system
-# current possible values: git svn 
-export VCS="git"
+
+[[ -r "${SHELLD}/settings" ]] && source  "${SHELLD}/settings"
 
 #----------------------------------------------------------------------
-# Set up PATH
+#-- Set up PATH
 #----------------------------------------------------------------------
 
 if [[ -r "${PROFILED}/profile.paths" ]]; then
@@ -70,7 +48,8 @@ unset line
 export PATH
 
 #----------------------------------------------------------------------
-### Set up helper variables
+#-- Set up helper variables
+#----------------------------------------------------------------------
 UNAMES=$(uname -s)
 UNAMER=$(uname -r)
 PLATFORM=$(uname -p)
@@ -111,7 +90,8 @@ fi
 
 export EDITOR VISUAL PAGER LESS RSYNC_RSH SYSTEM
 #----------------------------------------------------------------------
-### MANPATH ###
+#-- MANPATH
+#----------------------------------------------------------------------
 if [[ -e "${PROFILED}/profile.manpaths" ]]; then
     MANPATH=''
     while read line 
@@ -127,7 +107,8 @@ fi
 export MANPATH
 
 #----------------------------------------------------------------------
-### color TERM settings
+#-- color TERM settings
+#----------------------------------------------------------------------
 if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-256color >/dev/null 2>&1; then
     if [[ -x /usr/bin/dircolors ]]; then
         if [[ -r "$HOME/.dirColors/dircolors.256dark" ]]; then
@@ -255,7 +236,8 @@ export c_INFO="${c_green}"
 export c_DEBUG="${c_blue}"
 
 #----------------------------------------------------------------------
-### load general aliases
+#-- load general aliases
+#----------------------------------------------------------------------
 [[ -r "${PROFILED}/alias.general" ]] && source "${PROFILED}/alias.general"
 #   load default VCS aliases
 [[ -r "${PROFILED}/alias.${DEFAULT_VCS}" && -x $(which $DEFAULT_VCS 2>/dev/null) ]] && source "${PROFILED}/alias.${DEFAULT_VCS}"
@@ -263,7 +245,8 @@ export c_DEBUG="${c_blue}"
 [[ -r "${PROFILED}/alias.${UNAMES}" ]] && source "${PROFILED}/alias.${UNAMES}"
 
 #----------------------------------------------------------------------
-### platform-specific stuff goes in these files.
+#-- platform-specific stuff goes in these files.
+#----------------------------------------------------------------------
 [[ -r "${PROFILED}/profile.${UNAMES}" ]] && source "${PROFILED}/profile.${UNAMES}"
 
 #This will most likely only execute on Mac OS X systems w/Fink
@@ -271,18 +254,21 @@ export c_DEBUG="${c_blue}"
 [[ -x /sw/bin/init.sh ]] && source /sw/bin/init.sh
 
 #----------------------------------------------------------------------
-### Load functions
+#-- Load functions
+#----------------------------------------------------------------------
 [[ -r "${SHELLD}/functions/general" ]] && source "${SHELLD}/functions/general"
 
 #----------------------------------------------------------------------
-### Set up the shell environment
+#-- Set up the shell environment
+#----------------------------------------------------------------------
 umask 022
 trap "echo 'logout'" 0
 # removed '-o nounset' as it caused problems w/bash autocomplete
 set -o noclobber -o vi -o notify
 
 #----------------------------------------------------------------------
-### Shell dependent settings
+#-- Shell dependent settings
+#----------------------------------------------------------------------
 case "$SHELL" in
     *zsh* )
         SHELLSTRING="$SHELL ($ZSH_VERSION)"
@@ -332,7 +318,8 @@ type whereis >/dev/null 2>&1 || {
 }
 
 #----------------------------------------------------------------------
-### Display some useful information
+#-- Display some useful information
+#----------------------------------------------------------------------
 echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}
     ${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}
     ${c_white}${c_bold}Shell:${c_norm}  ${c_purple}${SHELLSTRING}${c_norm}
