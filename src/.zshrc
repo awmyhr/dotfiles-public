@@ -11,23 +11,23 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 ### If this is not an interactive shell, exit here
 [[ $- = *i* ]] || return
 # fix SHELL variable
-export SHELL=$0
+export SHELL='zsh'
 
 ###############################################################################
 ### Ancillary file directory set and create if necessary
-export SHELLD=$HOME/.zshrc.d
-[[ ! -d "$SHELLD" ]] && mkdir "$SHELLD" && chmod 700 "$SHELLD"
+export ZSHD=$HOME/.zshrc.d
+[[ ! -d "$ZSHD" ]] && mkdir "$ZSHD" && chmod 700 "$ZSHD"
 
 ###############################################################################
 ### zsh specific variables (common are set in .profile)
 export HIST_STAMPS="yyyy-mm-dd"
-export HISTFILE=$SHELLD/.zsh_history
+export HISTFILE=$ZSHD/.zsh_history
 export HISTIGNORE="(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)"
 
 ###############################################################################
 ### Load in ancillary if they exist
 # this does not appear to be working if there are no files. grrr.
-# for i in $SHELLD/*.zsh; do
+# for i in $ZSHD/*.zsh; do
 #     [ -r "$i" ] && source "$i"
 # done
 # unset i
@@ -38,7 +38,7 @@ export HISTIGNORE="(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)
 COMPLETION_WAITING_DOTS="true"
 # Save the location of the current completion dump file.
 if [ -z "$ZSH_COMPDUMP" ]; then
-  export ZSH_COMPDUMP="${SHELLD}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
+  export ZSH_COMPDUMP="${ZSHD}/.zcompdump-${HOSTNAME}-${ZSH_VERSION}"
 fi
 
 {
@@ -61,7 +61,7 @@ if [[ -r "$HOME/.profile" ]]; then
     c_pNOTICE="%{${c_NOTICE}%}"
     c_pINFO="%{${c_INFO}%}"
     c_pDEBUG="%{${c_DEBUG}%}"
-    c_pnorm="%{$reset_color%}"
+    c_pnorm="%{$c_norm%}"
     # %B sets bold, %b turns it off
     # %F{color} sets forground color, %f turns it off
     # %K(color} sets background color, $k turns it off
