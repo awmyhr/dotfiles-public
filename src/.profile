@@ -1,15 +1,33 @@
 #!/bin/bash
-# My personalized .profile, based on tons of things I've found/learned
+#===============================================================================
 #
-# 20160908 NOTE: May have broken compatibility w/non-bash/zsh shells
+# FILE: .profile
 #
-
-###############################################################################
-### If this is not an interactive shell, exit here
-[[ $- = *i* ]] || return
-###############################################################################
-### Set some configurations
+# USAGE: (automagically loaded by shell)
+#
+# DESCRIPTION: My personalized .profile, based on tons of things I've
+#              found/learned over the years.
+#
+# OPTIONS: ---
+# REQUIREMENTS: ----
+# BUGS: ---
+# NOTES: ---
+# AUTHOR: awmyhr, awmyhr@gmail.com
+# VERSION: 3.0.0
+# CREATED: ????-??-??
+# REVISION: 2016-09-28
+#===============================================================================
+#----------------------------------------------------------------------
+# Notes/known bugs/other issues
+#   20160908 May have broken compatibility w/non-bash/zsh shells
+#----------------------------------------------------------------------
+[[ "$TRACE" ]] && set -x     # Run in debug mode if called for
+[[ $- = *i* ]] || return     # If this is not an interactive shell, exit here
+#----------------------------------------------------------------------
+# Set some configurations
+#----------------------------------------------------------------------
 export PD="$HOME/.profile.d"
+export SHELLD="$HOME/.shell.d"
 # Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
 export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'
 # Set this to perfered version control system current possible values: git svn 
@@ -35,7 +53,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # current possible values: git svn 
 export VCS="git"
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Set up PATH
 
 if [[ -r "${PD}/profile.paths" ]]; then
@@ -50,7 +68,7 @@ unset line
 
 export PATH
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Set up helper variables
 UNAMES=$(uname -s)
 UNAMER=$(uname -r)
@@ -91,7 +109,7 @@ elif [[ -x $(which more 2>/dev/null) ]]; then
 fi
 
 export EDITOR VISUAL PAGER LESS RSYNC_RSH SYSTEM
-###############################################################################
+#----------------------------------------------------------------------
 ### MANPATH ###
 if [[ -e "${PD}/profile.manpaths" ]]; then
     MANPATH=''
@@ -107,7 +125,7 @@ fi
 
 export MANPATH
 
-###############################################################################
+#----------------------------------------------------------------------
 ### color TERM settings
 if [[ "$COLORTERM" == gnome-* && "$TERM" == xterm* ]] && /usr/bin/infocmp gnome-256color >/dev/null 2>&1; then
     if [[ -x /usr/bin/dircolors ]]; then
@@ -235,7 +253,7 @@ export c_NOTICE="${c_white}"
 export c_INFO="${c_green}"
 export c_DEBUG="${c_blue}"
 
-###############################################################################
+#----------------------------------------------------------------------
 ### load general aliases
 [[ -r "${PD}/alias.general" ]] && source "${PD}/alias.general"
 #   load default VCS aliases
@@ -243,7 +261,7 @@ export c_DEBUG="${c_blue}"
 #   load platform aliases
 [[ -r "${PD}/alias.${UNAMES}" ]] && source "${PD}/alias.${UNAMES}"
 
-###############################################################################
+#----------------------------------------------------------------------
 ### platform-specific stuff goes in these files.
 [[ -r "${PD}/profile.${UNAMES}" ]] && source "${PD}/profile.${UNAMES}"
 
@@ -251,18 +269,18 @@ export c_DEBUG="${c_blue}"
 #  but it's here like this in case I emulate the system elsewhere
 [[ -x /sw/bin/init.sh ]] && source /sw/bin/init.sh
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Load functions
-[[ -r "${PD}/functions" ]] && source "${PD}/functions"
+[[ -r "${SHELLD}/functions/general" ]] && source "${SHELLD}/functions/general"
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Set up the shell environment
 umask 022
 trap "echo 'logout'" 0
 # removed '-o nounset' as it caused problems w/bash autocomplete
 set -o noclobber -o vi -o notify
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Shell dependent settings
 case "$SHELL" in
     *zsh* )
@@ -296,7 +314,7 @@ case "$SHELL" in
         ;;
 esac
 
-###############################################################################
+#----------------------------------------------------------------------
 # FWIW:
 # tcsh   - $version  - set to tcsh version number (also: set prompt='%n@%m %~ ')
 # bash   - $BASH     - set to bash path
@@ -306,13 +324,13 @@ esac
 #   This generally seems like the hardest to distinguish - the ONLY difference
 #   in entire set of envionmental variables between sh and ksh installed on
 #   Solaris: $ERRNO, $FCEDIT, $LINENO, $PPID, $PS3, $PS4, $RANDOM, $SECONDS, $TMOUT
-###############################################################################
+#----------------------------------------------------------------------
 
 type whereis >/dev/null 2>&1 || {
 	alias whereis='type -all'
 }
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Display some useful information
 echo -e "${c_white}You're logged into ${c_bold}$SYSTEM${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}
     ${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}
