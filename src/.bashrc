@@ -11,16 +11,16 @@ PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 ### If this is not an interactive shell, exit here
 [[ $- = *i* ]] || return
 # fix SHELL variable
-export SHELL=$0
+export SHELL='bash'
 
 ###############################################################################
 ### Ancillary file directory set and create if necessary
-export SHELLD=$HOME/.bashrc.d
-[[ ! -d "$SHELLD" ]] && mkdir "$SHELLD" && chmod 700 "$SHELLD"
+export BASHD=$HOME/.bashrc.d
+[[ ! -d "$BASHD" ]] && mkdir "$BASHD" && chmod 700 "$BASHD"
 
 ###############################################################################
 ### bash specific variables (common are set in .profile)
-export HISTFILE=$SHELLD/.bash_history
+export HISTFILE=$BASHD/.bash_history
 
 ###############################################################################
 ### Load in system profiles if they exist
@@ -31,7 +31,7 @@ unset i
 
 ###############################################################################
 ### Load in ancillary if they exist
-for i in $SHELLD/*.sh; do
+for i in $BASHD/*.sh; do
     [ -r "$i" ] && source "$i"
 done
 unset i
@@ -88,7 +88,11 @@ unset i
 history -a
 export HISTCONTROL=ignoreboth:erasedups
 # Record each line of history right away instead of at the end of the session
-PROMPT_COMMAND="${PROMPT_COMMAND};history -a"
+if [[ "${PROMPT_COMMAND}" ]]; then
+    PROMPT_COMMAND="${PROMPT_COMMAND};history -a"
+else
+    PROMPT_COMMAND="history -a"
+fi
 
 # bind hh to Ctrl-r (for Vi mode check doc)
 bind '"\C-r": "\C-a hh \C-j"'
