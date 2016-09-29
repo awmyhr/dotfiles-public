@@ -1,0 +1,53 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: .shell.d/settings
+#
+#        USAGE: (should be sourced by shell login)
+#
+#  DESCRIPTION: Variables which define environment across shells.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0
+#      CREATED: 2016-09-28
+#     REVISION: 2016-09-28
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Static settings
+#----------------------------------------------------------------------
+# Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
+export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'
+# Set this to perfered version control system current possible values: git svn 
+export DEFAULT_VCS='git'
+# Set this to false to ignore untracked files, which can speed up repo checks
+export VCS_IGNORE_UNTRACKED_FILES='false'
+# Set this to false to ignore submodule files, which can speed up repo checks
+export VCS_IGNORE_SUBMODULES='true'
+# File extensions to ignore when doing name completion
+export FIGNORE='~':'.o':'.bak':'.tmp'
+# Some history-related settings
+export HISTSIZE=500
+export HISTFILESIZE=5000
+export SAVEHIST="${HISTFILESIZE}"
+export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
+# This is specifically for 'hh' (installed via package 'hrst')
+export HH_CONFIG=hicolor
+# Set autojump completion for commands
+export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
+# Set .config directory for XDG
+export XDG_CONFIG_HOME="$HOME/.config"
+# Set this to perfered version control system
+# current possible values: git svn 
+export VCS='git'
+
+#----------------------------------------------------------------------
+#-- Dynamic settings
+#----------------------------------------------------------------------
