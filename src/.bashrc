@@ -1,43 +1,71 @@
-#!/bin/bash
+#!/usr/bin/bash
+#===============================================================================
+#
+#         FILE: .bashrc
+#
+#        USAGE: (automagically loaded by bash interactive shell)
+#
+#  DESCRIPTION: My personalized bash profile, based on tons of things I've
+#               found/learned over the years.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bash shell
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 2.0.0
+#      CREATED: ????-??-??
+#     REVISION: 2016-09-28
+#===============================================================================
+#----------------------------------------------------------------------
+# Notes/known bugs/other issues
+#----------------------------------------------------------------------
 
 umask 022
 
-###############################################################################
-### set a reasonable default path
+#----------------------------------------------------------------------
+#  set a reasonable default path
+#----------------------------------------------------------------------
 PATH='/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin'
 [[ -d $HOME'/bin' ]] && PATH=$HOME'/bin:'$PATH
 
-###############################################################################
-### If this is not an interactive shell, exit here
+#----------------------------------------------------------------------
+#  If this is not an interactive shell, exit here
+#----------------------------------------------------------------------
 [[ $- = *i* ]] || return
 # fix SHELL variable
 export SHELL='bash'
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Ancillary file directory set and create if necessary
+#----------------------------------------------------------------------
 export BASHD=$HOME/.bashrc.d
 [[ ! -d "$BASHD" ]] && mkdir "$BASHD" && chmod 700 "$BASHD"
 
-###############################################################################
+#----------------------------------------------------------------------
 ### bash specific variables (common are set in .profile)
+#----------------------------------------------------------------------
 export HISTFILE=$BASHD/.bash_history
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Load in system profiles if they exist
+#----------------------------------------------------------------------
 for i in /etc/profile.d/*.sh; do
     [ -r "$i" ] && source "$i"
 done
 unset i
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Load in ancillary if they exist
+#----------------------------------------------------------------------
 for i in $BASHD/*.sh; do
     [ -r "$i" ] && source "$i"
 done
 unset i
 
-###############################################################################
+#----------------------------------------------------------------------
 ### This gives us darcs completion in bash if it exists
+#----------------------------------------------------------------------
 [[ -f /usr/local/share/darcs_completion ]] && source /usr/local/share/darcs_completion
 
 # User configuration -- NOTE: a lot of fuctions depend on my .profile!
@@ -70,8 +98,9 @@ else
 fi
 export PS1
 
-###############################################################################
+#----------------------------------------------------------------------
 ### Let's set some shoptions...
+#----------------------------------------------------------------------
 # autocd       - type 'directoryname' instead of 'cd directoryname'
 # cdspell      - autocorrect typos in path names when using cd
 # checkwinsize - keeps bash updated on window size
