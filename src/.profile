@@ -26,7 +26,7 @@
 #----------------------------------------------------------------------
 # Set some configurations
 #----------------------------------------------------------------------
-export PD="$HOME/.profile.d"
+export PROFILED="$HOME/.profile.d"
 export SHELLD="$HOME/.shell.d"
 # Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
 export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'
@@ -54,15 +54,16 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export VCS="git"
 
 #----------------------------------------------------------------------
-### Set up PATH
+# Set up PATH
+#----------------------------------------------------------------------
 
-if [[ -r "${PD}/profile.paths" ]]; then
+if [[ -r "${PROFILED}/profile.paths" ]]; then
     while read line 
     do
         if [[ -d $line ]]; then
             PATH=$PATH':'$line
         fi
-    done <"$PD/profile.paths"
+    done <"${PROFILED}/profile.paths"
 fi
 unset line
 
@@ -111,14 +112,14 @@ fi
 export EDITOR VISUAL PAGER LESS RSYNC_RSH SYSTEM
 #----------------------------------------------------------------------
 ### MANPATH ###
-if [[ -e "${PD}/profile.manpaths" ]]; then
+if [[ -e "${PROFILED}/profile.manpaths" ]]; then
     MANPATH=''
     while read line 
     do
         if [[ -d $line ]]; then
             PATH=$PATH':'$line
         fi
-    done <"$PD/profile.manpaths"
+    done <"${PROFILED}/profile.manpaths"
 fi
 
 [[ -d $HOME'/man' ]] && MANPATH=$MANPATH':'$HOME'/man'
@@ -255,15 +256,15 @@ export c_DEBUG="${c_blue}"
 
 #----------------------------------------------------------------------
 ### load general aliases
-[[ -r "${PD}/alias.general" ]] && source "${PD}/alias.general"
+[[ -r "${PROFILED}/alias.general" ]] && source "${PROFILED}/alias.general"
 #   load default VCS aliases
-[[ -r "${PD}/alias.${DEFAULT_VCS}" && -x $(which $DEFAULT_VCS 2>/dev/null) ]] && source "${PD}/alias.${DEFAULT_VCS}"
+[[ -r "${PROFILED}/alias.${DEFAULT_VCS}" && -x $(which $DEFAULT_VCS 2>/dev/null) ]] && source "${PROFILED}/alias.${DEFAULT_VCS}"
 #   load platform aliases
-[[ -r "${PD}/alias.${UNAMES}" ]] && source "${PD}/alias.${UNAMES}"
+[[ -r "${PROFILED}/alias.${UNAMES}" ]] && source "${PROFILED}/alias.${UNAMES}"
 
 #----------------------------------------------------------------------
 ### platform-specific stuff goes in these files.
-[[ -r "${PD}/profile.${UNAMES}" ]] && source "${PD}/profile.${UNAMES}"
+[[ -r "${PROFILED}/profile.${UNAMES}" ]] && source "${PROFILED}/profile.${UNAMES}"
 
 #This will most likely only execute on Mac OS X systems w/Fink
 #  but it's here like this in case I emulate the system elsewhere
