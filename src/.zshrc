@@ -123,7 +123,7 @@ bindkey -v
 # also do history expansion on space
 bindkey ' ' magic-space
 # Bind Ctrl-r to history search
-if [[ $(type -t hh) == file ]]; then
+if [[ $(type hh >/dev/null) == file ]]; then
     function _hh { hh }      # Create hh widget first
     zle -N _hh
     bindkey '^R' _hh
