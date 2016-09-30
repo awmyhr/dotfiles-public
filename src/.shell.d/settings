@@ -32,17 +32,14 @@ umask 022
 #----------------------------------------------------------------------
 #-- Static settings
 #----------------------------------------------------------------------
-# Prefered datstamp format. A good ISO date stamp is +%Y%m%d-%H%M
-export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'
-# File extensions to ignore when doing name completion
-export FIGNORE='~':'.o':'.bak':'.tmp'
-# Set .config directory for XDG
-export XDG_CONFIG_HOME="$HOME/.config"
-# Some history-related settings
-export HISTSIZE=500
-export HISTFILESIZE=5000
-export SAVEHIST="${HISTFILESIZE}"
-if [ "${SHELL}" = zsh ]; then # zsh has a slightly different format
+export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'   # Prefered datstamp format.
+export FIGNORE='~':'.o':'.bak':'.tmp'       # File extensions ignored in name completion
+export XDG_CONFIG_HOME="$HOME/.config"      # Set .config directory for XDG
+export RSYNC_RSH='ssh'                      # set rsync transport
+export HISTSIZE=500                         # In-memory history
+export HISTFILESIZE=5000                    # On-disk history
+export SAVEHIST="${HISTFILESIZE}"           # Alt On-disk history
+if [ "${SHELL}" = zsh ]; then               # zsh has a slightly different format
     export HISTIGNORE='(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)'
 else
     export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
@@ -63,7 +60,7 @@ export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
 #----------------------------------------------------------------------
 #-- VCS Settings
 #----------------------------------------------------------------------
-# Set this to perfered version control system current possible values: git svn 
+# Set this to perfered version control system 
 export DEFAULT_VCS='git'
 # Set this to false to ignore untracked files, which can speed up repo checks
 export VCS_IGNORE_UNTRACKED_FILES='false'
@@ -88,7 +85,7 @@ if [ -r "${SHELLD}/misc/paths" ]; then
     while read line 
     do
         if [ -d "${line}" ]; then
-            PATH="${PATH}:${line}"
+            pathmunge "${line}" after
         fi
     done <"${SHELLD}/misc/paths"
 fi; unset line
@@ -97,7 +94,7 @@ if [ -e "${SHELLD}/manpaths" ]; then
     while read line 
     do
         if [ -d "${line}" ]; then
-            MANPATH="${MANPATH}:${line}"
+            manpathmunge "${line}" after
         fi
     done <"${SHELLD}/misc/manpaths"
 fi; unset line
@@ -105,45 +102,45 @@ fi; unset line
 export PATH MANPATH
 
 #----------------------------------------------------------------------
-#-- Set up helper variables
+#-- Set up sysinfo variables
 #----------------------------------------------------------------------
-UNAMES=$(uname -s)
-UNAMER=$(uname -r)
-PLATFORM=$(uname -p)
-export UNAMES UNAMER PLATFORM
-export RSYNC_RSH='ssh'
+# This works great under sh, but not zsh
+command -v uname >/dev/null 2>&1 && {
+    split "$(uname -nprs)" ' ' UNAMES SYSNAME UNAMER PLATFORM
+    [ -z "${HOSTNAME}" ] && HOSTNAME=$SYSNAME && export HOSTNAME
+    export UNAMES UNAMER PLATFORM
+}
 
-[ -z "${HOSTNAME}" ] && HOSTNAME=$(hostname -s) && export HOSTNAME
-
-NVIM=$(which nvim 2>/dev/null)
-VIM=$(which vim 2>/dev/null)
-SUBL=$(which sublime_text 2>/dev/null || which subl 2>/dev/null)
-if [ -x $SUBL ]; then
-    EDITOR="$SUBL -w "
-    VISUAL=$SUBL
-    alias st="$SUBL"
-    alias vi="$VIM"
-elif [ -x $NVIM ]; then
-    EDITOR=$NVIM
-    VISUAL=$NVIM
-    alias vi="$NVIM"
-elif [ -x $VIM ]; then
-    EDITOR=$VIM
-    VISUAL=$VIM
-    alias vi="$VIM"
-else
-    EDITOR=vi
-    VISUAL=vi
+#----------------------------------------------------------------------
+#-- Set up editor & pager variables
+#----------------------------------------------------------------------
+if command -v nvim >/dev/null 2>&1 ; then
+    EDITOR='nvim'
+    VISUAL='nvim'
+    alias vi='nvim'
+elif command -v vim >/dev/null 2>&1 ; then
+    EDITOR='vim'
+    VISUAL='vim'
+    alias vi='vim'
+elif command -v vi >/dev/null 2>&1 ; then
+    EDITOR='vi'
+    VISUAL='vi'
 fi
 
-if [ -x $(which less 2>/dev/null) ]; then
-    PAGER='less -FIMRSw -z-2'
-    LESS='-FIMRSw -z-2'
-elif [ -x $(which more 2>/dev/null) ]; then
-    PAGER="more -s"
-fi
+command -v sublime_text >/dev/null 2>&1 && {
+    VISUAL='sublime_text'
+    EDITOR='sublime_text -w '
+    alias st='sublime_text'
+}
 
-export EDITOR VISUAL PAGER LESS RSYNC_RSH
+export EDITOR VISUAL
+
+if command -v less >/dev/null 2>&1 ; then
+    export PAGER='less -FIMRSw -z-2'
+    export LESS='-FIMRSw -z-2'
+elif command -v more >/dev/null 2>&1 ; then
+    export PAGER="more -s"
+fi
 
 #----------------------------------------------------------------------
 #-- Dynamic settings

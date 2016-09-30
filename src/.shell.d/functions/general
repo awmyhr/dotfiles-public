@@ -32,6 +32,7 @@ function timestamp() {
 # the versoin w/echo is here: http://stackoverflow.com/questions/24753824/linux-bin-sh-check-if-string-contains-x
 # not using the echo version due to call out to grep
 stringcontains() {
+    local string pattern
     string="$1"
     pattern="$2"
     #echo "${string}" | grep -q "${pattern}"
@@ -40,6 +41,45 @@ stringcontains() {
     else
         return 1    # $pattern is not in $string
     fi
+}
+
+# This was originally taken from /etc/profile on Fedora 24
+pathmunge() {
+    case ":${PATH}:" in
+        *:"${1}":*)
+            ;;
+        *)
+            if [ "${2}" = "after" ] ; then
+                PATH="${PATH}:${1}"
+            else
+                PATH="${1}:${PATH}"
+            fi
+    esac
+}
+# Until I figure out how to use a variable to assing a value to another variable
+manpathmunge() {
+    case ":${MANPATH}:" in
+        *:"${1}":*)
+            ;;
+        *)
+            if [ "${2}" = "after" ] ; then
+                MANPATH="${MANPATH}:${1}"
+            else
+                MANPATH="${1}:${MANPATH}"
+            fi
+    esac
+}
+
+# This is originally from: http://blog.isonoe.net/post/2010/10/01/Split-a-string-by-character(s)-in-POSIX-shell
+split() {
+    local string IFS
+ 
+    string="${1}"
+    IFS="${2}"
+    shift 2
+    read -r -- "$@" <<EOF
+$string
+EOF
 }
 
 ###############################################################################
