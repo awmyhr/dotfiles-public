@@ -10,18 +10,24 @@
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
 #    OPTIONALS: autojump (via 'autojump')
-#               hh (via 'hsrt')
+#               hh (via 'hstr')
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.0.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-09-28
+#     REVISION: 2016-09-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 umask 022
+
+#----------------------------------------------------------------------
+#-- Load functions, symbols, and others
+#----------------------------------------------------------------------
+[ -r "${SHELLD}/functions/general" ] && . "${SHELLD}/functions/general"
+[ -r "${SHELLD}/misc/symbols" ]      && . "${SHELLD}/symbols"
 
 #----------------------------------------------------------------------
 #-- Static settings
@@ -73,20 +79,30 @@ export VCS_IGNORE_SUBMODULES='true'
 export SEND_256_COLORS_TO_REMOTE=1
 
 #----------------------------------------------------------------------
-#-- Set up PATH
+#-- Set up PATH/MANPATH
 #----------------------------------------------------------------------
+[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
+[ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
 
-if [ -r "${PROFILED}/profile.paths" ]; then
+if [ -r "${SHELLD}/misc/paths" ]; then
     while read line 
     do
-        if [ -d $line ]; then
-            PATH=$PATH':'$line
+        if [ -d "${line}" ]; then
+            PATH="${PATH}:${line}"
         fi
-    done <"${PROFILED}/profile.paths"
-fi
-unset line
+    done <"${SHELLD}/misc/paths"
+fi; unset line
 
-export PATH
+if [ -e "${SHELLD}/manpaths" ]; then
+    while read line 
+    do
+        if [ -d "${line}" ]; then
+            MANPATH="${MANPATH}:${line}"
+        fi
+    done <"${SHELLD}/misc/manpaths"
+fi; unset line
+
+export PATH MANPATH
 
 #----------------------------------------------------------------------
 #-- Set up helper variables
@@ -128,23 +144,6 @@ elif [ -x $(which more 2>/dev/null) ]; then
 fi
 
 export EDITOR VISUAL PAGER LESS RSYNC_RSH
-
-#----------------------------------------------------------------------
-#-- MANPATH
-#----------------------------------------------------------------------
-if [ -e "${PROFILED}/profile.manpaths" ]; then
-    MANPATH=''
-    while read line 
-    do
-        if [ -d $line ]; then
-            PATH=$PATH':'$line
-        fi
-    done <"${PROFILED}/profile.manpaths"
-fi
-
-[ -d $HOME'/man' ] && MANPATH=$MANPATH':'$HOME'/man'
-
-export MANPATH
 
 #----------------------------------------------------------------------
 #-- Dynamic settings

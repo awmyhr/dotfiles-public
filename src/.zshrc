@@ -15,7 +15,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 2.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-09-28
+#     REVISION: 2016-09-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -35,7 +35,6 @@ export ZSHD="${HOME}/.zshrc.d"    # ZSH shell files
 export SHELLD="${HOME}/.shell.d"  # Common shell files
 export SHELL="${ZSH_NAME}"        # fix SHELL variable
 [[ ! -d "${ZSHD}" ]]     && mkdir "${ZSHD}" && chmod 700 "${ZSHD}"
-[[ -d "${HOME}'/bin'" ]] && PATH="${HOME}'/bin:'${PATH}"
 
 #----------------------------------------------------------------------
 # From /etc/profile.d/256term.sh on Fedora 24:
