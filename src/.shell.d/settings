@@ -1,4 +1,5 @@
 #!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2039" ]
 #===============================================================================
 #
 #         FILE: .shell.d/settings
