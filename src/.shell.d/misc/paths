@@ -56,4 +56,4 @@
 /usr/java/bin
 /usr/local/mysql/bin
 /opt/pbis/bin
-/Users/andy.myhr/.gem/ruby/2.0.0/bin
+"${HOME}"/.gem/ruby/2.0.0/bin

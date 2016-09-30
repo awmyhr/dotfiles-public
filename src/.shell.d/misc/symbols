@@ -1,0 +1,81 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: .shell.d/misc/symbols
+#
+#        USAGE: (should be sourced by .shell.d/settings)
+#
+#  DESCRIPTION: Sets symbols to represent various things
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0
+#      CREATED: 2016-09-30
+#     REVISION: 2016-09-30
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Special characters cribbed partly from LiquidPrompt
+#--   Fallback to ASCII if the term not Unicode-capable.
+#--   Currently 'fancy' symbols are only set for UTF-8 characters.
+#----------------------------------------------------------------------
+CHARMAP=$(locale -k LC_CTYPE | sed -n 's/^charmap="\(.*\)"/\1/p')
+if [ $(stringmatch "${CHARMAP}" "UTF-8") ]; then
+    #Some unused symbols: ✘ ⚡ ⚙ ᐅ ↓ ⁝ ✹ ➙ ◼ ● ♺ ❮ ❯
+    export VCS_DARCS='d'
+    export VCS_FOSSIL='⌘'
+    export VCS_GIT='±'
+    export VCS_HG='☿'
+    export VCS_SVN='‡'
+    export VCS_NONE='○'
+
+    export VCS_ADDED='✚'
+    export VCS_AHEAD='⬆'
+    export VCS_BEHIND='⬇'
+    export VCS_BRANCH=''
+    export VCS_CLEAN='✔'
+    export VCS_COMMIT='➦'
+    export VCS_COPIED='●'
+    export VCS_DELETED='✖'
+    export VCS_DIRTY='✘'
+    export VCS_DIVERGED='↕'
+    export VCS_MODIFIED='✱'
+    export VCS_RENAMED='➜'
+    export VCS_STAGED='●'
+    export VCS_STASHED='✭'
+    export VCS_UNMERGED='§'
+    export VCS_UNTRACKED='✭'
+else
+    export VCS_DARCS='d'
+    export VCS_FOSSIL='f'
+    export VCS_GIT='g'
+    export VCS_HG='m'
+    export VCS_SVN='s'
+    export VCS_NONE='0'
+
+    export VCS_ADDED='+'
+    export VCS_AHEAD='A'
+    export VCS_BEHIND='-'
+    export VCS_BRANCH='B'
+    export VCS_CLEAN='C'
+    export VCS_COMMIT='C'
+    export VCS_COPIED='C'
+    export VCS_DELETED='X'
+    export VCS_DIRTY='D'
+    export VCS_DIVERGED='S'
+    export VCS_MODIFIED='*'
+    export VCS_RENAMED='>'
+    export VCS_STAGED='S'
+    export VCS_STASHED='s'
+    export VCS_UNMERGED='='
+    export VCS_UNTRACKED='?'
+fi
+
+export ISSET_SYMBOLS=1

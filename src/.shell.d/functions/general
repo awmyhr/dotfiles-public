@@ -1,63 +1,47 @@
 #!/bin/bash
-
-###############################################################################
-### Some fun variables
-
-# Special characters cribbed partly from LiquidPrompt
-#  Fallback to ASCII if the term not Unicode-capable.
-#  Defaults to UTF-8 characters.
-if [[ "$(locale -k LC_CTYPE | sed -n 's/^charmap="\(.*\)"/\1/p')" == *"UTF-8"* ]]; then
-    # If charset is UTF-8.
-    VCS_DARCS=''
-    VCS_FOSSIL='⌘'
-    VCS_GIT='±'
-    VCS_HG='☿'
-    VCS_SVN='‡'
-    VCS_NONE='○'
-
-    VCS_ADDED='✚'
-    VCS_AHEAD='ᐅ'
-    VCS_BEHIND='↓'
-    VCS_CLEAN='✔'
-    VCS_COPIED='●'
-    VCS_DELETED='✖'
-    VCS_DIRTY='✘'
-    VCS_DIVERGED='↕'
-    VCS_MODIFIED='✹'
-    VCS_RENAMED='➜'
-    VCS_STASHED=''
-    VCS_UNMERGED='§'
-    VCS_UNTRACKED='✭'
-else
-    # If charset is anything else, fallback to ASCII chars
-    VCS_DARCS=''
-    VCS_FOSSIL='f'
-    VCS_GIT='g'
-    VCS_HG='m'
-    VCS_SVN='s'
-    VCS_NONE='0'
-
-    VCS_ADDED='+'
-    VCS_AHEAD='A'
-    VCS_BEHIND='-'
-    VCS_CLEAN='C'
-    VCS_COPIED='C'
-    VCS_DELETED='X'
-    VCS_DIRTY='D'
-    VCS_DIVERGED='S'
-    VCS_MODIFIED='M'
-    VCS_RENAMED='>'
-    VCS_STASHED=''
-    VCS_UNMERGED='?'
-    VCS_UNTRACKED='?'
-fi
+#===============================================================================
+#
+#         FILE: .shell.d/functions/general
+#
+#        USAGE: (should be sourced by .shell.d/settings)
+#
+#  DESCRIPTION: Functoins for use across shells.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0
+#      CREATED: ????-??-??
+#     REVISION: 2016-09-30
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
 
 ###############################################################################
 ### Functions for general use
 
 function timestamp() {
-    date $DEFAULT_TIMESTAMP
+    date "${DEFAULT_TIMESTAMP}"
 }
+
+# Originally found this here: http://stackoverflow.com/questions/2829613/how-do-you-tell-if-a-string-contains-another-string-in-unix-shell-scripting
+# the versoin w/echo is here: http://stackoverflow.com/questions/24753824/linux-bin-sh-check-if-string-contains-x
+# not using the echo version due to call out to grep
+stringcontains() {
+    string="$1"
+    pattern="$2"
+    #echo "${string}" | grep -q "${pattern}"
+    if test "${string#*$pattern}" != "$string"; then
+        return 0    # $pattern is in $string
+    else
+        return 1    # $pattern is not in $string
+    fi
+}
+
 ###############################################################################
 ### Functions for prompts
 
@@ -84,7 +68,7 @@ function _git_prompt_status() {
     [[ "$VCS_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
     [[ "$VCS_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
     GITSTAT=$(eval command git status ${FLAGS} 2> /dev/null)
-    #GITSTAT=$(eval command git status ${FLAGS})
+   #GITSTAT=$(eval command git status ${FLAGS})
 
     # Ahead/behind/diverged
     if $(echo "$GITSTAT" | grep '^## [^ ]\+ .*ahead' &> /dev/null); then

@@ -15,7 +15,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 3.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-09-28
+#     REVISION: 2016-09-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -36,7 +36,6 @@ export PROFILED="${HOME}/.profile.d"   # sh shell files
 export SHELLD="${HOME}/.shell.d"       # Common shell files
 export SHELL="${0}"                    # fix SHELL variable
 [ ! -d "${PROFILED}" ] && mkdir "${PROFILED}" && chmod 700 "${PROFILED}"
-[ -d "${HOME}'/bin'" ] && PATH="${HOME}'/bin:'${PATH}"
 
 #----------------------------------------------------------------------
 # From /etc/profile.d/256term.sh on Fedora 24:
@@ -203,11 +202,6 @@ export c_DEBUG="${c_blue}"
 #This will most likely only execute on Mac OS X systems w/Fink
 #  but it's here like this in case I emulate the system elsewhere
 [ -x /sw/bin/init.sh ] && . /sw/bin/init.sh
-
-#----------------------------------------------------------------------
-#-- Load functions
-#----------------------------------------------------------------------
-[ -r "${SHELLD}/functions/general" ] && . "${SHELLD}/functions/general"
 
 #----------------------------------------------------------------------
 #-- Set up the shell environment

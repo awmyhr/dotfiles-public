@@ -15,7 +15,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 2.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-09-28
+#     REVISION: 2016-09-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -35,7 +35,6 @@ export BASHD="${HOME}/.bashrc.d"  # Bash shell files
 export SHELLD="${HOME}/.shell.d"  # Common shell files
 export SHELL="${BASH}"            # fix SHELL variable
 [[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
-[[ -d "${HOME}'/bin'" ]] && PATH="${HOME}'/bin:'${PATH}"
 
 #----------------------------------------------------------------------
 # From /etc/profile.d/256term.sh on Fedora 24:
