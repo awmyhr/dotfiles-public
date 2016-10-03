@@ -38,6 +38,7 @@ assign [class="chromium-browser"]  browse
 
 ################################################################################
 ### Colorz - Solarized theme settings
+# Apparently i3 doesn't like variables w/0 in them much
 set $basez3  #002b36
 set $basez2  #073642
 set $basez1  #586e75
