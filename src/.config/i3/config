@@ -68,7 +68,13 @@ client.background       $basez3
 #         "placeholder"  == shows when restoring layouts
 ################################################################################
 ### Keybindings
-set $mod Mod1
+# Note: I run both on baremetal and VM under Windows. Also, I'm a macOS user as
+#   well. Thus I take all this into account when making keybindings.
+
+# Make primary modifer Alt (Mod1) or Super (Mod4) -- I perfer key next to Shift
+set $mod Mod4
+set $alt Mod1
+set $sup Mod4
 
 # start a terminal
 bindsym $mod+Return exec terminator
@@ -80,33 +86,23 @@ bindsym $mod+space exec dmenu_run -b -i -nf "$base2" -nb "$basez3" -sf "$basez2"
 bindsym $mod+Shift+space exec --no-startup-id i3-dmenu-desktop --dmenu='dmenu -b -i -nf "$base2" -nb "$basez3" -sf "$basez2" -sb "$blue" -fn "-misc-liberation mono-medium-r-normal--0-0-0-0-m-0-iso8859-1"'
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $alt+$sup+Escape kill
 
-# change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-
-# alternatively, you can use the cursor keys:
+# Originally I had vi bidings for focus/move container,
+#   but this collides w/Windows 'Super+L' lock-screen keys
+# change container focus
 bindsym $mod+Left  focus left
 bindsym $mod+Down  focus down
 bindsym $mod+Up    focus up
 bindsym $mod+Right focus right
 
-# move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
-
-# alternatively, you can use the cursor keys:
+# move focused container
 bindsym $mod+Shift+Left  move left
 bindsym $mod+Shift+Down  move down
 bindsym $mod+Shift+Up    move up
 bindsym $mod+Shift+Right move right
 
-# and an alt+tab combo for left/right
+# Change container focus left/right
 bindsym $mod+Tab focus right
 bindsym $mod+Shift+Tab focus left
 
@@ -116,8 +112,8 @@ bindsym $mod+Shift+o splith
 # split in vertical orientation
 bindsym $mod+Shift+i splitv
 
-# enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
+# enter fullscreen mode for the focused container (Not needed?)
+bindsym F11 fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -125,7 +121,7 @@ bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
 ################################################################################
-### Hide default bindings I'm not using
+### Hide some bindings I'm not using
 # change focus between tiling / floating windows
 #bindsym $mod+space focus mode_toggle
 # toggle tiling / floating
@@ -144,8 +140,17 @@ bindsym $mod+e layout toggle split
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# Take a screenshot upon pressing $mod+x (select an area)
-bindsym --release Print exec "scrot -s 'screenshot_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/'"
+################################################################################
+### Screenshots 
+# Use (Alt+)PrtScr for 'normal' keyboards,
+#     (Alt+)F13    for Apple Extended Keyboard, 
+#     (Alt+)F12    workaround for AEK in a VM under Windows
+bindsym --release Print      exec "scrot 'screen_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/Screenshots/'
+bindsym --release $alt+Print exec "scrot -s 'window_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/Screenshots/'
+bindsym --release F13        exec "scrot    'screen_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/Screenshots/'
+bindsym --release $alt+F13   exec "scrot -s 'window_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/Screenshots/'
+bindsym --release F12        exec "scrot    'screen_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/Screenshots/'
+bindsym --release $alt+F12   exec "scrot -s 'window_%Y%m%d-%H%M%S.png' -e 'mv $f ~/Documents/Pictures/Screenshots/'
 
 ################################################################################
 ### Workspaces
@@ -174,28 +179,22 @@ bindsym $mod+Shift+9 move container to workspace diff
 bindsym $mod+Shift+0 move container to workspace Cluster
 
 ################################################################################
-### Resize window binding mode (you can also use the mouse for that)
+### Resize container binding mode (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+    # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+    # Pressing left  will shrink the window’s width.
+    # Pressing right will grow   the window’s width.
+    # Pressing down  will shrink the window’s height.
+    # Pressing up    will grew   the window’s height.
+    bindsym Left  resize shrink width  10 px or 10 ppt
+    bindsym Right resize grow   width  10 px or 10 ppt
+    bindsym Down  resize shrink height 10 px or 10 ppt
+    bindsym Up    resize grow   height 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left  resize shrink width 10 px or 10 ppt
-        bindsym Down  resize grow height 10 px or 10 ppt
-        bindsym Up    resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
 
@@ -207,14 +206,18 @@ mode "$mode_system" {
     bindsym l exit
     bindsym c reload
     bindsym Shift+c restart
-    bindsym r exec --no-startup-id /usr/bin/systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id /usr/bin/systemctl poweroff -i, mode "default"  
+    bindsym r exec --no-startup-id /usr/bin/systemctl reboot
+    bindsym Shift+s exec --no-startup-id /usr/bin/systemctl poweroff -i
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym Pause mode "$mode_system"
+# Pause for 'normal' keyboards, F15 for Apple Extended Keyboard, 
+#   Alt+Super+F12 workaround for AEK in a VM under Windows
+bindsym Pause         mode "$mode_system"
+bindsym F15           mode "$mode_system"
+bindsym $alt+$sup+F12 mode "$mode_system"
 
 ################################################################################
 ### Start workspace bar (shows occupied workspaces other i3status info per config)
@@ -256,13 +259,14 @@ exec --no-startup-id i3-msg 'workspace Main; exec terminator'
 # dunst is a notificaiton daemon
 exec --no-startup-id dunst
 
-# set background (1st is a pic, second a solid color)
-exec --no-startup-id feh --image-bg black --bg-center '/home/awmyhr/Documents/Pictures/background.png'
-#exec --no-startup-id xsetroot -solid "$basez2"
 ################################################################################
 ### And finally...
 # Update dmenu cache
 exec --no-startup-id dmenu_path >/dev/null&
+
+# set background (1st is a pic, second a solid color)
+exec --no-startup-id feh --image-bg black --bg-center '/home/awmyhr/Documents/Pictures/background.png'
+#exec --no-startup-id xsetroot -solid "$basez2"
 
 ################################################################################
 ### useful notes
