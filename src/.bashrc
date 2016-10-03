@@ -37,13 +37,6 @@ export SHELL="${BASH}"            # fix SHELL variable
 [[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
 
 #----------------------------------------------------------------------
-# From /etc/profile.d/256term.sh on Fedora 24:
-#----------------------------------------------------------------------
-# Set this variable in your local shell config (such as ~/.bashrc)
-# if you want remote xterms connecting to this system, to be sent 256 colors.
-# This must be set before reading global initialization such as /etc/bashrc.
-export SEND_256_COLORS_TO_REMOTE=1
-#----------------------------------------------------------------------
 #-- Load in system profiles if they exist
 #----------------------------------------------------------------------
 for i in /etc/profile.d/*.sh; do
