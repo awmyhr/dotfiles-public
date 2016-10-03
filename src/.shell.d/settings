@@ -29,6 +29,7 @@ umask 022
 #----------------------------------------------------------------------
 [ -r "${SHELLD}/functions/general" ] && . "${SHELLD}/functions/general"
 [ -r "${SHELLD}/misc/symbols" ]      && . "${SHELLD}/symbols"
+[ -r "${SHELLD}/misc/color" ]        && . "${SHELLD}/color"
 
 #----------------------------------------------------------------------
 #-- Static settings
@@ -67,14 +68,6 @@ export DEFAULT_VCS='git'
 export VCS_IGNORE_UNTRACKED_FILES='false'
 # Set this to false to ignore submodule files, which can speed up repo checks
 export VCS_IGNORE_SUBMODULES='true'
-
-#----------------------------------------------------------------------
-# From /etc/profile.d/256term.sh on Fedora 24:
-#----------------------------------------------------------------------
-# Set this variable in your local shell config (such as ~/.bashrc)
-# if you want remote xterms connecting to this system, to be sent 256 colors.
-# This must be set before reading global initialization such as /etc/bashrc.
-export SEND_256_COLORS_TO_REMOTE=1
 
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
