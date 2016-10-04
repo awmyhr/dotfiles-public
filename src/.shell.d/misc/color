@@ -9,14 +9,14 @@
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
-#               ncurses (tput, tset, infocmp)
-#    OPTIONALS: dircolors
+#               tput, tset, infocmp (via 'ncurses')
+#    OPTIONALS: dircolors (via 'coreutils')
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.0.0
 #      CREATED: 2016-10-03
-#     REVISION: 2016-10-03
+#     REVISION: 2016-10-04
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -192,3 +192,7 @@ command -v dircolors >/dev/null 2>&1 && {
 #----------------------------------------------------------------------
 #-- colors for grep/xzgrep/zgrep
 #----------------------------------------------------------------------
+
+
+#----------------------------------------------------------------------
+export ISSET_COLORS=1
