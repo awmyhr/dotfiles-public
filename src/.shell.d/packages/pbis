@@ -1,0 +1,34 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: .shell.d/packages/pbis
+#
+#        USAGE: (should be sourced by .shell.d/settings)
+#
+#  DESCRIPTION: Git functions, aliases, etc for use across shells.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               pbis (via 'pbis-open')
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-alpha
+#      CREATED: 2016-10-04
+#     REVISION: 2016-10-04
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#=== FUNCTION ================================================================
+# NAME: usage
+# DESCRIPTION: Display usage information for this script.
+# PARAMETER 1: 
+#===============================================================================# Get the status of the working tree (copied and modified from git.zsh)
+if [ -x '/opt/pbis/bin/find-user-by-name' ]; then
+  name() { /opt/pbis/bin/find-user-by-name "$@" | grep -i gecos | awk '{ print $2 " " $3; }'; }
+else
+  name() { echo 'PBIS not found.'; }
+fi
