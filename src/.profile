@@ -1,4 +1,5 @@
 #!/usr/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
 #===============================================================================
 #
 #         FILE: .profile
@@ -19,11 +20,10 @@
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
-#       20160908 May have broken compatibility w/non-bash/zsh shells
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
-#  Set sane path, check for debug, and exit if not an interactive shell
+#-- Set sane path, check for debug, and exit if not an interactive shell
 #----------------------------------------------------------------------
 export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
 [ "${TRACE}" ]  && set -x    # Run in debug mode if called for
@@ -32,7 +32,7 @@ export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
 #----------------------------------------------------------------------
 #-- "Baby, baby, baby, let's do it interactive"
 #----------------------------------------------------------------------
-export PROFILED="${HOME}/.profile.d"   # sh shell files
+export PROFILED="${HOME}/.profile.d"   # shell specific files
 export SHELLD="${HOME}/.shell.d"       # Common shell files
 export SHELL="${0}"                    # fix SHELL variable
 [ ! -d "${PROFILED}" ] && mkdir "${PROFILED}" && chmod 700 "${PROFILED}"
@@ -50,29 +50,12 @@ done; unset i
 [ -r "${SHELLD}/settings" ] && . "${SHELLD}/settings"
 
 #----------------------------------------------------------------------
-#-- load general aliases
+#-- Let's set some shell options...
 #----------------------------------------------------------------------
-[ -r "${PROFILED}/alias.general" ] && . "${PROFILED}/alias.general"
-#   load default VCS aliases
-[ -r "${PROFILED}/alias.${DEFAULT_VCS}" ] && [ -x "$(which ${DEFAULT_VCS} 2>/dev/null)" ] && . "${PROFILED}/alias.${DEFAULT_VCS}"
-#   load platform aliases
-[ -r "${PROFILED}/alias.${UNAMES}" ] && . "${PROFILED}/alias.${UNAMES}"
-
-#----------------------------------------------------------------------
-#-- platform-specific stuff goes in these files.
-#----------------------------------------------------------------------
-[ -r "${PROFILED}/profile.${UNAMES}" ] && . "${PROFILED}/profile.${UNAMES}"
-
-#This will most likely only execute on Mac OS X systems w/Fink
-#  but it's here like this in case I emulate the system elsewhere
-[ -x /sw/bin/init.sh ] && . /sw/bin/init.sh
-
-#----------------------------------------------------------------------
-#-- Set up the shell environment
-#----------------------------------------------------------------------
-trap "echo 'logout'" 0
-# removed '-o nounset' as it caused problems w/bash autocomplete
-set -o noclobber -o vi -o notify
+# noclobber Prevent output redirection (>/>&/<>) from overwriting existing files.
+# notify    Status of terminated background jobs are reported immediately
+# vi        Use vi-style line editing (also affects editing w/'read -e.')
+set -o noclobber -o notify -o vi
 
 #----------------------------------------------------------------------
 #-- Shell dependent settings
@@ -116,15 +99,15 @@ esac
 
 export PS1 SHELLSTRING
 #----------------------------------------------------------------------
-# FWIW:
-# tcsh   - $version  - set to tcsh version number (also: set prompt='%n@%m %~ ')
-# bash   - $BASH     - set to bash path
-# [t]csh - $shell    - set to 'csh' or 'tcsh'
-# zsh    - $ZSH_NAME - set to 'zsh'
-# ksh has $PS3 & $PS4 set (normal Bourne shell (sh) only has $PS1 & $PS2 set).
-#   This generally seems like the hardest to distinguish - the ONLY difference
-#   in entire set of envionmental variables between sh and ksh installed on
-#   Solaris: $ERRNO, $FCEDIT, $LINENO, $PPID, $PS3, $PS4, $RANDOM, $SECONDS, $TMOUT
+#-- FWIW, some ways to identify current shell other than $SHELL & $0:
+#--   tcsh   - $version  - set to tcsh version (also: set prompt='%n@%m %~ ')
+#--   bash   - $BASH     - set to bash path
+#--   [t]csh - $shell    - set to 'csh' or 'tcsh'
+#--   zsh    - $ZSH_NAME - set to 'zsh'
+#-- ksh has $PS3 & $PS4 set (normal Bourne shell (sh) only has $PS1 & $PS2 set).
+#-- This generally seems like the hardest to distinguish - the ONLY difference
+#-- in entire set of envionmental variables between sh and ksh installed on
+#-- Solaris: $ERRNO $FCEDIT $LINENO $PPID $PS3 $PS4 $RANDOM $SECONDS $TMOUT
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
@@ -132,3 +115,9 @@ export PS1 SHELLSTRING
 #----------------------------------------------------------------------
 [ -r "${SHELLD}/misc/greeting" ] && "${SHELLD}/misc/greeting"
 
+printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
+
+#----------------------------------------------------------------------
+#-- A Parting comment...
+#----------------------------------------------------------------------
+trap 'printf "\n%s\n" "${c_purple}Welcome 2 The Dawn${c_norm}"' EXIT
