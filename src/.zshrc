@@ -1,4 +1,5 @@
 #!/usr/bin/zsh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
 #===============================================================================
 #
 #         FILE: .zshrc
@@ -15,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 2.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-09-30
+#     REVISION: 2016-10-04
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -31,7 +32,7 @@ export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
 #----------------------------------------------------------------------
 #-- "Baby, baby, baby, let's do it interactive"
 #----------------------------------------------------------------------
-export ZSHD="${HOME}/.zshrc.d"    # ZSH shell files
+export ZSHD="${HOME}/.zshrc.d"    # ZSH specific files
 export SHELLD="${HOME}/.shell.d"  # Common shell files
 export SHELL="${ZSH_NAME}"        # fix SHELL variable
 [[ ! -d "${ZSHD}" ]]     && mkdir "${ZSHD}" && chmod 700 "${ZSHD}"
@@ -135,3 +136,15 @@ zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 autoload -U colors && colors
 autoload -Uz compinit && compinit
+
+#----------------------------------------------------------------------
+#-- Display some useful information
+#----------------------------------------------------------------------
+[ -r "${SHELLD}/misc/greeting" ] && "${SHELLD}/misc/greeting"
+
+printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
+
+#----------------------------------------------------------------------
+#-- A Parting comment...
+#----------------------------------------------------------------------
+trap 'printf "\n%s\n" "${c_purple}Welcome 2 The Dawn${c_norm}"' EXIT
