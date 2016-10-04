@@ -28,19 +28,17 @@ function timestamp() {
     date "${DEFAULT_TIMESTAMP}"
 }
 
-# Originally found this here: http://stackoverflow.com/questions/2829613/how-do-you-tell-if-a-string-contains-another-string-in-unix-shell-scripting
-# the versoin w/echo is here: http://stackoverflow.com/questions/24753824/linux-bin-sh-check-if-string-contains-x
-# not using the echo version due to call out to grep
-stringcontains() {
-    local string pattern
-    string="$1"
-    pattern="$2"
-    #echo "${string}" | grep -q "${pattern}"
-    if test "${string#*$pattern}" != "$string"; then
-        return 0    # $pattern is in $string
-    else
-        return 1    # $pattern is not in $string
-    fi
+# Originally found here: http://www.etalabs.net/sh_tricks.html
+stringmatch() {
+    case "${2}" in 
+        *${1}*) 
+            return 0 
+            ;; 
+        *) 
+            return 1 
+            ;; 
+    esac ;
+    return 20
 }
 
 # This was originally taken from /etc/profile on Fedora 24
