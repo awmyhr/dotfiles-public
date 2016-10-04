@@ -15,7 +15,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 3.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-09-30
+#     REVISION: 2016-10-04
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -54,7 +54,7 @@ done; unset i
 #----------------------------------------------------------------------
 [ -r "${PROFILED}/alias.general" ] && . "${PROFILED}/alias.general"
 #   load default VCS aliases
-[ -r "${PROFILED}/alias.${DEFAULT_VCS}" ] && [ -x "$(which $DEFAULT_VCS 2>/dev/null)" ] && . "${PROFILED}/alias.${DEFAULT_VCS}"
+[ -r "${PROFILED}/alias.${DEFAULT_VCS}" ] && [ -x "$(which ${DEFAULT_VCS} 2>/dev/null)" ] && . "${PROFILED}/alias.${DEFAULT_VCS}"
 #   load platform aliases
 [ -r "${PROFILED}/alias.${UNAMES}" ] && . "${PROFILED}/alias.${UNAMES}"
 
@@ -76,39 +76,45 @@ set -o noclobber -o vi -o notify
 
 #----------------------------------------------------------------------
 #-- Shell dependent settings
+#--     Theoretically, we'll never run this file under zsh/bash
 #----------------------------------------------------------------------
-case "$SHELL" in
+case "${SHELL}" in
     *zsh* )
-        SHELLSTRING="$SHELL ($ZSH_VERSION)"
+        SHELLSTRING="${SHELL} (${ZSH_VERSION})"
+        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}): ${c_norm} $PWD
+! $ '
         ;;
 
     *bash* )
-        SHELLSTRING="$SHELL ($BASH_VERSION)"
+        SHELLSTRING="${SHELL} (${BASH_VERSION})"
+        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}): ${c_norm} $PWD
+! $ '
         ;;
 
     *ksh* )
-        SHELLSTRING="$SHELL ($KSH_VERSION)"
-        export PS1='$c_bold$USER@$HOSTNAME ($UNAMES): $c_norm $PWD
+        SHELLSTRING="${SHELL} (${KSH_VERSION})"
+        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}): ${c_norm} $PWD
 ! $ '
         ;;
     *csh )
         # Set a simple prompt
-        SHELLSTRING="$shell"
-        export PS1='$USER@$HOSTNAME $ '
+        SHELLSTRING="${shell}"
+        PS1='${USER}@${HOSTNAME} $ '
         ;;
     *sh )
         # Set a simple prompt
-        SHELLSTRING="$SHELL"
-        export PS1='$USER@$HOSTNAME $ '
+        SHELLSTRING="${SHELL}"
+        PS1='${USER}@${HOSTNAME} $ '
         ;;
     * )
         # Sorry, unknown shell??
         SHELLSTRING="UNKNOWN"
 
-        export PS1='$ '
+        PS1='$ '
         ;;
 esac
 
+export PS1 SHELLSTRING
 #----------------------------------------------------------------------
 # FWIW:
 # tcsh   - $version  - set to tcsh version number (also: set prompt='%n@%m %~ ')
@@ -121,27 +127,8 @@ esac
 #   Solaris: $ERRNO, $FCEDIT, $LINENO, $PPID, $PS3, $PS4, $RANDOM, $SECONDS, $TMOUT
 #----------------------------------------------------------------------
 
-type whereis >/dev/null 2>&1 || {
-	alias whereis='type -all'
-}
-
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-echo -e "${c_white}You're logged into ${c_bold}$HOSTNAME${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}
-    ${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}
-    ${c_white}${c_bold}Shell:${c_norm}  ${c_purple}${SHELLSTRING}${c_norm}
-    ${c_white}${c_bold}Pager:${c_norm}  ${c_purple}${PAGER}${c_norm}
-    ${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR}${c_norm}
-    ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}${DEFAULT_VCS}${c_norm}"
-
-# Print the Discordian date.
-if [ -x $(which ddate 2>/dev/null) ]; then
-    echo -e "${c_cyan}$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')${c_norm}"
-fi
-
-# Print a random, hopefully interesting, adage.
-if [ -x $(which fortune 2>/dev/null) ]; then
-    echo -e "${c_purple}$(fortune -s)${c_norm}"
-fi
+[ -r "${SHELLD}/misc/greeting" ] && "${SHELLD}/misc/greeting"
 
