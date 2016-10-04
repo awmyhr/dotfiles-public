@@ -1,9 +1,9 @@
 #!/bin/sh
 #===============================================================================
 #
-#         FILE: .shell.d/misc/symbols
+#         FILE: .shell.d/lib/symbols
 #
-#        USAGE: (should be sourced by .shell.d/settings)
+#        USAGE: (should be sourced by .shell.d/shellinit)
 #
 #  DESCRIPTION: Sets symbols to represent various things
 #

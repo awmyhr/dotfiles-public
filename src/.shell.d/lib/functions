@@ -1,9 +1,9 @@
 #!/bin/sh
 #===============================================================================
 #
-#         FILE: .shell.d/functions/general
+#         FILE: .shell.d/lib/functions
 #
-#        USAGE: (should be sourced by .shell.d/settings)
+#        USAGE: (should be sourced by .shell.d/shellinit)
 #
 #  DESCRIPTION: General functions for use across shells.
 #
