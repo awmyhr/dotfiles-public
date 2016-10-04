@@ -30,7 +30,7 @@ umask 022
 [ -r "${SHELLD}/etc/settings" ]   && . "${SHELLD}/etc/settings"
 [ -r "${SHELLD}/lib/functions" ]  && . "${SHELLD}/lib/functions"
 [ -r "${SHELLD}/lib/symbols" ]    && . "${SHELLD}/lib/symbols"
-[ -r "${SHELLD}/lib/color" ]      && . "${SHELLD}/lib/color"
+[ -r "${SHELLD}/lib/colors" ]     && . "${SHELLD}/lib/colors"
 [ -r "${SHELLD}/lib/aliases" ]    && . "${SHELLD}/lib/aliases"
 
 #----------------------------------------------------------------------
