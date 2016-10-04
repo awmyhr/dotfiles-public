@@ -9,7 +9,7 @@
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
-#    OPTIONALS: ---
+#    OPTIONALS: (various vcs commands - git, hg)
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
@@ -105,27 +105,39 @@ $string
 EOF
 }
 
-###############################################################################
-### Functions for prompts
-
+#=== FUNCTION ==================================================================
+# NAME: _vcs_prompt_char
+# DESCRIPTION: This will detect the presence of a vcs command, check if the
+#               current directory is a repo for that command, and return
+#               a symbol (defined in shell.d/lib/symbols)
+#===============================================================================
 # need a solid, quick way to detect svn/fossil/darcs repos (copied and modified from some zsh thing)
-function _vcs_prompt_char() {
-    git branch >/dev/null 2>/dev/null && echo $VCS_GIT && return
-    hg  root   >/dev/null 2>/dev/null && echo $VCS_HG  && return
-    #svn status >/dev/null 2>/dev/null && echo $VCS_SVN && return
-    #fossile status  >/dev/null 2>/dev/null && echo $VCS_FOSSIL && return
-    #darcs status  >/dev/null 2>/dev/null && echo $VCS_DARCS && return
-    echo $VCS_NONE
+_vcs_prompt_char() {
+    command -v git >/dev/null 2>&1 && {
+        git branch >/dev/null 2>&1 && printf -- "${VCS_GIT}" && return
+    }
+    command -v hg  >/dev/null 2>&1 && {
+        hg  root   >/dev/null 2>&1 && printf -- "${VCS_HG}"  && return
+    }
+    # command -v svn    >/dev/null 2>&1 && {
+    #     svn    STATUS >/dev/null 2>&1 && printf -- "${VCS_SVN}"    && return
+    # }
+    # command -v fossil >/dev/null 2>&1 && {
+    #     fossil STATUS >/dev/null 2>&1 && printf -- "${VCS_FOSSIL}" && return
+    # }
+    # command -v darcs  >/dev/null 2>&1 && {
+    #     darcs  STATUS >/dev/null 2>&1 && printf -- "${VCS_DARCS}"  && return
+    # }
+    printf -- "${VCS_NONE}"
 }
 
-function _return_code() { 
-    exit_code=$?
-    [[ $exit_code -ne 0 ]] && printf -- "$exit_code ↵"
+#=== FUNCTION ==================================================================
+# NAME: _return_code
+# DESCRIPTION: This will detect if the last command had a non-zero return code.
+#               If so, it will return that code for prompt display
+#===============================================================================
+_return_code() { 
+    exit_code="${?}"
+    [ "${exit_code}" -ne 0 ] && printf -- "${exit_code} ↵"
 }
-###############################################################################
-### Limited use functions
-if [[ -x '/opt/pbis/bin/find-user-by-name' ]]; then
-  function name() { /opt/pbis/bin/find-user-by-name "$@" | grep -i gecos | awk '{ print $2 " " $3; }'; }
-else
-  function name() { echo 'PBIS not found.'; }
-fi
+
