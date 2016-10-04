@@ -20,6 +20,8 @@
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
+#--     20161004 sometimes SHELL is not set properly. detecting this
+#--         and correcting it is proving troublesome. 
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
@@ -27,22 +29,15 @@
 #----------------------------------------------------------------------
 export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
 [ "${TRACE}" ]  && set -x    # Run in debug mode if called for
-[ -z "${PS1}" ] || return    # Exit if not an interactive shell
+[ -t 0 ]        || return    # Exit if not interactive (no stdin)
 
 #----------------------------------------------------------------------
 #-- "Baby, baby, baby, let's do it interactive"
 #----------------------------------------------------------------------
 export PROFILED="${HOME}/.profile.d"   # shell specific files
 export SHELLD="${HOME}/.shell.d"       # Common shell files
-export SHELL="${0}"                    # fix SHELL variable
+export SHELL="${0#-}"                  # fix SHELL variable
 [ ! -d "${PROFILED}" ] && mkdir "${PROFILED}" && chmod 700 "${PROFILED}"
-
-#----------------------------------------------------------------------
-#-- Load in system profiles if they exist
-#----------------------------------------------------------------------
-for i in /etc/profile.d/*.sh; do
-    [ -r "$i" ] && . "$i"
-done; unset i
 
 #----------------------------------------------------------------------
 #-- Load/Initilize/Override settings
@@ -64,30 +59,27 @@ set -o noclobber -o notify -o vi
 case "${SHELL}" in
     *zsh* )
         SHELLSTRING="${SHELL} (${ZSH_VERSION})"
-        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}): ${c_norm} $PWD
-! $ '
+        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}):${c_norm}$PWD ! $ '
         ;;
 
     *bash* )
         SHELLSTRING="${SHELL} (${BASH_VERSION})"
-        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}): ${c_norm} $PWD
-! $ '
+        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}):${c_norm}$PWD ! $ '
         ;;
 
     *ksh* )
         SHELLSTRING="${SHELL} (${KSH_VERSION})"
-        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}): ${c_norm} $PWD
-! $ '
+        PS1='${c_bold}${USER}@${HOSTNAME} (${UNAMES}):${c_norm}$PWD ! $ '
         ;;
     *csh )
         # Set a simple prompt
         SHELLSTRING="${shell}"
-        PS1='${USER}@${HOSTNAME} $ '
+        PS1='${USER}@${HOSTNAME}:$PWD $ '
         ;;
     *sh )
         # Set a simple prompt
         SHELLSTRING="${SHELL}"
-        PS1='${USER}@${HOSTNAME} $ '
+        PS1='${USER}@${HOSTNAME}:$PWD $ '
         ;;
     * )
         # Sorry, unknown shell??
