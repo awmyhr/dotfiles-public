@@ -164,16 +164,20 @@ export c_DEBUG="${c_blue}"
 #----------------------------------------------------------------------
 unset cfile
 command -v dircolors >/dev/null 2>&1 && {
-    for config in   "${HOME}/.dirColors/dircolors.256dark" \
-                    "${HOME}/.dir_colors.${TERM}" \
-                    "${HOME}/.dircolors.${TERM}" \
-                    "${HOME}/.dir_colors" \
-                    "${HOME}/.dircolors" \
-                    "/etc/DIR_COLORS.${TERM}" \
-                    "/etc/DIR_COLORS.256color" \
-                    "/etc/DIR_COLORS"; do
-        [ -r "${config}" ] && cfile="${config}" && break
-    done
+    if [ "${TERM_NUMCOLORS}" = 8 ]; then    
+        [ -r '/etc/DIR_COLORS' ] && cfile='/etc/DIR_COLORS'
+    else
+        for config in   "${HOME}/.dirColors/dircolors.256dark" \
+                        "${HOME}/.dir_colors.${TERM}" \
+                        "${HOME}/.dircolors.${TERM}" \
+                        "${HOME}/.dir_colors" \
+                        "${HOME}/.dircolors" \
+                        "/etc/DIR_COLORS.${TERM}" \
+                        '/etc/DIR_COLORS.256color' \
+                        '/etc/DIR_COLORS'; do
+            [ -r "${config}" ] && cfile="${config}" && break
+        done
+    fi
 
     if [ -n "${cfile}" ]; then
         eval "$(dircolors -b "${cfile}" 2>/dev/null)"
