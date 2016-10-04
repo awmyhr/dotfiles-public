@@ -27,9 +27,36 @@ umask 022
 #----------------------------------------------------------------------
 #-- Load functions, symbols, and others
 #----------------------------------------------------------------------
-[ -r "${SHELLD}/functions/general" ] && . "${SHELLD}/functions/general"
-[ -r "${SHELLD}/misc/symbols" ]      && . "${SHELLD}/misc/symbols"
-[ -r "${SHELLD}/misc/color" ]        && . "${SHELLD}/misc/color"
+[ -r "${SHELLD}/functions/general" ]  && . "${SHELLD}/functions/general"
+[ -r "${SHELLD}/misc/symbols" ]       && . "${SHELLD}/misc/symbols"
+[ -r "${SHELLD}/misc/color" ]         && . "${SHELLD}/misc/color"
+[ -r "${SHELLD}/misc/aliases" ]       && . "${SHELLD}/misc/aliases"
+
+#----------------------------------------------------------------------
+#-- Set up PATH/MANPATH
+#----------------------------------------------------------------------
+[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
+[ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
+
+if [ -r "${SHELLD}/misc/paths" ]; then
+    while read line 
+    do
+        if [ -d "${line}" ]; then
+            pathmunge "${line}" after
+        fi
+    done <"${SHELLD}/misc/paths"
+fi; unset line
+
+if [ -e "${SHELLD}/manpaths" ]; then
+    while read line 
+    do
+        if [ -d "${line}" ]; then
+            manpathmunge "${line}" after
+        fi
+    done <"${SHELLD}/misc/manpaths"
+fi; unset line
+
+export PATH MANPATH
 
 #----------------------------------------------------------------------
 #-- Static settings
@@ -68,41 +95,17 @@ export DEFAULT_VCS='git'
 export VCS_IGNORE_UNTRACKED_FILES='false'
 # Set this to false to ignore submodule files, which can speed up repo checks
 export VCS_IGNORE_SUBMODULES='true'
+#   load default VCS aliases
+[ -r "${PROFILED}/alias.${DEFAULT_VCS}" ] && [ -x "$(which ${DEFAULT_VCS} 2>/dev/null)" ] && . "${PROFILED}/alias.${DEFAULT_VCS}"
 
 #----------------------------------------------------------------------
-#-- Set up PATH/MANPATH
+#-- Set up sysinfo variables and load in platform specific things
 #----------------------------------------------------------------------
-[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
-[ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
-
-if [ -r "${SHELLD}/misc/paths" ]; then
-    while read line 
-    do
-        if [ -d "${line}" ]; then
-            pathmunge "${line}" after
-        fi
-    done <"${SHELLD}/misc/paths"
-fi; unset line
-
-if [ -e "${SHELLD}/manpaths" ]; then
-    while read line 
-    do
-        if [ -d "${line}" ]; then
-            manpathmunge "${line}" after
-        fi
-    done <"${SHELLD}/misc/manpaths"
-fi; unset line
-
-export PATH MANPATH
-
-#----------------------------------------------------------------------
-#-- Set up sysinfo variables
-#----------------------------------------------------------------------
-# This works great under sh, but not zsh
 command -v uname >/dev/null 2>&1 && {
     split "$(uname -nprs)" ' ' UNAMES SYSNAME UNAMER PLATFORM
     [ -z "${HOSTNAME}" ] && HOSTNAME=$SYSNAME && export HOSTNAME
     export UNAMES UNAMER PLATFORM
+    [ -r "${SHELLD}/platform/${UNAMES}" ] && . "${SHELLD}/platform/${UNAMES}"
 }
 
 #----------------------------------------------------------------------
@@ -139,3 +142,4 @@ fi
 #----------------------------------------------------------------------
 #-- Dynamic settings
 #----------------------------------------------------------------------
+
