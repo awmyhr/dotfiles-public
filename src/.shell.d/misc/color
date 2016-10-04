@@ -72,7 +72,7 @@ TERM_NUMCOLORS=$(tput colors) && export TERM_NUMCOLORS
 #----------------------------------------------------------------------
 #-- Set the color variables
 #----------------------------------------------------------------------
-if [ "${TERM_NUMCOLORS}" -ge 256 ] 2>/dev/null; then
+if [ "${TERM_NUMCOLORS}" -ge 256 ]; then
     c_BASE03=$(tput setaf 234)
     c_BASE02=$(tput setaf 235)
     c_BASE01=$(tput setaf 240)
@@ -89,7 +89,7 @@ if [ "${TERM_NUMCOLORS}" -ge 256 ] 2>/dev/null; then
     c_purple=$(tput setaf 61)
     c_red=$(tput setaf 160)
     c_yellow=$(tput setaf 136)
-elif [ "${TERM_NUMCOLORS}" -ge 16 ] 2>/dev/null; then
+elif [ "${TERM_NUMCOLORS}" -ge 16 ]; then
     c_BASE03=$(tput setaf 8)
     c_BASE02=$(tput setaf 0)
     c_BASE01=$(tput setaf 10)
