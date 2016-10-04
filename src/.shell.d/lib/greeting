@@ -43,7 +43,7 @@ command -v ddate >/dev/null 2>&1 && {
 # Print a random, hopefully interesting, adage.
 command -v fortune >/dev/null 2>&1 && {
     FORTUNE=$(fortune -s)
-    printf "%s\n" "${c_purple}${FORTUNE}${c_norm}"
+    printf "%s\n" "${c_blue}${FORTUNE}${c_norm}"
     unset FORTUNE
 }
 
