@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
 #===============================================================================
 #
 #         FILE: .bashrc
@@ -15,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 2.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-09-30
+#     REVISION: 2016-10-04
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -31,7 +32,7 @@ export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
 #----------------------------------------------------------------------
 #-- "Baby, baby, baby, let's do it interactive"
 #----------------------------------------------------------------------
-export BASHD="${HOME}/.bashrc.d"  # Bash shell files
+export BASHD="${HOME}/.bashrc.d"  # Bash specific files
 export SHELLD="${HOME}/.shell.d"  # Common shell files
 export SHELL="${BASH}"            # fix SHELL variable
 [[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
@@ -93,6 +94,13 @@ fi
 export PS1
 
 #----------------------------------------------------------------------
+### Let's set some shell options...
+#----------------------------------------------------------------------
+# noclobber Prevent output redirection (>/>&/<>) from overwriting existing files.
+# notify    Status of terminated background jobs are reported immediately
+# vi        Use vi-style line editing (also affects editing w/'read -e.')
+set -o noclobber -o notify -o vi
+#----------------------------------------------------------------------
 ### Let's set some shoptions...
 #----------------------------------------------------------------------
 # autocd       - type 'directoryname' instead of 'cd directoryname'
@@ -101,11 +109,9 @@ export PS1
 # cmdhist      - save multi-line commands to history as one command
 # dirspell     - correct spelling of directories
 # histappend   - Turn on parallel history
-# Some shoptions are not available in every version of Bash, so check first
 for i in autocd cdspell checkwinsize cmdhist dirspell histappend; do
-    shopt -s "${i}"
-done
-unset i
+    shopt -s -q "${i}"
+done; unset i
 
 # Append to history file
 history -a
@@ -117,4 +123,14 @@ PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 # bind hh to Ctrl-r
 [[ $(type -t hh) == file ]] && bind '"\C-r": "\C-a hh \C-j"'
 
-# Clean up
+#----------------------------------------------------------------------
+#-- Display some useful information
+#----------------------------------------------------------------------
+[ -r "${SHELLD}/misc/greeting" ] && "${SHELLD}/misc/greeting"
+
+printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
+
+#----------------------------------------------------------------------
+#-- A Parting comment...
+#----------------------------------------------------------------------
+trap 'printf "\n%s\n" "${c_purple}Welcome 2 The Dawn${c_norm}"' EXIT
