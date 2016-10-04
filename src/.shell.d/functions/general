@@ -5,7 +5,7 @@
 #
 #        USAGE: (should be sourced by .shell.d/settings)
 #
-#  DESCRIPTION: Functoins for use across shells.
+#  DESCRIPTION: General functions for use across shells.
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
@@ -21,13 +21,22 @@
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
-###############################################################################
-### Functions for general use
-
-function timestamp() {
+#=== FUNCTION ==================================================================
+# NAME: timestamp
+# DESCRIPTION: Return currant date/time in user-defined format for appending to 
+#               a filename (or some other similar thing)
+#    REQUIRED: Environment variable DEFAULT_TIMESTAMP containing format string
+#               for date command.
+#===============================================================================
+timestamp() {
     date "${DEFAULT_TIMESTAMP}"
 }
 
+#=== FUNCTION ==================================================================
+# NAME: stringmatch
+# DESCRIPTION: return true if second string contains first string, false if not
+#       USAGE: stringmatch needle heystack
+#===============================================================================
 # Originally found here: http://www.etalabs.net/sh_tricks.html
 stringmatch() {
     case "${2}" in 
@@ -38,9 +47,14 @@ stringmatch() {
             return 1 
             ;; 
     esac ;
-    return 20
+    return 1        # This should never execute
 }
 
+#=== FUNCTION ==================================================================
+# NAME: pathmunge
+# DESCRIPTION: Add a directory to PATH
+#       USAGE: pathmunge /new/path [after]
+#===============================================================================
 # This was originally taken from /etc/profile on Fedora 24
 pathmunge() {
     case ":${PATH}:" in
@@ -54,6 +68,12 @@ pathmunge() {
             fi
     esac
 }
+
+#=== FUNCTION ==================================================================
+# NAME: manpathmunge
+# DESCRIPTION: Add a directory to MANPATH
+#       USAGE: manpathmunge /new/man/path [after]
+#===============================================================================
 # Until I figure out how to use a variable to assing a value to another variable
 manpathmunge() {
     case ":${MANPATH}:" in
@@ -68,8 +88,13 @@ manpathmunge() {
     esac
 }
 
+#=== FUNCTION ==================================================================
+# NAME: splitvar
+# DESCRIPTION: split a series of words into different varaibles
+#       USAGE: splitvar "word list" ' ' VAR1 VAR2
+#===============================================================================
 # This is originally from: http://blog.isonoe.net/post/2010/10/01/Split-a-string-by-character(s)-in-POSIX-shell
-split() {
+splitvar() {
     local string IFS
  
     string="${1}"
@@ -91,102 +116,6 @@ function _vcs_prompt_char() {
     #fossile status  >/dev/null 2>/dev/null && echo $VCS_FOSSIL && return
     #darcs status  >/dev/null 2>/dev/null && echo $VCS_DARCS && return
     echo $VCS_NONE
-}
-
-# Get the status of the working tree (copied and modified from git.zsh)
-function _git_prompt_status() {
-    ## NOTE: this may not work in git versions older than 1.7.2
-    local GITSTAT=''
-    local STATUS=''
-    ## NOTE: This method of building FLAGS isn't compatible w/bash
-    ##       I've tried many different things, can't quite get it...
-    local FLAGS=('--porcelain')
-    FLAGS+=' -b'
-    #local FLAGS=('--porcelain -b')
-    [[ "$VCS_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
-    [[ "$VCS_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
-    GITSTAT=$(eval command git status ${FLAGS} 2> /dev/null)
-   #GITSTAT=$(eval command git status ${FLAGS})
-
-    # Ahead/behind/diverged
-    if $(echo "$GITSTAT" | grep '^## [^ ]\+ .*ahead' &> /dev/null); then
-        STATUS="${c_pDEBUG}${VCS_AHEAD}$STATUS "
-    elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*behind' &> /dev/null); then
-        STATUS="${c_pCRIT}${VCS_BEHIND}$STATUS "
-    elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*diverged' &> /dev/null); then
-        STATUS="${c_pEMERG}${VCS_DIVERGED}$STATUS "
-    fi
-    GITSTAT=`echo $GITSTAT | sed 1d`
-
-    if [[ -n $GITSTAT ]]; then
-        STATUS="${c_pCRIT}${VCS_DIRTY}$STATUS"
-        # Non-staged
-        if $(echo "$GITSTAT" | grep '^?? ' &> /dev/null); then
-            STATUS="${STATUS}${c_pNOTICE}${VCS_UNTRACKED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^UU ' &> /dev/null); then
-            STATUS="${STATUS}${c_pCRIT}${VCS_UNMERGED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^ D ' &> /dev/null); then
-            STATUS="${STATUS}${c_pCRIT}${VCS_DELETED}"
-        fi
-
-        if $(echo "$GITSTAT" | grep '^.M ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
-        elif $(echo "$GITSTAT" | grep '^AM ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
-        elif $(echo "$GITSTAT" | grep '^ T ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
-        fi
-
-        # Staged
-        if $(echo "$GITSTAT" | grep '^D  ' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_DELETED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^R' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_RENAMED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^M' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_MODIFIED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^A' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_ADDED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^C' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_COPIED}"
-        fi
-    else
-        STATUS="${c_pINFO}${VCS_CLEAN}$STATUS"
-    fi
-
-    # Put a space at the beginning
-    if $(echo -n "$STATUS" | grep '.*' &> /dev/null); then
-        STATUS=" $STATUS"
-    fi
-
-    echo $STATUS
-}
-
-# Checks if working tree is dirty (copied and modified from git.zsh)
-function _parse_git_dirty() {
-    ## NOTE: this may not work in git versions older than 1.7.2
-    local GITSTAT=''
-    local FLAGS=('--porcelain')
-    [[ "$VCS_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
-    [[ "$VCS_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
-    GITSTAT=$(eval command git status $FLAGS 2> /dev/null | tail -n1)
-
-    if [[ -n $GITSTAT ]]; then
-        echo " ${c_pCRIT}$VCS_DIRTY"
-    else
-        echo " ${c_pINFO}$VCS_CLEAN"
-    fi
-}
-
-# get the name of the branch we are on (copied and modified from git.zsh)
-function _git_prompt() {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    echo " ${c_pDEBUG}‹${ref#refs/heads/}$(_git_prompt_status)${c_pDEBUG}›"
 }
 
 function _return_code() { 
