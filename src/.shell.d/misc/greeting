@@ -1,4 +1,5 @@
 #!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
 #===============================================================================
 #
 #         FILE: .shell.d/misc/greeting
@@ -9,9 +10,8 @@
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
-#               ncurses (tput, tset, infocmp)
-#    OPTIONALS: ddate
-#               fortune
+#    OPTIONALS: ddate (via 'ddate')
+#               fortune (via 'fortune-mod')
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
@@ -26,20 +26,24 @@
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-echo -e "${c_white}You're logged into ${c_bold}$HOSTNAME${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}
-    ${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}
-    ${c_white}${c_bold}Shell:${c_norm}  ${c_purple}${SHELLSTRING}${c_norm}
-    ${c_white}${c_bold}Pager:${c_norm}  ${c_purple}${PAGER}${c_norm}
-    ${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR}${c_norm}
-    ${c_white}${c_bold}VCS:${c_norm}    ${c_purple}${DEFAULT_VCS}${c_norm}"
+printf "%s\n" "${c_white}You're logged into ${c_bold}$HOSTNAME${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}"
+printf "\t%s\n" "${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}"
+printf "\t%s\n" " ${c_white}${c_bold}Shell:${c_norm} ${c_purple}${SHELLSTRING}${c_norm}"
+printf "\t%s\n" " ${c_white}${c_bold}Pager:${c_norm} ${c_purple}${PAGER}${c_norm}"
+printf "\t%s\n" "${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR}${c_norm}"
+printf "\t%s\n" "   ${c_white}${c_bold}VCS:${c_norm} ${c_purple}${DEFAULT_VCS}${c_norm}"
 
 # Print the Discordian date.
-if [ -x $(which ddate 2>/dev/null) ]; then
-    echo -e "${c_cyan}$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')${c_norm}"
-fi
+command -v ddate >/dev/null 2>&1 && {
+    DDATE=$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')
+    printf "%s\n" "${c_cyan}${DDATE}${c_norm}"
+    unset DDATE
+}
 
 # Print a random, hopefully interesting, adage.
-if [ -x $(which fortune 2>/dev/null) ]; then
-    echo -e "${c_purple}$(fortune -s)${c_norm}"
-fi
+command -v fortune >/dev/null 2>&1 && {
+    FORTUNE=$(fortune -s)
+    printf "%s\n" "${c_purple}${FORTUNE}${c_norm}"
+    unset FORTUNE
+}
 
