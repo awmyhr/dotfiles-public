@@ -14,7 +14,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 3.0.0-alpha
+#      VERSION: 3.0.0
 #      CREATED: ????-??-??
 #     REVISION: 2016-10-04
 #===============================================================================
@@ -79,7 +79,7 @@ case "${SHELL}" in
     *sh )
         # Set a simple prompt
         SHELLSTRING="${SHELL}"
-        PS1='${USER}@${HOSTNAME}:$PWD $ '
+        PS1='${c_ALERT}$(_return_code)${c_norm}${USER}@${HOSTNAME}:$PWD $ '
         ;;
     * )
         # Sorry, unknown shell??
