@@ -47,7 +47,7 @@ done; unset i
 #----------------------------------------------------------------------
 #-- Load/Initilize/Override settings
 #----------------------------------------------------------------------
-[[ -r "${SHELLD}/settings" ]] && source "${SHELLD}/settings"
+[[ -r "${SHELLD}/shellinit" ]] && source "${SHELLD}/shellinit"
 
 export HISTFILE="${BASHD}/.bash_history"
 
@@ -126,7 +126,7 @@ PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-[ -r "${SHELLD}/misc/greeting" ] && "${SHELLD}/misc/greeting"
+[ -r "${SHELLD}/lib/greeting" ] && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
 

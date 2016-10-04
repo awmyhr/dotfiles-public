@@ -47,7 +47,7 @@ export SHELL="${ZSH_NAME}"        # fix SHELL variable
 #----------------------------------------------------------------------
 #-- Load/Initilize/Override settings
 #----------------------------------------------------------------------
-[[ -r "${SHELLD}/settings" ]] && source "${SHELLD}/settings"
+[[ -r "${SHELLD}/shellinit" ]] && source "${SHELLD}/shellinit"
 
 export HIST_STAMPS='yyyy-mm-dd'
 export HISTFILE="${ZSHD}/.zsh_history"
@@ -140,7 +140,7 @@ autoload -Uz compinit && compinit
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-[ -r "${SHELLD}/misc/greeting" ] && "${SHELLD}/misc/greeting"
+[ -r "${SHELLD}/lib/greeting" ] && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
 

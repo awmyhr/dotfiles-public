@@ -27,10 +27,10 @@ umask 022
 #----------------------------------------------------------------------
 #-- Load functions, symbols, and others
 #----------------------------------------------------------------------
-[ -r "${SHELLD}/functions/general" ]  && . "${SHELLD}/functions/general"
-[ -r "${SHELLD}/misc/symbols" ]       && . "${SHELLD}/misc/symbols"
-[ -r "${SHELLD}/misc/color" ]         && . "${SHELLD}/misc/color"
-[ -r "${SHELLD}/misc/aliases" ]       && . "${SHELLD}/misc/aliases"
+[ -r "${SHELLD}/lib/functions" ] && . "${SHELLD}/lib/functions"
+[ -r "${SHELLD}/lib/symbols" ]   && . "${SHELLD}/lib/symbols"
+[ -r "${SHELLD}/lib/color" ]     && . "${SHELLD}/lib/color"
+[ -r "${SHELLD}/lib/aliases" ]   && . "${SHELLD}/lib/aliases"
 
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
@@ -38,22 +38,22 @@ umask 022
 [ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
 [ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
 
-if [ -r "${SHELLD}/misc/paths" ]; then
+if [ -r "${SHELLD}/etc/paths" ]; then
     while read line 
     do
         if [ -d "${line}" ]; then
             pathmunge "${line}" after
         fi
-    done <"${SHELLD}/misc/paths"
+    done <"${SHELLD}/etc/paths"
 fi; unset line
 
-if [ -e "${SHELLD}/manpaths" ]; then
+if [ -e "${SHELLD}/etc/manpaths" ]; then
     while read line 
     do
         if [ -d "${line}" ]; then
             manpathmunge "${line}" after
         fi
-    done <"${SHELLD}/misc/manpaths"
+    done <"${SHELLD}/etc/manpaths"
 fi; unset line
 
 export PATH MANPATH

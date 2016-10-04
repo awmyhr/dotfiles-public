@@ -2,7 +2,7 @@
 # [SublimeLinter shellcheck-exclude:"SC2154" ]
 #===============================================================================
 #
-#         FILE: .shell.d/misc/greeting
+#         FILE: .shell.d/lib/greeting
 #
 #        USAGE: (should be run by shell login)
 #

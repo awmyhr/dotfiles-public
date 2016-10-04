@@ -42,7 +42,7 @@ export SHELL="${0#-}"                  # fix SHELL variable
 #----------------------------------------------------------------------
 #-- Load/Initilize/Override settings
 #----------------------------------------------------------------------
-[ -r "${SHELLD}/settings" ] && . "${SHELLD}/settings"
+[ -r "${SHELLD}/shellinit" ] && . "${SHELLD}/shellinit"
 
 #----------------------------------------------------------------------
 #-- Let's set some shell options...
@@ -105,7 +105,7 @@ export PS1 SHELLSTRING
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-[ -r "${SHELLD}/misc/greeting" ] && "${SHELLD}/misc/greeting"
+[ -r "${SHELLD}/lib/greeting" ] && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
 
