@@ -14,7 +14,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0
+#      VERSION: 2.0.0-alpha
 #      CREATED: ????-??-??
 #     REVISION: 2016-10-04
 #===============================================================================
