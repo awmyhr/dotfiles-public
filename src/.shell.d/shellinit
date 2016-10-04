@@ -2,16 +2,16 @@
 # [SublimeLinter shellcheck-exclude:"SC2039" ]
 #===============================================================================
 #
-#         FILE: .shell.d/settings
+#         FILE: .shell.d/shellinit
 #
-#        USAGE: (should be sourced by shell login)
+#        USAGE: (should be sourced by interactive shell logins)
 #
-#  DESCRIPTION: Variables which define environment across shells.
+#  DESCRIPTION: Set up working shell environment.
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
-#    OPTIONALS: autojump (via 'autojump')
-#               hh (via 'hstr')
+#               uname (via 'coreutils')
+#    OPTIONALS: ---
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
@@ -25,12 +25,22 @@
 umask 022
 
 #----------------------------------------------------------------------
-#-- Load functions, symbols, and others
+#-- Load settings, functions, symbols, and others
 #----------------------------------------------------------------------
-[ -r "${SHELLD}/lib/functions" ] && . "${SHELLD}/lib/functions"
-[ -r "${SHELLD}/lib/symbols" ]   && . "${SHELLD}/lib/symbols"
-[ -r "${SHELLD}/lib/color" ]     && . "${SHELLD}/lib/color"
-[ -r "${SHELLD}/lib/aliases" ]   && . "${SHELLD}/lib/aliases"
+[ -r "${SHELLD}/etc/settings" ]   && . "${SHELLD}/etc/settings"
+[ -r "${SHELLD}/lib/functions" ]  && . "${SHELLD}/lib/functions"
+[ -r "${SHELLD}/lib/symbols" ]    && . "${SHELLD}/lib/symbols"
+[ -r "${SHELLD}/lib/color" ]      && . "${SHELLD}/lib/color"
+[ -r "${SHELLD}/lib/aliases" ]    && . "${SHELLD}/lib/aliases"
+
+#----------------------------------------------------------------------
+#-- Load packages
+#----------------------------------------------------------------------
+#   load default VCS aliases
+[ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
+    [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
+       . "${SHELLD}/packages/${DEFAULT_VCS}"
+}
 
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
@@ -57,46 +67,6 @@ if [ -e "${SHELLD}/etc/manpaths" ]; then
 fi; unset line
 
 export PATH MANPATH
-
-#----------------------------------------------------------------------
-#-- Static settings
-#----------------------------------------------------------------------
-export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'   # Prefered datstamp format.
-export FIGNORE='~':'.o':'.bak':'.tmp'       # File extensions ignored in name completion
-export XDG_CONFIG_HOME="$HOME/.config"      # Set .config directory for XDG
-export RSYNC_RSH='ssh'                      # set rsync transport
-export HISTSIZE=500                         # In-memory history
-export HISTFILESIZE=5000                    # On-disk history
-export SAVEHIST="${HISTFILESIZE}"           # Alt On-disk history
-if [ "${SHELL}" = zsh ]; then               # zsh has a slightly different format
-    export HISTIGNORE='(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)'
-else
-    export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
-fi
-
-#----------------------------------------------------------------------
-#-- Optional program settings
-#----------------------------------------------------------------------
-# Make hh colorful, use keyword search, use blacklist file if it exists
-if [ -r "${HOME}/.hh_blacklist" ]; then
-    export HH_CONFIG="hicolor,keywords,blacklist"
-else
-    export HH_CONFIG="hicolor,keywords"
-fi
-# Set autojump completion for commands
-export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-
-#----------------------------------------------------------------------
-#-- VCS Settings
-#----------------------------------------------------------------------
-# Set this to perfered version control system 
-export DEFAULT_VCS='git'
-# Set this to false to ignore untracked files, which can speed up repo checks
-export VCS_IGNORE_UNTRACKED_FILES='false'
-# Set this to false to ignore submodule files, which can speed up repo checks
-export VCS_IGNORE_SUBMODULES='true'
-#   load default VCS aliases
-[ -r "${PROFILED}/alias.${DEFAULT_VCS}" ] && [ -x "$(which ${DEFAULT_VCS} 2>/dev/null)" ] && . "${PROFILED}/alias.${DEFAULT_VCS}"
 
 #----------------------------------------------------------------------
 #-- Set up sysinfo variables and load in platform specific things
