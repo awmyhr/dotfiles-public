@@ -102,7 +102,7 @@ export VCS_IGNORE_SUBMODULES='true'
 #-- Set up sysinfo variables and load in platform specific things
 #----------------------------------------------------------------------
 command -v uname >/dev/null 2>&1 && {
-    split "$(uname -nprs)" ' ' UNAMES SYSNAME UNAMER PLATFORM
+    splitvar "$(uname -nprs)" ' ' UNAMES SYSNAME UNAMER PLATFORM
     [ -z "${HOSTNAME}" ] && HOSTNAME=$SYSNAME && export HOSTNAME
     export UNAMES UNAMER PLATFORM
     [ -r "${SHELLD}/platform/${UNAMES}" ] && . "${SHELLD}/platform/${UNAMES}"
