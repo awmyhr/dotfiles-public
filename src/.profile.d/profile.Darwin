@@ -17,3 +17,5 @@ alias psa='ps axo "user,pid,ppid,%cpu,%mem,tty,stime,state,command"'
 alias psmem='ps axo "user,pid,ppid,vsz,command" |sort -rnk4|head '
 alias pscpu='ps axo "user,pid,ppid,%cpu,command" |sort -rnk4|head '
 
+#This will most likely only execute on Mac OS X systems w/Fink
+[ -x /sw/bin/init.sh ] && . /sw/bin/init.sh
