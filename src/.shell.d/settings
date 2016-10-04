@@ -28,8 +28,8 @@ umask 022
 #-- Load functions, symbols, and others
 #----------------------------------------------------------------------
 [ -r "${SHELLD}/functions/general" ] && . "${SHELLD}/functions/general"
-[ -r "${SHELLD}/misc/symbols" ]      && . "${SHELLD}/symbols"
-[ -r "${SHELLD}/misc/color" ]        && . "${SHELLD}/color"
+[ -r "${SHELLD}/misc/symbols" ]      && . "${SHELLD}/misc/symbols"
+[ -r "${SHELLD}/misc/color" ]        && . "${SHELLD}/misc/color"
 
 #----------------------------------------------------------------------
 #-- Static settings
