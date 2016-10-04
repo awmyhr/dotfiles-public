@@ -13,7 +13,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0-alpha
+#      VERSION: 1.0.0
 #      CREATED: 2016-09-30
 #     REVISION: 2016-10-04
 #===============================================================================
@@ -27,7 +27,7 @@
 #--   Currently 'fancy' symbols are only set for UTF-8 characters.
 #----------------------------------------------------------------------
 CHARMAP=$(locale -k LC_CTYPE | sed -n 's/^charmap="\(.*\)"/\1/p')
-if [ "$(stringmatch 'UTF-8' "${CHARMAP}")" ]; then
+if stringmatch "UTF-8" "${CHARMAP}"; then
     #Some unused symbols: ✘ ⚡ ⚙ ᐅ ↓ ⁝ ✹ ➙ ◼ ● ♺ ❮ ❯
     export VCS_DARCS='d'
     export VCS_FOSSIL='⌘'
