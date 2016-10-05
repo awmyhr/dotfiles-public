@@ -33,7 +33,6 @@
 #----------------------------------------------------------------------
 export ZSHD="${HOME}/.zshrc.d"    # ZSH specific files
 export SHELLD="${HOME}/.shell.d"  # Common shell files
-export SHELL="${ZSH_NAME}"        # fix SHELL variable
 [[ ! -d "${ZSHD}" ]]     && mkdir "${ZSHD}" && chmod 700 "${ZSHD}"
 
 #----------------------------------------------------------------------
