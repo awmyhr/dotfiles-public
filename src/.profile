@@ -16,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 3.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-05
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -25,9 +25,8 @@
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
-#-- Set sane path, check for debug, and exit if not an interactive shell
+#-- Check for debug, and exit if not an interactive shell
 #----------------------------------------------------------------------
-export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
 [ "${TRACE}" ]  && set -x    # Run in debug mode if called for
 [ -t 0 ]        || return    # Exit if not interactive (no stdin)
 

@@ -23,9 +23,8 @@
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
-#-- Set sane path, check for debug, and exit if not an interactive shell
+#-- Check for debug, and exit if not an interactive shell
 #----------------------------------------------------------------------
-export PATH='/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
 [[ "${TRACE}" ]]  && set -x  # Run in debug mode if called for
 [[ $- =~ .*i*. ]] || return  # Exit if not an interactive shell
 
