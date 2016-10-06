@@ -16,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 3.1.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-05
+#     REVISION: 2016-10-06
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -63,13 +63,13 @@ set -o noclobber -o notify -o vi
 #----------------------------------------------------------------------
 #-- Leave now if we're bash or zsh
 #----------------------------------------------------------------------
-[ "${BASH}" ] && return
+[ "${BASH##/[a-z]*/}" = "bash" ] && return
 [ "${ZSH_NAME}" ] && return
 
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-SHELLSTRING="${SHELL}"
+export SHELLSTRING="${SHELL}"
 [ -r "${SHELLD}/lib/greeting" ] && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
@@ -77,4 +77,4 @@ printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
 #----------------------------------------------------------------------
 #-- A Parting comment...
 #----------------------------------------------------------------------
-trap 'printf "\n%s\n" "${c_purple}Welcome 2 The Dawn${c_norm}"' EXIT
+[ "${BASH}" ] || trap 'printf "\n%s\n" "${c_purple}Welcome 2 The Dawn${c_norm}"' EXIT
