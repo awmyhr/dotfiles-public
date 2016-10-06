@@ -9,12 +9,19 @@ more of a suggestion than anything else...
 
 ## [Unreleased]
 ### Added
+- a real .bash_profile
+- .bash_logout
+- .profilerc (split out pertinent parts from .profile)
 
 ### Changed
+- more ISSET_ variables
+- many minor functions/variables/settings moved to more sensible locations
 
 ### Deprecated
 
 ### Removed
+- removed (mis-)use of SHELL
+- no longer trying to second-guess system profiles (for PATH, etc)
 
 ### Fixed
 
