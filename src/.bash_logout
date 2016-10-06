@@ -13,7 +13,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0-alpha
+#      VERSION: 1.0.0
 #      CREATED: 2016-10-05
 #     REVISION: 2016-10-05
 #===============================================================================
