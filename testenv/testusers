@@ -15,7 +15,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0-alpha
+#      VERSION: 1.0.0
 #      CREATED: 2016-10-06
 #     REVISION: 2016-10-06
 #===============================================================================
@@ -210,23 +210,45 @@ usage() {
 
 case "${1}" in
     del) case "${2}" in
-            clean)   init && delclean;;
-            default) init && deldefault;;
-            test)    init && deltest;;
-            all)     init && delclean && deldefault && deltest;;
+            clean)   init
+                     delclean
+                ;;
+            default) init
+                     deldefault
+                ;;
+            test)    init
+                     deltest
+                ;;
+            all)     init
+                     delclean
+                     deldefault
+                     deltest
+                ;;
             *)       printf "%s\n\n" "${2} is an invalid group." && \
                         usage && exit 64;;
          esac
         ;;
     add) case "${2}" in
-            clean)   init && addclean;;
-            default) init && adddefault;;
-            test)    init && addtest;;
-            all)     init && addclean && adddefault && addtest;;
+            clean)   init
+                     addclean
+                ;;
+            default) init
+                     adddefault
+                ;;
+            test)    init
+                     addtest
+                ;;
+            all)     init
+                     addclean
+                     adddefault
+                     addtest
+                ;;
             *)       printf "%s\n\n" "${2} is an invalid group." && \
                         usage && exit 64;;
          esac
         ;;
+    -h|help)    usage && exit 0;;
+    -v|version) printf "%s\n" 'Version: 1.0.0-alpha' && exit 0;;
     *)   printf "%s\n\n" "${1} is an invalid action." && usage && exit 64
         ;;
 esac
