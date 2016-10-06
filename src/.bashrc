@@ -12,15 +12,18 @@
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Bash shell
+#    OPTIONALS: hh (via 'hstr')
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0-alpha
+#      VERSION: 2.0.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-05
+#     REVISION: 2016-10-06
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
+#       Exporting functions for sub-shell usage can throw errors once 
+#       the sub-shell is entered in some circumstances.
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
@@ -36,10 +39,8 @@ export BASHD="${HOME}/.bashrc.d"  # Bash specific files
 [[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
 
 if $(shopt -q login_shell) ; then
-    declare -pf >"${BASHD}/cache.functions" 2>/dev/null
-else
-    # this is being execute, but not functioning as expected!!!!!!!!!!!
-    source "${BASHD}/cache.functions" 2>/dev/null
+    # This is exporting functions as expected, but some are throwing errors
+    declare -fx $(compgen -A function)
 fi
 
 #----------------------------------------------------------------------
