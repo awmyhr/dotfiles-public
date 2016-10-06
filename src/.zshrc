@@ -35,6 +35,8 @@ export ZSHD="${HOME}/.zshrc.d"    # ZSH specific files
 export SHELLD="${HOME}/.shell.d"  # Common shell files
 [[ ! -d "${ZSHD}" ]]     && mkdir "${ZSHD}" && chmod 700 "${ZSHD}"
 
+# check if login: if [[ -o login ]]
+# check if interactive: if [[ -o interactive ]]
 #----------------------------------------------------------------------
 #-- Load in system profiles if they exist - currently not enabled for zsh
 #----------------------------------------------------------------------
@@ -146,3 +148,23 @@ printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
 #-- A Parting comment...
 #----------------------------------------------------------------------
 trap 'printf "\n%s\n" "${c_purple}Welcome 2 The Dawn${c_norm}"' EXIT
+
+
+# EXPORTING FUNCTIONS
+# If you are using ksh or zsh:
+
+# You can use the environment variable FPATH, wherein you can place all your functions.
+
+# If FPATH is set on an interactive interpreter, and a command or function is not found in the current shell environment or the PATH, the directories listed there are searched for the existence of a file named after the missing command. If one is found, it is sourced in the current shell environment, and expected to define the function.
+
+# So, you can place all your functions in a location in FPATH, and child scripts will also be able to find it.
+
+# You can use the autoload command in shell scripts to load the functions you require:
+
+# autoload fun_a fun_b
+# In zsh, autoload is required for FPATH to work. In ksh and its close relatives, I believe it simply causes functions defined in FPATH to override regular command in your PATH, as they would if defined directly.
+
+# Some details on FPATH and autoload:
+
+# http://docstore.mik.ua/orelly/unix3/upt/ch29_13.htm
+# http://users.speakeasy.net/~arkay/216-7.4KshFunctions.html
