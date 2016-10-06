@@ -1,0 +1,53 @@
+#!/usr/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
+#===============================================================================
+#
+#         FILE: .profilerc
+#
+#        USAGE: (loaded by posix shell using ENV)
+#
+#  DESCRIPTION: This has things an interactive, non-login posix shell needs.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: POSIX compatible shell
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-alpha
+#      CREATED: 2016-10-05
+#     REVISION: 2016-10-05
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Load/Initilize/Override settings
+#----------------------------------------------------------------------
+export PROFILED="${HOME}/.profile.d"   # shell specific files
+[ ! -d "${PROFILED}" ] && mkdir "${PROFILED}" && chmod 700 "${PROFILED}"
+
+# because posix only inherits vars, we need to run this again
+[ "${0%%[a-z]*}" = "" ] && [ -r "${SHELLD}/shellinit" ] && . "${SHELLD}/shellinit"
+
+#----------------------------------------------------------------------
+#-- Load ancillary bash configs if they exist
+#----------------------------------------------------------------------
+for i in ${PROFILED}/*.sh; do
+    [ -r "$i" ] && . "$i"
+done; unset i
+
+#----------------------------------------------------------------------
+#-- Prompt time
+#----------------------------------------------------------------------
+if [ "${ISSET_COLORS}" ]; then
+    PS1='---${c_norm}
+P┌${c_ALERT}$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}${USER}${c_green}@${c_blue}${HOSTNAME}: ${c_yellow}$PWD${c_norm}
+P└${c_DEBUG}$ ${c_norm}'
+else
+    PS1='---
+P ($(uname -s)) ${USER}@$(hostname): $PWD
+P $ '
+fi
+
+export PS1
