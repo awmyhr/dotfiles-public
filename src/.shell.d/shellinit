@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.0.2
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-06
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -30,6 +30,7 @@ umask 022
 [ -r "${SHELLD}/etc/settings" ]   && . "${SHELLD}/etc/settings"
 [ -r "${SHELLD}/lib/functions" ]  && . "${SHELLD}/lib/functions"
 [ -r "${SHELLD}/lib/symbols" ]    && . "${SHELLD}/lib/symbols"
+[ -r "${SHELLD}/lib/exitcodes" ]  && . "${SHELLD}/lib/exitcodes"
 [ -r "${SHELLD}/lib/colors" ]     && . "${SHELLD}/lib/colors"
 [ -r "${SHELLD}/lib/aliases" ]    && . "${SHELLD}/lib/aliases"
 
@@ -37,10 +38,10 @@ umask 022
 #-- Load packages
 #----------------------------------------------------------------------
 #   load default VCS aliases
-[ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
-    [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
-       . "${SHELLD}/packages/${DEFAULT_VCS}"
-}
+# [ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
+#     [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
+#        . "${SHELLD}/packages/${DEFAULT_VCS}"
+# }
 
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
@@ -109,7 +110,8 @@ elif command -v more >/dev/null 2>&1 ; then
     export PAGER="more -s"
 fi
 
+#===============================================================================
 #----------------------------------------------------------------------
-#-- Dynamic settings
+export ISSET_SHELLINIT=1
 #----------------------------------------------------------------------
-
+#===============================================================================

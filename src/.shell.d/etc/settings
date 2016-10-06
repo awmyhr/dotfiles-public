@@ -34,7 +34,7 @@ export RSYNC_RSH='ssh'                      # set rsync transport
 export HISTSIZE=500                         # In-memory history
 export HISTFILESIZE=5000                    # On-disk history
 export SAVEHIST="${HISTFILESIZE}"           # Alt On-disk history
-if [ "${SHELL}" = zsh ]; then               # zsh has a slightly different format
+if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
     export HISTIGNORE='(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)'
 else
     export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
@@ -55,7 +55,7 @@ export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
 #----------------------------------------------------------------------
 #-- VCS Settings
 #----------------------------------------------------------------------
-# Set this to perfered version control system 
+# Set this to perfered version control system
 export DEFAULT_VCS='git'
 # Set this to false to ignore untracked files, which can speed up repo checks
 export VCS_IGNORE_UNTRACKED_FILES='false'

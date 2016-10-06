@@ -1,0 +1,126 @@
+#!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2039" ]
+#===============================================================================
+#
+#         FILE: .shell.d/lib/exitcodes
+#
+#        USAGE: (should be sourced by .shell.d/shellinit)
+#
+#  DESCRIPTION: Standardize my exit codes.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0
+#      CREATED: 2016-10-06
+#     REVISION: 2016-10-06
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Some of these were taken from http://tldp.org/LDP/abs/html/exitcodes.html
+#--     May as well use these. 
+#--     Note: do NOT use 128 (Invalid arg to exit)
+#--     Note: do NOT use values <0 or >254 (out of range)
+#----------------------------------------------------------------------
+export ec_OK=0              # successful termination
+export ec_NOTOK=1           # catchall
+export ec_BUILTIN=2         # misuse of shell builtins
+export ec_WARN=5            # general warning (From AmigaOS)
+export ec_ERROR=10          # general error   (From AmigaOS)
+export ec_FAILURE=20        # general failure (From AmigaOS)
+export ec_NOEXECUTE=126     # command not executeable (see also: ec_NOPERM)
+export ec_NOTFOUND=127      # command not found
+
+#----------------------------------------------------------------------
+#-- Note: The FSEs (fatal error signals) go from 128 to 165
+#--     I've defined some common ones for whatever use I may find for them
+#----------------------------------------------------------------------
+export ec_SIGHUP=129        # hangup aka FES "1"
+export ec_SIGINT=130        # Terminated by Ctrl-C aka FES "2"
+export ec_SIGQUIT=131       # core dump aka FES "3"
+export ec_SIGTRAP=133       # trace/break point aka FES "5"
+export ec_SIGABRT=134       # process abort aka FES "6"
+export ec_SIGKILL=137       # kill aka FES "9"
+export ec_SIGTERM=143       # terminate aka FES "15"
+#----------------------------------------------------------------------
+#-- For Reference (see also https://en.wikipedia.org/wiki/Unix_signal) :
+#----------------------------------------------------------------------
+#   SIGHUP           1 Hangup
+#   SIGINT           2 Terminal interrupt signal
+#   SIGQUIT          3 Terminal quit signal.
+#   SIGILL           4 Illegal instruction
+#   SIGTRAP          5 Trace/breakpoint trap
+#   SIGABRT          6 Process abort signal
+#   SIGIOT           6 
+#   SIGBUS           7 Access to an undefined portion of a memory object.
+#   SIGFPE           8 Erroneous/Illegal arithmetic operation
+#   SIGKILL          9 Kill (cannot be caught or ignored).
+#   SIGUSR1         10 User-defined signal 1
+#   SIGSEGV         11 Invalid memory reference
+#   SIGUSR2         12 User-defined signal 2
+#   SIGPIPE         13 Write on a pipe with no one to read it
+#   SIGALRM         14 Alarm clock
+#   SIGTERM         15 Termination signal
+#   SIGSTKFLT       16 
+#   SIGCHLD         17 Child process terminated, stopped, or continued
+#   SIGCONT         18 Continue executing, if stopped
+#   SIGSTOP         19 Stop executing (cannot be caught or ignored)
+#   SIGTSTP         20 Terminal stop signal
+#   SIGTTIN         21 Background process attempting read
+#   SIGTTOU         22 Background process attempting write
+#   SIGURG          23 High bandwidth data is available at a socket
+#   SIGXCPU         24 CPU time limit exceeded
+#   SIGXFSZ         25 File size limit exceeded
+#   SIGVTALRM       26 Virtual timer expired
+#   SIGPROF         27 Profiling timer expired
+#   SIGWINCH        28 * controlling terminal changed its size
+#   SIGIO           29 
+#   SIGPOLL      SIGIO Pollable event
+#   SIGLOST         29 * file lock lost
+#   SIGPWR          30 * system experienced a power failure
+#   SIGSYS          31 Bad system call
+#   SIGUNUSED       31 
+#   SIGRTMIN        32 real-time signals (User-defined)
+#   SIGRTMAX        32 real-time signals (User-defined)
+#   SIGINFO         ?? * status request received from controlling terminal
+#   SIGEMT          ?? * emulator trap has occured
+# All are POSIX except those marked with *. However, only the numbers
+#   1, 2, 3, 6, 9, 14, and 15 are POSIX defined, the rest are implementation
+#   specific. These numbers are from /usr/include/asm/signal.h on Fedora 24
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- These were taken from /usr/include/sysexits.h on Fedora 24
+#--     May as well use these too
+#----------------------------------------------------------------------
+export ec_LINUX_BASE=64     # base value for error messages
+
+export ec_USAGE=64          # command line usage error (bad syntax, etc.)
+export ec_DATAERR=65        # data format error (Only for user data)
+export ec_NOINPUT=66        # cannot open input (Not a system file)
+export ec_NOUSER=67         # user does not exist/addressee unknown
+export ec_NOHOST=68         # host name unknown
+export ec_UNAVAILABLE=69    # service/program/file unavailable or uknown error
+export ec_SOFTWARE=70      # internal software error (non-OS problems)
+export ec_OSERR=71          # system error (e.g., can't fork)
+export ec_OSFILE=72         # critical OS file missing
+export ec_CANTCREAT=73      # can't create (user specified) output file
+export ec_IOERR=74          # input/output error
+export ec_TEMPFAIL=75       # temp failure; user is invited to retry
+export ec_PROTOCOL=76       # remote error in protocol
+export ec_NOPERM=77         # permission denied (not file system-related)
+export ec_CONFIG=78         # configuration error
+
+export ec_LINUX_MAX=78      # maximum listed value
+
+#===============================================================================
+#----------------------------------------------------------------------
+export ISSET_EXITCODES=1
+#----------------------------------------------------------------------
+#===============================================================================
