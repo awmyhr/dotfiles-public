@@ -26,7 +26,7 @@
 #-- Some of these were taken from http://tldp.org/LDP/abs/html/exitcodes.html
 #--     May as well use these. 
 #--     Note: do NOT use 128 (Invalid arg to exit)
-#--     Note: do NOT use values less than 0 or greater than 254 (out of range)
+#--     Note: do NOT use values <0 or >254 (out of range)
 #----------------------------------------------------------------------
 export ec_OK=0              # successful termination
 export ec_NOTOK=1           # catchall
