@@ -9,23 +9,33 @@ more of a suggestion than anything else...
 
 ## [Unreleased]
 ### Added
-- a real .bash_profile
-- .bash_logout
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.1.0] - 2016-10-06
+### Added
+- a real .bash_profile [considered released]
+- .bash_logout [considered released]
 - .profilerc (split out pertinent parts from .profile)
+- .shell.d/lib/exitcodes (set vars for common codes) [considered released]
+- testenv/testusers (creates/removes groups of test users) [considered released]
+- .bashrc exports functions for subshells [considered released]
 
 ### Changed
 - more ISSET_ variables
 - many minor functions/variables/settings moved to more sensible locations
 
-### Deprecated
-
 ### Removed
 - removed (mis-)use of SHELL
 - no longer trying to second-guess system profiles (for PATH, etc)
-
-### Fixed
-
-### Security
 
 ## [1.0.0] - 2016-10-04
 ### Added
