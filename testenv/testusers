@@ -1,0 +1,232 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: testenv/testusers
+#
+#        USAGE: sudo testusers (del|add) (clean|default|test|all)
+#
+#  DESCRIPTION: Should be run as root to create or remove test users
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               useradd (via 'shadow-utils')
+#               userdel (via 'shadow-utils')
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-alpha
+#      CREATED: 2016-10-06
+#     REVISION: 2016-10-06
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#=== FUNCTION ==================================================================
+# NAME: delclean
+# DESCRIPTION: Remove the clean users
+#===============================================================================
+delclean() {
+    userdel -f -r cdefault 2>/dev/null && printf -- 'Removed: cdefault\n'
+    userdel -f -r cbash    2>/dev/null && printf -- 'Removed: cbash\n'
+    userdel -f -r csh      2>/dev/null && printf -- 'Removed: csh\n'
+    userdel -f -r cdash    2>/dev/null && printf -- 'Removed: cdash\n'
+    userdel -f -r cyash    2>/dev/null && printf -- 'Removed: cyash\n'
+    userdel -f -r czsh     2>/dev/null && printf -- 'Removed: czsh\n'
+    userdel -f -r cksh     2>/dev/null && printf -- 'Removed: cksh\n'
+    userdel -f -r cmksh    2>/dev/null && printf -- 'Removed: cmksh\n'
+    userdel -f -r ccsh     2>/dev/null && printf -- 'Removed: ccsh\n'
+    userdel -f -r ctcsh    2>/dev/null && printf -- 'Removed: ctcsh\n'
+    userdel -f -r cfish    2>/dev/null && printf -- 'Removed: cfish\n'
+    userdel -f -r ctmux    2>/dev/null && printf -- 'Removed: ctmux\n'
+    userdel -f -r crc      2>/dev/null && printf -- 'Removed: crc\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: deldefault
+# DESCRIPTION: Remove the default users
+#===============================================================================
+deldefault() {
+    userdel -f -r ddefault 2>/dev/null && printf -- 'Removed: ddefault\n'
+    userdel -f -r dbash    2>/dev/null && printf -- 'Removed: dbash\n'
+    userdel -f -r dsh      2>/dev/null && printf -- 'Removed: dsh\n'
+    userdel -f -r ddash    2>/dev/null && printf -- 'Removed: ddash\n'
+    userdel -f -r dyash    2>/dev/null && printf -- 'Removed: dyash\n'
+    userdel -f -r dzsh     2>/dev/null && printf -- 'Removed: dzsh\n'
+    userdel -f -r dksh     2>/dev/null && printf -- 'Removed: dksh\n'
+    userdel -f -r dmksh    2>/dev/null && printf -- 'Removed: dmksh\n'
+    userdel -f -r dcsh     2>/dev/null && printf -- 'Removed: dcsh\n'
+    userdel -f -r dtcsh    2>/dev/null && printf -- 'Removed: dtcsh\n'
+    userdel -f -r dfish    2>/dev/null && printf -- 'Removed: dfish\n'
+    userdel -f -r dtmux    2>/dev/null && printf -- 'Removed: dtmux\n'
+    userdel -f -r drc      2>/dev/null && printf -- 'Removed: drc\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: deltest
+# DESCRIPTION: Remove the test users
+#===============================================================================
+deltest() {
+    userdel -f -r tdefault 2>/dev/null && printf -- 'Removed: tdefault\n'
+    userdel -f -r tbash    2>/dev/null && printf -- 'Removed: tbash\n'
+    userdel -f -r tsh      2>/dev/null && printf -- 'Removed: tsh\n'
+    userdel -f -r tdash    2>/dev/null && printf -- 'Removed: tdash\n'
+    userdel -f -r tyash    2>/dev/null && printf -- 'Removed: tyash\n'
+    userdel -f -r tzsh     2>/dev/null && printf -- 'Removed: tzsh\n'
+    userdel -f -r tksh     2>/dev/null && printf -- 'Removed: tksh\n'
+    userdel -f -r tmksh    2>/dev/null && printf -- 'Removed: tmksh\n'
+    userdel -f -r tcsh     2>/dev/null && printf -- 'Removed: tcsh\n'
+    userdel -f -r ttcsh    2>/dev/null && printf -- 'Removed: ttcsh\n'
+    userdel -f -r tfish    2>/dev/null && printf -- 'Removed: tfish\n'
+    userdel -f -r ttmux    2>/dev/null && printf -- 'Removed: ttmux\n'
+    userdel -f -r trc      2>/dev/null && printf -- 'Removed: trc\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: addclean
+# DESCRIPTION: Add the clean users
+#===============================================================================
+addclean() {
+    useradd -u 9200 -b /home/clean -m -U cdefault 2>/dev/null && \
+                                                printf -- 'created: cdefault\n'
+    useradd -u 9210 -b /home/clean -s /bin/bash     -m -U cbash 2>/dev/null && \
+                                                printf -- 'created: cbash\n'
+    useradd -u 9212 -b /home/clean -s /bin/sh       -m -U csh   2>/dev/null && \
+                                                printf -- 'created: csh\n'
+    useradd -u 9214 -b /home/clean -s /bin/dash     -m -U cdash 2>/dev/null && \
+                                                printf -- 'created: cdash\n'
+    useradd -u 9216 -b /home/clean -s /bin/yash     -m -U cyash 2>/dev/null && \
+                                                printf -- 'created: cyash\n'
+    useradd -u 9218 -b /home/clean -s /bin/zsh      -m -U czsh  2>/dev/null && \
+                                                printf -- 'created: czsh\n'
+    useradd -u 9220 -b /home/clean -s /bin/ksh      -m -U cksh  2>/dev/null && \
+                                                printf -- 'created: cksh\n'
+    useradd -u 9222 -b /home/clean -s /bin/mksh     -m -U cmksh 2>/dev/null && \
+                                                printf -- 'created: cmksh\n'
+    useradd -u 9230 -b /home/clean -s /bin/csh      -m -U ccsh  2>/dev/null && \
+                                                printf -- 'created: ccsh\n'
+    useradd -u 9232 -b /home/clean -s /bin/tcsh     -m -U ctcsh 2>/dev/null && \
+                                                printf -- 'created: ctcsh\n'
+    useradd -u 9240 -b /home/clean -s /usr/bin/fish -m -U cfish 2>/dev/null && \
+                                                printf -- 'created: cfish\n'
+    useradd -u 9242 -b /home/clean -s /bin/tmux     -m -U ctmux 2>/dev/null && \
+                                                printf -- 'created: ctmux\n'
+    useradd -u 9244 -b /home/clean -s /bin/rc       -m -U crc   2>/dev/null && \
+                                                printf -- 'created: crc\n'
+    rm -Rf /home/clean/*/.[a-zA-Z]* 2>/dev/null && printf -- 'Clean users cleaned\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: adddefault
+# DESCRIPTION: Add the default users
+#===============================================================================
+adddefault() {
+    useradd -u 9300 -b /home/default -m -U ddefault 2>/dev/null && \
+                                                printf -- 'created: ddefault\n'
+    useradd -u 9310 -b /home/default -s /bin/bash     -m -U dbash 2>/dev/null && \
+                                                printf -- 'created: dbash\n'
+    useradd -u 9312 -b /home/default -s /bin/sh       -m -U dsh   2>/dev/null && \
+                                                printf -- 'created: dsh\n'
+    useradd -u 9314 -b /home/default -s /bin/dash     -m -U ddash 2>/dev/null && \
+                                                printf -- 'created: ddash\n'
+    useradd -u 9316 -b /home/default -s /bin/yash     -m -U dyash 2>/dev/null && \
+                                                printf -- 'created: dyash\n'
+    useradd -u 9318 -b /home/default -s /bin/zsh      -m -U dzsh  2>/dev/null && \
+                                                printf -- 'created: dzsh\n'
+    useradd -u 9320 -b /home/default -s /bin/ksh      -m -U dksh  2>/dev/null && \
+                                                printf -- 'created: dksh\n'
+    useradd -u 9322 -b /home/default -s /bin/mksh     -m -U dmksh  2>/dev/null && \
+                                                printf -- 'created: dmksh\n'
+    useradd -u 9330 -b /home/default -s /bin/csh      -m -U dcsh   2>/dev/null && \
+                                                printf -- 'created: dcsh\n'
+    useradd -u 9332 -b /home/default -s /bin/tcsh     -m -U dtcsh  2>/dev/null && \
+                                                printf -- 'created: dtcsh\n'
+    useradd -u 9340 -b /home/default -s /usr/bin/fish -m -U dfish  2>/dev/null && \
+                                                printf -- 'created: dfish\n'
+    useradd -u 9342 -b /home/default -s /bin/tmux     -m -U dtmux  2>/dev/null && \
+                                                printf -- 'created: dtmux\n'
+    useradd -u 9344 -b /home/default -s /bin/rc       -m -U drc    2>/dev/null && \
+                                                printf -- 'created: drc\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: addtest
+# DESCRIPTION: Add the test users
+#===============================================================================
+addtest() {
+    useradd -u 9400 -b /home/test -m -U tdefault 2>/dev/null && \
+                                                printf -- 'created: tdefault\n'
+    useradd -u 9410 -b /home/test -s /bin/bash     -m -U tbash 2>/dev/null && \
+                                                printf -- 'created: tbash\n'
+    useradd -u 9412 -b /home/test -s /bin/sh       -m -U tsh   2>/dev/null && \
+                                                printf -- 'created: tsh\n'
+    useradd -u 9414 -b /home/test -s /bin/dash     -m -U tdash 2>/dev/null && \
+                                                printf -- 'created: tdash\n'
+    useradd -u 9416 -b /home/test -s /bin/yash     -m -U tyash 2>/dev/null && \
+                                                printf -- 'created: tyash\n'
+    useradd -u 9418 -b /home/test -s /bin/zsh      -m -U tzsh  2>/dev/null && \
+                                                printf -- 'created: tzsh\n'
+    useradd -u 9420 -b /home/test -s /bin/ksh      -m -U tksh  2>/dev/null && \
+                                                printf -- 'created: tksh\n'
+    useradd -u 9422 -b /home/test -s /bin/mksh     -m -U tmksh 2>/dev/null && \
+                                                printf -- 'created: tmksh\n'
+    useradd -u 9430 -b /home/test -s /bin/csh      -m -U tcsh  2>/dev/null && \
+                                                printf -- 'created: tcsh\n'
+    useradd -u 9432 -b /home/test -s /bin/tcsh     -m -U ttcsh 2>/dev/null && \
+                                                printf -- 'created: ttcsh\n'
+    useradd -u 9440 -b /home/test -s /usr/bin/fish -m -U tfish 2>/dev/null && \
+                                                printf -- 'created: tfish\n'
+    useradd -u 9442 -b /home/test -s /bin/tmux     -m -U ttmux 2>/dev/null && \
+                                                printf -- 'created: ttmux\n'
+    useradd -u 9444 -b /home/test -s /bin/rc       -m -U trc   2>/dev/null && \
+                                                printf -- 'created: trc\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: addtest
+# DESCRIPTION: Add the t* users
+#===============================================================================
+init() {
+    [ ! "${UID}" = 0 ] && printf -- 'Must execute as root\n' && exit 77
+}
+
+#=== FUNCTION ==================================================================
+# NAME: addtest
+# DESCRIPTION: Add the t* users
+#===============================================================================
+usage() {
+    printf "%s\n\n" "$0 ACTION GROUP"
+    printf "%s\n"   "Where ACTION is one of:"
+    printf "\t%s\n" "del     Remove all users in group"
+    printf "\t%s\n" "add     Create all users in group"
+    printf "\n%s\n" "And GROUP is one of:"
+    printf "\t%s\n" "clean   Users with no user profiles"
+    printf "\t%s\n" "default Users with system default user profiles"
+    printf "\t%s\n" "test    Users where user profile testing will happen"
+    printf "\t%s\n" "all     Do ACTION for all GROUPs"
+    printf "\n%s\n" "NOTE: script must be executed as root"
+}
+
+case "${1}" in
+    del) case "${2}" in
+            clean)   init && delclean;;
+            default) init && deldefault;;
+            test)    init && deltest;;
+            all)     init && delclean && deldefault && deltest;;
+            *)       printf "%s\n\n" "${2} is an invalid group." && \
+                        usage && exit 64;;
+         esac
+        ;;
+    add) case "${2}" in
+            clean)   init && addclean;;
+            default) init && adddefault;;
+            test)    init && addtest;;
+            all)     init && addclean && adddefault && addtest;;
+            *)       printf "%s\n\n" "${2} is an invalid group." && \
+                        usage && exit 64;;
+         esac
+        ;;
+    *)   printf "%s\n\n" "${1} is an invalid action." && usage && exit 64
+        ;;
+esac
