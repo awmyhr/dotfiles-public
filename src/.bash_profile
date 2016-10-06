@@ -4,7 +4,7 @@
 #
 #         FILE: .bash_profile
 #
-#        USAGE: (automagically loaded by bash interactive shell)
+#        USAGE: (automagically loaded by bash interactive login shell)
 #
 #  DESCRIPTION: My personalized bash profile, based on tons of things I've
 #               found/learned over the years.
@@ -14,11 +14,24 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0-alpha
-#      CREATED: ????-??-??
+#      VERSION: 1.0.0-alpha
+#      CREATED: 2016-10-05
 #     REVISION: 2016-10-05
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
+#----------------------------------------------------------------------
+#-- Load .bashrc
+#----------------------------------------------------------------------
+[[ -r "${HOME}/.profile" ]] && source "${HOME}/.profile"
+[[ -r "${HOME}/.bashrc" ]]  && source "${HOME}/.bashrc"
+
+#----------------------------------------------------------------------
+#-- Display some useful information
+#----------------------------------------------------------------------
+SHELLSTRING="${BASH} (${BASH_VERSION})"
+[[ -r "${SHELLD}/lib/greeting" ]] && "${SHELLD}/lib/greeting"
+
+printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
