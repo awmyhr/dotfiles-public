@@ -7,7 +7,7 @@
 #
 #  DESCRIPTION: Should be run as root to create or remove test users
 #
-#      OPTIONS: ---
+#      OPTIONS: SRCFILES - Directory where profile files are located
 # REQUIREMENTS: Bourne-compatible shell
 #               useradd (via 'shadow-utils')
 #               userdel (via 'shadow-utils')
@@ -15,13 +15,15 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
 #      CREATED: 2016-10-06
 #     REVISION: 2016-10-06
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
+
+SRCFILES="/home/awmyhr/projects/dotfiles-public/src"
 
 #=== FUNCTION ==================================================================
 # NAME: delclean
@@ -184,7 +186,21 @@ addtest() {
 }
 
 #=== FUNCTION ==================================================================
-# NAME: addtest
+# NAME: updatetest
+# DESCRIPTION: Add the t* users
+#===============================================================================
+updatetest() {
+    rm -Rf /home/test/*/.[a-zA-Z]* 2>/dev/null && printf "%s\n" 'Test users cleaned'
+    
+    for u in $(/bin/ls /home/test); do
+        cp -R "${SRCFILES}"/.[bkmpsvz]* "/home/test/${u}/" || continue
+        chown -R "${u}":"${u}" /home/test/"${u}" || continue
+        printf "%s\n" "${u} updated."
+    done; unset u
+}
+
+#=== FUNCTION ==================================================================
+# NAME: init
 # DESCRIPTION: Add the t* users
 #===============================================================================
 init() {
@@ -192,7 +208,7 @@ init() {
 }
 
 #=== FUNCTION ==================================================================
-# NAME: addtest
+# NAME: usage
 # DESCRIPTION: Add the t* users
 #===============================================================================
 usage() {
@@ -200,6 +216,7 @@ usage() {
     printf "%s\n"   "Where ACTION is one of:"
     printf "\t%s\n" "del     Remove all users in group"
     printf "\t%s\n" "add     Create all users in group"
+    printf "\t%s\n" "update  Update profiles in group"
     printf "\n%s\n" "And GROUP is one of:"
     printf "\t%s\n" "clean   Users with no user profiles"
     printf "\t%s\n" "default Users with system default user profiles"
@@ -242,6 +259,26 @@ case "${1}" in
                      addclean
                      adddefault
                      addtest
+                ;;
+            *)       printf "%s\n\n" "${2} is an invalid group." && \
+                        usage && exit 64;;
+         esac
+        ;;
+    update) case "${2}" in
+            clean)   init
+                     printf "%s\n" 'Update currently for test only.'
+                     printf "%s\n" 'No action taken.'
+                ;;
+            default) init
+                     printf "%s\n" 'Update currently for test only.'
+                     printf "%s\n" 'No action taken.'
+                ;;
+            test)    init
+                     updatetest
+                ;;
+            all)     init
+                     printf "%s\n" 'Update currently for test only.'
+                     printf "%s\n" 'No action taken.'
                 ;;
             *)       printf "%s\n\n" "${2} is an invalid group." && \
                         usage && exit 64;;
