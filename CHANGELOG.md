@@ -7,6 +7,23 @@ and this project tries to adhere to [Semantic Versioning](http://semver.org/).
 Most files will have their own version number, project release numbers are 
 more of a suggestion than anything else...
 
+## TODO
+- refactor variables for uniformity
+    - c_  colors
+    - ec_ error codes
+    - f_  file names
+    - t_  terminal request/setting strings (including appropriate escaping)
+    - tc_ terminal color strings           (including appropriate escaping)
+    - s_  single character symbols
+    - v_  version string
+    - IS_ Flag to describe an environment (i.e., IS_BASH)
+    - ISSET_ Flag to confirm a library has been loaded
+- re-work colors to enable themeing
+- implement said themeing 
+- optimize calling of variables/functions to take advantage of login vs subshells
+- optimize functions for bash and zsh
+- 'build' system, probably using make
+
 ## [Unreleased]
 ### Added
 
@@ -19,6 +36,20 @@ more of a suggestion than anything else...
 ### Fixed
 
 ### Security
+
+## [1.2.0] - 2016-10-07
+### Added
+- real .zlogin/.zlogout
+- .zshenv, .zprofile (which is read *before* .zshrc, .zlogin is read *after*)
+- zsh profile files are now considered released
+
+### Changed
+- bring .zshrc in-line with previous work
+- all zsh profile files moved into .zshrc.d except .zshenv, which tells zsh where to go
+
+### Fixed
+- fixed loading BASHD ancillary scripts
+- put bash login stuff in the bash_login file
 
 ## [1.1.0] - 2016-10-06
 ### Added
