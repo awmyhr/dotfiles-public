@@ -22,11 +22,23 @@
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
+export BASHD="${HOME}/.bashrc.d"  # Bash specific files
+[[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
+
 #----------------------------------------------------------------------
-#-- Load .bashrc
+#-- Load shell settings (general and bash)
 #----------------------------------------------------------------------
 [[ -r "${HOME}/.profile" ]] && source "${HOME}/.profile"
 [[ -r "${HOME}/.bashrc" ]]  && source "${HOME}/.bashrc"
+
+# This is exporting functions as expected, but some are throwing errors
+declare -fx $(compgen -A function)
+
+#----------------------------------------------------------------------
+#-- some history stuff
+#----------------------------------------------------------------------
+export HISTFILE="${BASHD}/.bash_history"
+export HISTCONTROL=ignoreboth:erasedups
 
 #----------------------------------------------------------------------
 #-- Display some useful information

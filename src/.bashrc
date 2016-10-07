@@ -16,7 +16,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.1
+#      VERSION: 2.0.2
 #      CREATED: ????-??-??
 #     REVISION: 2016-10-06
 #===============================================================================
@@ -31,17 +31,6 @@
 #----------------------------------------------------------------------
 [[ "${TRACE}" ]]  && set -x  # Run in debug mode if called for
 [[ $- =~ .*i*. ]] || return  # Exit if not an interactive shell
-
-#----------------------------------------------------------------------
-#-- "Baby, baby, baby, let's do it interactive"
-#----------------------------------------------------------------------
-export BASHD="${HOME}/.bashrc.d"  # Bash specific files
-[[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
-
-if $(shopt -q login_shell) ; then
-    # This is exporting functions as expected, but some are throwing errors
-    declare -fx $(compgen -A function)
-fi
 
 #----------------------------------------------------------------------
 #-- Load ancillary bash configs if they exist
@@ -104,12 +93,6 @@ set -o noclobber -o notify -o vi
 for i in autocd cdspell checkwinsize cmdhist dirspell extglob histappend; do
     shopt -s -q "${i}"
 done; unset i
-
-#----------------------------------------------------------------------
-#-- some history stuff
-#----------------------------------------------------------------------
-export HISTFILE="${BASHD}/.bash_history"
-export HISTCONTROL=ignoreboth:erasedups
 
 #----------------------------------------------------------------------
 #-- Conditional keybinds
