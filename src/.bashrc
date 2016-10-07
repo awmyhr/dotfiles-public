@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0
+#      VERSION: 2.0.3
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-06
+#     REVISION: 2016-10-07
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -33,20 +33,9 @@
 [[ $- =~ .*i*. ]] || return  # Exit if not an interactive shell
 
 #----------------------------------------------------------------------
-#-- "Baby, baby, baby, let's do it interactive"
-#----------------------------------------------------------------------
-export BASHD="${HOME}/.bashrc.d"  # Bash specific files
-[[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
-
-if $(shopt -q login_shell) ; then
-    # This is exporting functions as expected, but some are throwing errors
-    declare -fx $(compgen -A function)
-fi
-
-#----------------------------------------------------------------------
 #-- Load ancillary bash configs if they exist
 #----------------------------------------------------------------------
-for i in ${BASHD}/*.bash; do
+[[ -a "${BASH}/*.bash" ]] && for i in $(ls ${BASHD}/*.bash); do
     [[ -r "$i" ]] && source "$i"
 done; unset i
 
@@ -104,12 +93,6 @@ set -o noclobber -o notify -o vi
 for i in autocd cdspell checkwinsize cmdhist dirspell extglob histappend; do
     shopt -s -q "${i}"
 done; unset i
-
-#----------------------------------------------------------------------
-#-- some history stuff
-#----------------------------------------------------------------------
-export HISTFILE="${BASHD}/.bash_history"
-export HISTCONTROL=ignoreboth:erasedups
 
 #----------------------------------------------------------------------
 #-- Conditional keybinds
