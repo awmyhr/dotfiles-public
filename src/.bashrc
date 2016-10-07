@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.2
+#      VERSION: 2.0.3
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-06
+#     REVISION: 2016-10-07
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -35,7 +35,7 @@
 #----------------------------------------------------------------------
 #-- Load ancillary bash configs if they exist
 #----------------------------------------------------------------------
-for i in $(ls ${BASHD}/*.bash 2>/dev/null); do
+[[ -a "${BASH}/*.bash" ]] && for i in $(ls ${BASHD}/*.bash); do
     [[ -r "$i" ]] && source "$i"
 done; unset i
 
