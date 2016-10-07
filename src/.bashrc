@@ -16,7 +16,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0
+#      VERSION: 2.0.1
 #      CREATED: ????-??-??
 #     REVISION: 2016-10-06
 #===============================================================================
@@ -46,7 +46,7 @@ fi
 #----------------------------------------------------------------------
 #-- Load ancillary bash configs if they exist
 #----------------------------------------------------------------------
-for i in ${BASHD}/*.bash; do
+for i in $(ls ${BASHD}/*.bash 2>/dev/null); do
     [[ -r "$i" ]] && source "$i"
 done; unset i
 
