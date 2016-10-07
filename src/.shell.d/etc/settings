@@ -18,14 +18,14 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.0.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-07
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
-#-- Static settings
+#-- Misc static settings
 #----------------------------------------------------------------------
 export DEFAULT_TIMESTAMP='+%Y%m%d-%H%M%S'   # Prefered datstamp format.
 export FIGNORE='~':'.o':'.bak':'.tmp'       # File extensions ignored in name completion
@@ -49,8 +49,8 @@ if [ -r "${HOME}/.hh_blacklist" ]; then
 else
     export HH_CONFIG="hicolor,keywords"
 fi
-# Set autojump completion for commands
-export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
+
+export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'  # Set autojump completion for commands
 
 #----------------------------------------------------------------------
 #-- VCS Settings
