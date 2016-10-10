@@ -1,0 +1,38 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: .shell.d/platform/Linux
+#
+#        USAGE: (should be sourced by .shell.d/shellinit)
+#
+#  DESCRIPTION: Linux specific settings/functions/etc
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               'uname -s' reports 'Linux'
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-alpha
+#      CREATED: 2016-10-10
+#     REVISION: 2016-10-10
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Alias overrides
+#----------------------------------------------------------------------
+alias   l1='ls -F $LS_OPTS -1Ssh'
+alias   la='ls -F $LS_OPTS -lAh'
+alias   ll='ls -F $LS_OPTS -lh'
+alias  lsa='ls -F $LS_OPTS -lAh'
+alias  lln='ls -F $LS_OPTS -nAh'
+alias latr='ls -F $LS_OPTS -lAtrh'
+
+alias mkdir='mkdir -pv'
+
+alias psmem='ps --sort="-vsz"  -eo "user,pid,ppid,vsz,args"  | head '
+alias pscpu='ps --sort="-%cpu" -eo "user,pid,ppid,%cpu,args" | head '
