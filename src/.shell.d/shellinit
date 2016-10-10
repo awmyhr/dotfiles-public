@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.2
+#      VERSION: 1.1.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-06
+#     REVISION: 2016-10-10
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -110,6 +110,14 @@ elif command -v more >/dev/null 2>&1 ; then
     export PAGER="more -s"
 fi
 
+#----------------------------------------------------------------------
+#-- What command handles priviledge elavation
+#----------------------------------------------------------------------
+if command -v dzdo      >/dev/null 2>&1 ; then
+    export PROG_BECOME=dzdo
+elif command -v sudo    >/dev/null 2>&1 ; then
+    export PROG_BECOME=sudo
+fi
 #===============================================================================
 #----------------------------------------------------------------------
 export ISSET_SHELLINIT=1
