@@ -1,4 +1,28 @@
 #!/bin/sh
+#===============================================================================
+#
+#         FILE: tools/install_SublimeText
+#
+#        USAGE: (should be run by shell bootstrap)
+#
+#  DESCRIPTION: Install Sublime Text. This is originally based on the gist:
+#                   https://gist.github.com/dkd903/8ba3f51313c1781cc571
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: curl (via 'curl')
+#               root access for system-level install
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-alpha
+#      CREATED: 2016-09-28
+#     REVISION: 2016-10-10
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#       The .desktop file is not working.
+#----------------------------------------------------------------------
 
 DOWNLOAD='https://download.sublimetext.com/sublime_text_3_build_3126_x64.tar.bz2'
 TARBALL='/tmp/sublime-text-3.tar.bz2'
