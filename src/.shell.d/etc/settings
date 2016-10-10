@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-07
+#     REVISION: 2016-10-10
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -36,8 +36,13 @@ export HISTFILESIZE=5000                    # On-disk history
 export SAVEHIST="${HISTFILESIZE}"           # Alt On-disk history
 if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
     export HISTIGNORE='(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)'
+    # format for time, ex:
+    # ls -latr U: 0.002 S: 0.003 (T: 0.005) C: 89% M: 0
+    export TIMEFMT="--- Time for: ${c_blue}%J${c_norm} ---
+U: %*U S: %*S (T: %*E) C: %P | M: (%K) %M W: %W | I/O: %I/%O"
 else
     export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
+    export TIMEFORMAT='U: %lU S: %lS (T: $lT) C: %P'
 fi
 
 #----------------------------------------------------------------------
