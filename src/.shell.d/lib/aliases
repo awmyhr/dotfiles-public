@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0-alpha
+#      VERSION: 1.0.1
 #      CREATED: 2016-10-10
-#     REVISION: 2016-10-10
+#     REVISION: 2016-10-11
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -38,7 +38,11 @@ alias    ll='ls -F $LS_OPTS -l'
 alias   lsa='ls -F $LS_OPTS -lA'
 alias   lln='ls -F $LS_OPTS -nA'
 alias  latr='ls -F $LS_OPTS -lAtr'
-alias dusort='du -ksx * .[a-zA-Z1-0]* | sort -n'
+if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
+    alias dusort='du -kscx (*|.[a-zA-Z0-9_]*) | sort -n'
+else
+    alias dusort='du -kscx .[[:alnum:]]* * 2>/dev/null |sort -n'
+fi
 
 alias  mkdir='mkdir -p'
 
