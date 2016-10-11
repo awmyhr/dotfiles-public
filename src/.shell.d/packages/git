@@ -16,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.0.0-alpha
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-10
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -43,53 +43,53 @@ function _git_prompt_status() {
 
     # Ahead/behind/diverged
     if $(echo "$GITSTAT" | grep '^## [^ ]\+ .*ahead' &> /dev/null); then
-        STATUS="${c_pDEBUG}${VCS_AHEAD}$STATUS "
+        STATUS="${c_pDEBUG}${s_AHEAD}$STATUS "
     elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*behind' &> /dev/null); then
-        STATUS="${c_pCRIT}${VCS_BEHIND}$STATUS "
+        STATUS="${c_pCRIT}${s_BEHIND}$STATUS "
     elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*diverged' &> /dev/null); then
-        STATUS="${c_pEMERG}${VCS_DIVERGED}$STATUS "
+        STATUS="${c_pEMERG}${s_DIVERGED}$STATUS "
     fi
     GITSTAT=`echo $GITSTAT | sed 1d`
 
     if [[ -n $GITSTAT ]]; then
-        STATUS="${c_pCRIT}${VCS_DIRTY}$STATUS"
+        STATUS="${c_pCRIT}${s_DIRTY}$STATUS"
         # Non-staged
         if $(echo "$GITSTAT" | grep '^?? ' &> /dev/null); then
-            STATUS="${STATUS}${c_pNOTICE}${VCS_UNTRACKED}"
+            STATUS="${STATUS}${c_pNOTICE}${s_UNTRACKED}"
         fi
         if $(echo "$GITSTAT" | grep '^UU ' &> /dev/null); then
-            STATUS="${STATUS}${c_pCRIT}${VCS_UNMERGED}"
+            STATUS="${STATUS}${c_pCRIT}${s_UNMERGED}"
         fi
         if $(echo "$GITSTAT" | grep '^ D ' &> /dev/null); then
-            STATUS="${STATUS}${c_pCRIT}${VCS_DELETED}"
+            STATUS="${STATUS}${c_pCRIT}${s_DELETED}"
         fi
 
         if $(echo "$GITSTAT" | grep '^.M ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
+            STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}"
         elif $(echo "$GITSTAT" | grep '^AM ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
+            STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}"
         elif $(echo "$GITSTAT" | grep '^ T ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
+            STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}"
         fi
 
         # Staged
         if $(echo "$GITSTAT" | grep '^D  ' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_DELETED}"
+            STATUS="${STATUS}${c_pINFO}${s_DELETED}"
         fi
         if $(echo "$GITSTAT" | grep '^R' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_RENAMED}"
+            STATUS="${STATUS}${c_pINFO}${s_RENAMED}"
         fi
         if $(echo "$GITSTAT" | grep '^M' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_MODIFIED}"
+            STATUS="${STATUS}${c_pINFO}${s_MODIFIED}"
         fi
         if $(echo "$GITSTAT" | grep '^A' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_ADDED}"
+            STATUS="${STATUS}${c_pINFO}${s_ADDED}"
         fi
         if $(echo "$GITSTAT" | grep '^C' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_COPIED}"
+            STATUS="${STATUS}${c_pINFO}${s_COPIED}"
         fi
     else
-        STATUS="${c_pINFO}${VCS_CLEAN}$STATUS"
+        STATUS="${c_pINFO}${s_CLEAN}$STATUS"
     fi
 
     # Put a space at the beginning
@@ -105,14 +105,14 @@ function _parse_git_dirty() {
     ## NOTE: this may not work in git versions older than 1.7.2
     local GITSTAT=''
     local FLAGS=('--porcelain')
-    [[ "$VCS_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
-    [[ "$VCS_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
+    [[ "$s_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
+    [[ "$s_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
     GITSTAT=$(eval command git status $FLAGS 2> /dev/null | tail -n1)
 
     if [[ -n $GITSTAT ]]; then
-        echo " ${c_pCRIT}$VCS_DIRTY"
+        echo " ${c_pCRIT}$s_DIRTY"
     else
-        echo " ${c_pINFO}$VCS_CLEAN"
+        echo " ${c_pINFO}$s_CLEAN"
     fi
 }
 

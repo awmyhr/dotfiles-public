@@ -115,21 +115,21 @@ EOF
 # need a solid, quick way to detect svn/fossil/darcs repos (copied and modified from some zsh thing)
 _vcs_prompt_char() {
     command -v git >/dev/null 2>&1 && {
-        git branch >/dev/null 2>&1 && printf -- "${VCS_GIT}" && return
+        git branch >/dev/null 2>&1 && printf -- "${s_GIT}" && return
     }
     command -v hg  >/dev/null 2>&1 && {
-        hg  root   >/dev/null 2>&1 && printf -- "${VCS_HG}"  && return
+        hg  root   >/dev/null 2>&1 && printf -- "${s_HG}"  && return
     }
     # command -v svn    >/dev/null 2>&1 && {
-    #     svn    STATUS >/dev/null 2>&1 && printf -- "${VCS_SVN}"    && return
+    #     svn    STATUS >/dev/null 2>&1 && printf -- "${s_SVN}"    && return
     # }
     # command -v fossil >/dev/null 2>&1 && {
-    #     fossil STATUS >/dev/null 2>&1 && printf -- "${VCS_FOSSIL}" && return
+    #     fossil STATUS >/dev/null 2>&1 && printf -- "${s_FOSSIL}" && return
     # }
     # command -v darcs  >/dev/null 2>&1 && {
-    #     darcs  STATUS >/dev/null 2>&1 && printf -- "${VCS_DARCS}"  && return
+    #     darcs  STATUS >/dev/null 2>&1 && printf -- "${s_DARCS}"  && return
     # }
-    printf -- "${VCS_NONE}"
+    printf -- "${s_NOVCS}"
 }
 
 #=== FUNCTION ==================================================================
