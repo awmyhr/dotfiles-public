@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0
+#      VERSION: 2.2.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-07
+#     REVISION: 2016-10-10
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -60,6 +60,7 @@ unsetopt beep
 #-- Prompt configuration
 #----------------------------------------------------------------------
 if [[ "${ISSET_COLORS}" ]]; then
+    # Goint to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
     # zsh needs special formating for prompt colors
     c_pEMERG="%{${c_EMERG}%}"
     c_pALERT="%{${c_ALERT}%}"
@@ -77,8 +78,8 @@ if [[ "${ISSET_COLORS}" ]]; then
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
     export PROMPT='---${c_pnorm}
-%{%K{${c_black}}%}Z┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
-%{%K{${c_black}}%}Z└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
+%{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
+%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
     export RPROMPT=''
 else
     export PROMPT='---
