@@ -16,7 +16,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.1
+#      VERSION: 1.1.0
 #      CREATED: 2016-10-10
 #     REVISION: 2016-10-11
 #===============================================================================
@@ -49,7 +49,6 @@ alias  mkdir='mkdir -p'
 alias   psef='ps -ef'
 alias    psa='ps -eo "user,pid,ppid,%cpu,%mem,tty,stime,state,command"'
 alias    psg="psa | grep -v \"^\${LOGNAME} .* \${$} .* grep.*\" | grep "
-alias    psz="ps -el | awk '{ if (\$2 == \"Z\") {print \$4}}'"
 alias  psmem='ps -eo "user,pid,ppid,vsz,args"  |sort -rk4 | head '
 alias  pscpu='ps -eo "user,pid,ppid,%cpu,args" |sort -rk4 | head '
 
