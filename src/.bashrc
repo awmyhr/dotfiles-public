@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.3
+#      VERSION: 2.1.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-07
+#     REVISION: 2016-10-11
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -61,8 +61,8 @@ if [[ "${ISSET_COLORS}" ]]; then
     TTY=${TTY#/dev/}
     # \j = # of jobs ; \l basname of terminal device
     PS1="---${c_pnorm}
-B┌${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h: ${c_yellow}\w${c_pnorm} 
-B└${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_pnorm} "
+${s_bash}┌${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h: ${c_yellow}\w${c_pnorm} 
+${s_bash}└${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_pnorm} "
 else
     PS1="---
 B ($(uname -s)) \u@\h: \w 

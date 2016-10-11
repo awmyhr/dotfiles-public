@@ -13,9 +13,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.2.0
 #      CREATED: 2016-09-30
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-11
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -52,6 +52,20 @@ if stringmatch "UTF-8" "${CHARMAP}"; then
     export s_STASHED='✭'
     export s_UNMERGED='§'
     export s_UNTRACKED='✭'
+
+    export s_bash='B'
+    export s_csh='C'
+    export s_dash='D'
+    export s_fish='F'
+    export s_ksh='K'
+    export s_mksh='M'
+    export s_posix='P'
+    export s_rc='R'
+    export s_screen='s'
+    export s_tcsh='T'
+    export s_tmux='t'
+    export s_yash='Y'
+    export s_zsh='Z'
 else
     export s_DARCS='d'
     export s_FOSSIL='f'
@@ -76,6 +90,20 @@ else
     export s_STASHED='s'
     export s_UNMERGED='='
     export s_UNTRACKED='?'
+
+    export s_bash='B'
+    export s_csh='C'
+    export s_dash='D'
+    export s_fish='F'
+    export s_ksh='K'
+    export s_mksh='M'
+    export s_posix='P'
+    export s_rc='R'
+    export s_screen='s'
+    export s_tcsh='T'
+    export s_tmux='t'
+    export s_yash='Y'
+    export s_zsh='Z'
 fi
 
 #===============================================================================
