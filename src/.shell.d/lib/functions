@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
+#      VERSION: 1.2.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-11
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -143,7 +143,7 @@ _return_code() {
 }
 
 #=== FUNCTION ==================================================================
-# NAME: timestamp
+# NAME: getip
 # DESCRIPTION: Return IP address for a hostname
 #    OPTIONAL: Hostname. If none given, use $HOSTNAME
 #===============================================================================
@@ -160,6 +160,23 @@ getip() {
         # TODO: parse this properly...
         nslookup  "${1:-$HOSTNAME}"
     fi
+}
+
+#=== FUNCTION ==================================================================
+# NAME: psz
+# DESCRIPTION: list only zombie processes
+#===============================================================================
+psz() {
+    ps -el | awk '{ if (\$2 == \"Z\") {print \$4}}'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: mymemuse
+# DESCRIPTION: list memory used by currant user
+#               Not sure where I found this, but it was named 'memtotaller'
+#===============================================================================
+mymemuse() {
+    /bin/ps -u $(whoami) -o pid,rss,command | awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
 }
 
 #===============================================================================
