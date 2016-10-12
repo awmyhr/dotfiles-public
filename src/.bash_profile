@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.0.1
 #      CREATED: 2016-10-05
-#     REVISION: 2016-10-06
+#     REVISION: 2016-10-12
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -30,9 +30,6 @@ export BASHD="${HOME}/.bashrc.d"  # Bash specific files
 #----------------------------------------------------------------------
 [[ -r "${HOME}/.profile" ]] && source "${HOME}/.profile"
 [[ -r "${HOME}/.bashrc" ]]  && source "${HOME}/.bashrc"
-
-# This is exporting functions as expected, but some are throwing errors
-declare -fx $(compgen -A function)
 
 #----------------------------------------------------------------------
 #-- some history stuff
