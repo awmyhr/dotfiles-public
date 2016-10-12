@@ -6,22 +6,88 @@
      excludesfile = ~/.gitignore
 [color]
      ui = auto
+     branch = auto
+     diff = auto
+     status = auto
+
+[color "branch"]
+     current = red reverse
+     local = blue
+     remote = green
+
+[color "diff"]
+     meta = yellow
+     frag = magenta
+     old = red bold
+     new = green
+     plain = white
+
+[color "status"]
+     added = yellow
+     changed = green
+     untracked = cyan
+
 [alias]
-     st = status -sb
-     ci = commit
+     # simple aliases
+     a = add
      br = branch
+     ci = commit
+     cl = clone
+     cm = commit -m
      co = checkout
-     df = diff
-     dc = diff --cached
+     cob = checkout -b
+     cp = cherry-pick
+     d = diff
+     dstat = diff --stat
      ls = ls-files
-     lg = log -p
-     lc = log ORIG_HEAD.. --stat --no-merges
-     gl = log --oneline --decorate --stat --graph
-     lol = log --graph --decorate --pretty=oneline --abbrev-commit
-     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-     serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
-     prune-all = !git remote | xargs -n 1 git remote prune
+     s = status -sb
+     st = status -s
+
+     # fix inconsistent ui (http://gggritso.com/human-git-aliases)
+     branches = branch -a
+     remotes = remote -v
+     stashes = stash list
+     tags = tag
+     # "Add" features (http://gggritso.com/human-git-aliases)
+     amend = commit --amend
+     discard = checkout --
+     graph = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
+     nevermind = !git reset --hard HEAD && git clean -d -f
+          #^^^ unstages changes in the index, discards changes in the working directory, and removes any new files
+     precommit = diff --cached --diff-algorithm=minimal -w
+     uncommit = reset --mixed HEAD~
+     unmerged = diff --name-only --diff-filter=U
+     unstage = reset -q HEAD --
+
+     # Others I've found
+     aliases = "!git config -l | grep alias | cut -c 7-"
+     branchlist = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+     prune-all = "!git remote | xargs -n 1 git remote prune"
      whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
      whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+     update = "!git pull --rebase --prune $@ && git submodule update --init --recursive"
+     wipe = "!git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard"
+
+     # Some log/info aliases
+     pipelog = log --pretty=format:"%h\\ %s\\ [%cn]"
+     lasttag = describe --tags --abbrev=0
+
+     t-lg = log -p
+     t-lc = log ORIG_HEAD.. --stat --no-merges
+     t-gl = log --oneline --decorate --stat --graph
+
+     t-le = log --oneline --decorate
+     t-ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+     t-lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+     t-ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+     t-ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+     t-l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+     t-lol = log --graph --decorate --pretty=oneline --abbrev-commit
+     t-lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+     t-log-graph = log --graph --all  --decorate --oneline
+     t-log-fresh = log ORIG_HEAD.. --stat --no-merges
+     t-log-standup = !git log --since yesterday --author $(git config user.email) --pretty=short
 [credential]
      helper = cache
+[push]
+     default = simple
