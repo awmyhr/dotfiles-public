@@ -1,4 +1,5 @@
 #!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
 #===============================================================================
 #
 #         FILE: .shell.d/packages/git
@@ -6,7 +7,6 @@
 #        USAGE: (should be sourced by .shell.d/settings)
 #
 #  DESCRIPTION: Git functions, aliases, etc for use across shells.
-#
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
 #               git (via 'git-core')
@@ -16,110 +16,110 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.0.0-alpha
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-10
+#     REVISION: 2016-10-11
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
 #=== FUNCTION ================================================================
-# NAME: usage
-# DESCRIPTION: Display usage information for this script.
-# PARAMETER 1: 
+# NAME: _git_prompt_status
+# DESCRIPTION:  parse status of current repo, return string of symbols
+#               (originally from some oh-my-zsh theme files)
+# NOTE: this may not work in git versions older than 1.7.2
 #===============================================================================# Get the status of the working tree (copied and modified from git.zsh)
-function _git_prompt_status() {
-    ## NOTE: this may not work in git versions older than 1.7.2
+_git_prompt_status() {
     local GITSTAT=''
     local STATUS=''
-    ## NOTE: This method of building FLAGS isn't compatible w/bash
-    ##       I've tried many different things, can't quite get it...
-    local FLAGS=('--porcelain')
-    FLAGS+=' -b'
-    #local FLAGS=('--porcelain -b')
-    [[ "$VCS_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
-    [[ "$VCS_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
-    GITSTAT=$(eval command git status ${FLAGS} 2> /dev/null)
-   #GITSTAT=$(eval command git status ${FLAGS})
-
-    # Ahead/behind/diverged
-    if $(echo "$GITSTAT" | grep '^## [^ ]\+ .*ahead' &> /dev/null); then
+    local FLAGS=''
+    [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
+                            FLAGS=$(printf -- "${FLAGS} --ignore-submodules")
+    [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
+                            FLAGS=$(printf -- "${FLAGS} --untracked-files=no")
+    
+    if $(expr match "$GITSTAT" '^## [^ ]\+ .*ahead' 2>/dev/null); then
         STATUS="${c_pDEBUG}${s_AHEAD}$STATUS "
-    elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*behind' &> /dev/null); then
+    elif $(expr match "$GITSTAT" '^## [^ ]\+ .*behind' 2>/dev/null); then
         STATUS="${c_pCRIT}${s_BEHIND}$STATUS "
-    elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*diverged' &> /dev/null); then
+    elif $(expr match "$GITSTAT" '^## [^ ]\+ .*diverged' 2>/dev/null); then
         STATUS="${c_pEMERG}${s_DIVERGED}$STATUS "
     fi
-    GITSTAT=`echo $GITSTAT | sed 1d`
+    GITSTAT=$(echo "${GITSTAT}" | sed 1d)
 
-    if [[ -n $GITSTAT ]]; then
-        STATUS="${c_pCRIT}${s_DIRTY}$STATUS"
+    if [ -n "${GITSTAT}" ]; then
+        STATUS="${c_pCRIT}${s_DIRTY}${STATUS}"
         # Non-staged
-        if $(echo "$GITSTAT" | grep '^?? ' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^?? ' 2>/dev/null); then
             STATUS="${STATUS}${c_pNOTICE}${s_UNTRACKED}"
         fi
-        if $(echo "$GITSTAT" | grep '^UU ' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^UU ' 2>/dev/null); then
             STATUS="${STATUS}${c_pCRIT}${s_UNMERGED}"
         fi
-        if $(echo "$GITSTAT" | grep '^ D ' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^ D ' 2>/dev/null); then
             STATUS="${STATUS}${c_pCRIT}${s_DELETED}"
         fi
 
-        if $(echo "$GITSTAT" | grep '^.M ' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^.M ' 2>/dev/null); then
             STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}"
-        elif $(echo "$GITSTAT" | grep '^AM ' &> /dev/null); then
+        elif $(expr match "$GITSTAT" '^AM ' 2>/dev/null); then
             STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}"
-        elif $(echo "$GITSTAT" | grep '^ T ' &> /dev/null); then
+        elif $(expr match "$GITSTAT" '^ T ' 2>/dev/null); then
             STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}"
         fi
 
         # Staged
-        if $(echo "$GITSTAT" | grep '^D  ' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^D  ' 2>/dev/null); then
             STATUS="${STATUS}${c_pINFO}${s_DELETED}"
         fi
-        if $(echo "$GITSTAT" | grep '^R' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^R' 2>/dev/null); then
             STATUS="${STATUS}${c_pINFO}${s_RENAMED}"
         fi
-        if $(echo "$GITSTAT" | grep '^M' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^M' 2>/dev/null); then
             STATUS="${STATUS}${c_pINFO}${s_MODIFIED}"
         fi
-        if $(echo "$GITSTAT" | grep '^A' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^A' 2>/dev/null); then
             STATUS="${STATUS}${c_pINFO}${s_ADDED}"
         fi
-        if $(echo "$GITSTAT" | grep '^C' &> /dev/null); then
+        if $(expr match "$GITSTAT" '^C' 2>/dev/null); then
             STATUS="${STATUS}${c_pINFO}${s_COPIED}"
         fi
     else
-        STATUS="${c_pINFO}${s_CLEAN}$STATUS"
+        STATUS="${c_pINFO}${s_CLEAN}${STATUS}"
     fi
 
-    # Put a space at the beginning
-    if $(echo -n "$STATUS" | grep '.*' &> /dev/null); then
-        STATUS=" $STATUS"
-    fi
-
-    echo $STATUS
+    printf "%s" " ${STATUS}"                # Put a space at the beginning
 }
 
-# Checks if working tree is dirty (copied and modified from git.zsh)
-function _parse_git_dirty() {
-    ## NOTE: this may not work in git versions older than 1.7.2
+#=== FUNCTION ==================================================================
+# NAME: _git_parse_dirty
+# DESCRIPTION: Checks if working tree is dirty
+#              (originally from .oh-my-zsh/lib/git.zsh)
+# NOTE: this may not work in git versions older than 1.7.2
+#===============================================================================
+_git_parse_dirty() {
     local GITSTAT=''
-    local FLAGS=('--porcelain')
-    [[ "$s_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
-    [[ "$s_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
-    GITSTAT=$(eval command git status $FLAGS 2> /dev/null | tail -n1)
+    local FLAGS=''
+    [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
+                            FLAGS=$(printf -- "${FLAGS} --ignore-submodules")
+    [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
+                            FLAGS=$(printf -- "${FLAGS} --untracked-files=no")
+    GITSTAT=$(git status --porcelain "${FLAGS}" 2>/dev/null | tail -n1)
 
-    if [[ -n $GITSTAT ]]; then
-        echo " ${c_pCRIT}$s_DIRTY"
+    if [ -n "${GITSTAT}" ]; then
+        printf "%s" " ${c_pCRIT}${s_DIRTY}"
     else
-        echo " ${c_pINFO}$s_CLEAN"
+        printf "%s" " ${c_pINFO}${s_CLEAN}"
     fi
 }
 
-# get the name of the branch we are on (copied and modified from git.zsh)
-function _git_prompt() {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    echo " ${c_pDEBUG}‹${ref#refs/heads/}$(_git_prompt_status)${c_pDEBUG}›"
+#=== FUNCTION ==================================================================
+# NAME: _git_prompt
+# DESCRIPTION: get the name of the branch we are on
+#              (originally from .oh-my-zsh/lib/git.zsh)
+#===============================================================================
+_git_prompt() {
+    ref=$(git symbolic-ref HEAD 2>/dev/null) || return
+    printf "%s" "${c_pDEBUG}‹${ref#refs/heads/}$(_git_prompt_status)${c_pDEBUG}›"
 }
 
 #===============================================================================
