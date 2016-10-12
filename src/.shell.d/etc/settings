@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
+#      VERSION: 1.2.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-10
+#     REVISION: 2016-10-12
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -66,3 +66,5 @@ export DEFAULT_VCS='git'
 export VCS_IGNORE_UNTRACKED_FILES='false'
 # Set this to false to ignore submodule files, which can speed up repo checks
 export VCS_IGNORE_SUBMODULES='true'
+# Set this to true for a detailed vcs status line, otherwise just clean/dirty
+export VCS_DETAILED_STATUS='true'
