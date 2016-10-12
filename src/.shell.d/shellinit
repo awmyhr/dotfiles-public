@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
+#      VERSION: 1.1.2
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-10
+#     REVISION: 2016-10-12
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -37,11 +37,11 @@ umask 022
 #----------------------------------------------------------------------
 #-- Load packages
 #----------------------------------------------------------------------
-#   load default VCS aliases
-# [ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
-#     [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
-#        . "${SHELLD}/packages/${DEFAULT_VCS}"
-# }
+#   Default VCS pacakge
+[ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
+    [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
+       . "${SHELLD}/packages/${DEFAULT_VCS}"
+}
 
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
