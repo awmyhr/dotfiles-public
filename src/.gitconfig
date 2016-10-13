@@ -1,0 +1,89 @@
+[user]
+     name = awmyhr
+     email = awmyhr@gmail.com
+[core]
+     whitespace = fix,space-before-tab,trailing-space
+     excludesfile = ~/.gitignore
+[color]
+     ui = auto
+     branch = auto
+     diff = auto
+     status = auto
+
+[color "branch"]
+     current = red reverse
+     local = blue
+     remote = green
+
+[color "diff"]
+     meta = yellow
+     frag = magenta
+     old = red bold
+     new = green
+     plain = white
+
+[color "status"]
+     added = yellow
+     changed = green
+     untracked = cyan
+
+[alias]
+     # simple aliases
+     a = add
+     aa = add --all
+     ap = add --patch
+     au = add --update
+     br = branch
+     ci = commit
+     cl = clone
+     cm = commit -m
+     co = checkout
+     cob = checkout -b
+     cp = cherry-pick
+     d = diff --word-diff
+     dstat = diff --stat
+     f = fetch
+     g = grep
+     l = log --oneline --decorate --graph
+     ll = log --stat --oneline --decorate --graph
+     ls = ls-files
+     ls-ignored = ls-files --others --i --exclude-standard
+     m = merge
+     s = status -sb
+     w = whatchanged
+
+     # fix inconsistent ui (http://gggritso.com/human-git-aliases)
+     branches = branch -a
+     remotes = remote -v
+     stashes = stash list
+     tags = tag
+     # "Add" features (http://gggritso.com/human-git-aliases)
+     amend = commit --amend
+     discard = checkout --
+     graph = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
+     nevermind = !git reset --hard HEAD && git clean -d -f
+          #^^^ unstages changes in the index, discards changes in the working directory, and removes any new files
+     precommit = diff --cached --diff-algorithm=minimal -w
+     uncommit = reset --mixed HEAD~
+     unmerged = diff --name-only --diff-filter=U
+     unstage = reset -q HEAD --
+
+     # Others I've found
+     aliases = "!git config -l | grep alias | cut -c 7-"
+     branchlist = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+     prune-all = "!git remote | xargs -n 1 git remote prune"
+     update = "!git pull --rebase --prune $@ && git submodule update --init --recursive"
+     whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+     whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+     wipe = "!git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard"
+
+     # Some log/info aliases
+     pipelog = log --pretty=format:"%h\\ %s\\ [%cn]"
+     lasttag = describe --tags --abbrev=0
+     log-fresh = log ORIG_HEAD.. --stat --no-merges
+     log-standup = "!git log --since yesterday --author $(git config user.email) --pretty=short"
+
+[credential]
+     helper = cache
+[push]
+     default = simple

@@ -1,4 +1,5 @@
 #!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
 #===============================================================================
 #
 #         FILE: .shell.d/packages/git
@@ -6,7 +7,6 @@
 #        USAGE: (should be sourced by .shell.d/settings)
 #
 #  DESCRIPTION: Git functions, aliases, etc for use across shells.
-#
 #      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
 #               git (via 'git-core')
@@ -14,113 +14,163 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0-alpha
+#      VERSION: 1.0.0
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-12
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
+alias g='git'
+
 #=== FUNCTION ================================================================
-# NAME: usage
-# DESCRIPTION: Display usage information for this script.
-# PARAMETER 1: 
-#===============================================================================# Get the status of the working tree (copied and modified from git.zsh)
-function _git_prompt_status() {
-    ## NOTE: this may not work in git versions older than 1.7.2
-    local GITSTAT=''
-    local STATUS=''
-    ## NOTE: This method of building FLAGS isn't compatible w/bash
-    ##       I've tried many different things, can't quite get it...
-    local FLAGS=('--porcelain')
-    FLAGS+=' -b'
-    #local FLAGS=('--porcelain -b')
-    [[ "$VCS_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
-    [[ "$VCS_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
-    GITSTAT=$(eval command git status ${FLAGS} 2> /dev/null)
-   #GITSTAT=$(eval command git status ${FLAGS})
+# NAME: _git_prompt_status
+# DESCRIPTION:  parse status of current repo, return string of symbols
+#               (originally from some oh-my-zsh theme files,
+#                however by this point I've totally re-written it)
+# NOTE: this may not work in git versions older than 1.7.2
+# NOTE: the <() form of process substitution doesn't work in POSIX, thus we use
+#       <command> | while. This may cause issues with some shells, as the while
+#       loop is now run in a subshell, which may hide the variables
+#===============================================================================
+_git_prompt_status() {
+    IGNORE_SUBMODULES=''
+    IGNORE_UNTRACKED_FILES=''
+    [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
+                    IGNORE_SUBMODULES=$(printf -- " --ignore-submodules")
+    [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
+                    IGNORE_UNTRACKED_FILES=$(printf -- " --untracked-files=no")
 
-    # Ahead/behind/diverged
-    if $(echo "$GITSTAT" | grep '^## [^ ]\+ .*ahead' &> /dev/null); then
-        STATUS="${c_pDEBUG}${VCS_AHEAD}$STATUS "
-    elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*behind' &> /dev/null); then
-        STATUS="${c_pCRIT}${VCS_BEHIND}$STATUS "
-    elif $(echo "$GITSTAT" | grep '^## [^ ]\+ .*diverged' &> /dev/null); then
-        STATUS="${c_pEMERG}${VCS_DIVERGED}$STATUS "
-    fi
-    GITSTAT=`echo $GITSTAT | sed 1d`
+    GITSTAT=0
+    STATUS=''
 
-    if [[ -n $GITSTAT ]]; then
-        STATUS="${c_pCRIT}${VCS_DIRTY}$STATUS"
-        # Non-staged
-        if $(echo "$GITSTAT" | grep '^?? ' &> /dev/null); then
-            STATUS="${STATUS}${c_pNOTICE}${VCS_UNTRACKED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^UU ' &> /dev/null); then
-            STATUS="${STATUS}${c_pCRIT}${VCS_UNMERGED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^ D ' &> /dev/null); then
-            STATUS="${STATUS}${c_pCRIT}${VCS_DELETED}"
-        fi
+    # These variables flage if we've already added condition to status line
+    state=0         #  \#\#*  ) Should match first branch info line
+   
+    unstaged_UT=0   # \?\?\ * ) non-staged & untracked
+    unstaged_UM=0   # UU\ *   ) non-staged & unmerged   
+    unstaged_D=0    # \ D\ *  ) non-staged & deleted
 
-        if $(echo "$GITSTAT" | grep '^.M ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
-        elif $(echo "$GITSTAT" | grep '^AM ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
-        elif $(echo "$GITSTAT" | grep '^ T ' &> /dev/null); then
-            STATUS="${STATUS}${c_pWARNING}${VCS_MODIFIED}"
-        fi
+    unstaged_M=0    # \ M\ *  ) non-staged & modified
+                    # AM\ *   ) non-staged & modified
+                    # \ T\ *  ) non-staged & modified
 
-        # Staged
-        if $(echo "$GITSTAT" | grep '^D  ' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_DELETED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^R' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_RENAMED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^M' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_MODIFIED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^A' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_ADDED}"
-        fi
-        if $(echo "$GITSTAT" | grep '^C' &> /dev/null); then
-            STATUS="${STATUS}${c_pINFO}${VCS_COPIED}"
-        fi
+    staged_D=0      # D\ \ *  ) staged & deleted
+    staged_R=0      # R*      ) staged & renamed
+    staged_M=0      # M*      ) staged & modified
+    staged_A=0      # A*      ) staged & added
+    staged_C=0      # C*      ) staged & copied
+
+    exec 3<&1
+    git status -b --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null
+    while IFS= read -u 3 -r line ;do       
+        case "${line}" in
+            \#\#*   ) [ "${state}" -eq 0 ] && \
+                      case "${line}" in
+                        *ahead* )    STATUS="${c_pDEBUG}${s_AHEAD}${STATUS} " ;;
+                        *behind* )   STATUS="${c_pCRIT}${s_BEHIND}${STATUS} " ;;
+                        *diverged* ) STATUS="${c_pEMERG}${s_DIVERGED}${STATUS} "  ;;
+                        * ) STATUS="${STATUS}" ;;
+                      esac
+                      state=$((state+1))  ;;
+            \?\?\ * ) [ "${unstaged_UT}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pNOTICE}${s_UNTRACKED}" 
+                      unstaged_M=$((unstaged_UT+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            UU\ *   ) [ "${unstaged_UM}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pCRIT}${s_UNMERGED}" 
+                      unstaged_M=$((unstaged_UM+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            \ D\ *  ) [ "${unstaged_D}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pCRIT}${s_DELETED}" 
+                      unstaged_M=$((unstaged_D+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+
+            \ M\ *  ) [ "${unstaged_M}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}" 
+                      unstaged_M=$((unstaged_M+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            AM\ *   ) [ "${unstaged_M}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}" 
+                      unstaged_M=$((unstaged_M+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            \ T\ *  ) [ "${unstaged_M}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}" 
+                      unstaged_M=$((unstaged_M+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+
+            D\ \ *  ) [ "${staged_D}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pINFO}${s_DELETED}" 
+                      staged_D=$((staged_D+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            R*      ) [ "${staged_R}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pINFO}${s_RENAMED}" 
+                      staged_R=$((staged_R+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            M*      ) [ "${staged_M}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pINFO}${s_MODIFIED}" 
+                      staged_M=$((staged_M+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            A*      ) [ "${staged_A}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pINFO}${s_ADDED}" 
+                      staged_A=$((staged_A+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            C*      ) [ "${staged_C}" -eq 0 ] && \
+                        STATUS="${STATUS}${c_pINFO}${s_COPIED}" 
+                      staged_C=$((staged_C+1))
+                      GITSTAT=$((GITSTAT+1))  ;;
+            *       ) STATUS="${STATUS}" ;;
+        esac
+    done
+    exec 3<&-
+
+    if [ "${GITSTAT}" = 0 ]; then
+        STATUS="${c_pINFO}${s_CLEAN}${STATUS}"
     else
-        STATUS="${c_pINFO}${VCS_CLEAN}$STATUS"
+        STATUS="${c_pCRIT}${s_DIRTY}${STATUS}"
     fi
 
-    # Put a space at the beginning
-    if $(echo -n "$STATUS" | grep '.*' &> /dev/null); then
-        STATUS=" $STATUS"
-    fi
-
-    echo $STATUS
+    printf "%s" " ${STATUS}"                # Put a space at the beginning
 }
+declare -fx _git_prompt_status 1>/dev/null 2>/dev/null
 
-# Checks if working tree is dirty (copied and modified from git.zsh)
-function _parse_git_dirty() {
-    ## NOTE: this may not work in git versions older than 1.7.2
-    local GITSTAT=''
-    local FLAGS=('--porcelain')
-    [[ "$VCS_IGNORE_SUBMODULES" == "true" ]]      && FLAGS+='--ignore-submodules'
-    [[ "$VCS_IGNORE_UNTRACKED_FILES" == "true" ]] && FLAGS+='--untracked-files=no'
-    GITSTAT=$(eval command git status $FLAGS 2> /dev/null | tail -n1)
+#=== FUNCTION ==================================================================
+# NAME: _git_parse_dirty
+# DESCRIPTION: Checks if working tree is dirty
+#              (originally from .oh-my-zsh/lib/git.zsh)
+# NOTE: this may not work in git versions older than 1.7.2
+#===============================================================================
+_git_parse_dirty() {
+    IGNORE_SUBMODULES=''
+    IGNORE_UNTRACKED_FILES=''
+    [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
+                    IGNORE_SUBMODULES=$(printf -- " --ignore-submodules")
+    [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
+                    IGNORE_UNTRACKED_FILES=$(printf -- " --untracked-files=no")
 
-    if [[ -n $GITSTAT ]]; then
-        echo " ${c_pCRIT}$VCS_DIRTY"
+    if [ "$(git status --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null)" ]; then
+        printf "%s" " ${c_pCRIT}${s_DIRTY}"
     else
-        echo " ${c_pINFO}$VCS_CLEAN"
+        printf "%s" " ${c_pINFO}${s_CLEAN}"
     fi
 }
+declare -fx _git_parse_dirty 1>/dev/null 2>/dev/null
 
-# get the name of the branch we are on (copied and modified from git.zsh)
-function _git_prompt() {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    echo " ${c_pDEBUG}‹${ref#refs/heads/}$(_git_prompt_status)${c_pDEBUG}›"
+#=== FUNCTION ==================================================================
+# NAME: _git_prompt
+# DESCRIPTION: get the name of the branch we are on
+#              (originally from .oh-my-zsh/lib/git.zsh)
+#===============================================================================
+_git_prompt() {
+    ref=$(git symbolic-ref HEAD 2>/dev/null) || return
+    if [ "${VCS_DETAILED_STATUS}" = "true" ]; then
+        printf "%s" "${c_pDEBUG}‹${ref#refs/heads/}$(_git_prompt_status)${c_pDEBUG}›"
+    else
+        printf "%s" "${c_pDEBUG}‹${ref#refs/heads/}$(_git_parse_dirty)${c_pDEBUG}›"
+    fi
 }
+declare -fx _git_prompt 1>/dev/null 2>/dev/null
 
 #===============================================================================
 #----------------------------------------------------------------------

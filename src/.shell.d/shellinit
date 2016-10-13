@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.2
+#      VERSION: 1.1.2
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-06
+#     REVISION: 2016-10-12
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -37,11 +37,11 @@ umask 022
 #----------------------------------------------------------------------
 #-- Load packages
 #----------------------------------------------------------------------
-#   load default VCS aliases
-# [ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
-#     [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
-#        . "${SHELLD}/packages/${DEFAULT_VCS}"
-# }
+#   Default VCS pacakge
+[ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
+    [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
+       . "${SHELLD}/packages/${DEFAULT_VCS}"
+}
 
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
@@ -110,6 +110,14 @@ elif command -v more >/dev/null 2>&1 ; then
     export PAGER="more -s"
 fi
 
+#----------------------------------------------------------------------
+#-- What command handles priviledge elavation
+#----------------------------------------------------------------------
+if command -v dzdo      >/dev/null 2>&1 ; then
+    export PROG_BECOME=dzdo
+elif command -v sudo    >/dev/null 2>&1 ; then
+    export PROG_BECOME=sudo
+fi
 #===============================================================================
 #----------------------------------------------------------------------
 export ISSET_SHELLINIT=1

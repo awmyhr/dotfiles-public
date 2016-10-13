@@ -1,0 +1,102 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: .shell.d/lib/aliases
+#
+#        USAGE: (should be sourced by .shell.d/shellinit)
+#
+#  DESCRIPTION: General aliasas which should be compaltible accross platforms.
+#               This may include some command-specific aliases, but if they
+#               start to get more then half a dozen or so, a 'package' should
+#               be created.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.1.0
+#      CREATED: 2016-10-10
+#     REVISION: 2016-10-11
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Common command aliases
+#----------------------------------------------------------------------
+alias    ..='cd ..'
+alias   ...='cd ../..'
+alias  ....='cd ../../..'
+alias    ls='ls -F $LS_OPTS'
+alias    l.='ls -F $LS_OPTS -d .*'
+alias    l1='ls -F $LS_OPTS -1Ss'
+alias    la='ls -F $LS_OPTS -lA'
+alias    ll='ls -F $LS_OPTS -l'
+alias   lsa='ls -F $LS_OPTS -lA'
+alias   lln='ls -F $LS_OPTS -nA'
+alias  latr='ls -F $LS_OPTS -lAtr'
+if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
+    alias dusort='du -kscx (*|.[a-zA-Z0-9_]*) | sort -n'
+else
+    alias dusort='du -kscx .[[:alnum:]]* * 2>/dev/null |sort -n'
+fi
+
+alias  mkdir='mkdir -p'
+
+alias   psef='ps -ef'
+alias    psa='ps -eo "user,pid,ppid,%cpu,%mem,tty,stime,state,command"'
+alias    psg="psa | grep -v \"^\${LOGNAME} .* \${$} .* grep.*\" | grep "
+alias  psmem='ps -eo "user,pid,ppid,vsz,args"  |sort -rk4 | head '
+alias  pscpu='ps -eo "user,pid,ppid,%cpu,args" |sort -rk4 | head '
+
+alias      _="\${PROG_BECOME}"
+alias    ssu="_ su -"
+
+#----------------------------------------------------------------------
+#-- 'new' command aliases
+#----------------------------------------------------------------------
+alias path="printf -- \${PATH}|tr -s ':' '\n';printf '\n'"
+alias clr='clear;printf "%s\n" "${c_white}Currently logged into ${c_bold}$HOSTNAME${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal on $(tty)${c_norm}"'
+
+#----------------------------------------------------------------------
+#-- Conditional aliases
+#----------------------------------------------------------------------
+command -v whereis      >/dev/null 2>&1 && alias whereis='type -all'
+command -v shellcheck   >/dev/null 2>&1 && alias lint-sh='shellcheck'
+command -v phpcs        >/dev/null 2>&1 && alias lint-php='phpcs'
+command -v csslint      >/dev/null 2>&1 && alias lint-css='csslint'
+command -v ping         >/dev/null 2>&1 && alias ping='ping -c 5'
+
+if command -v hh        >/dev/null 2>&1 ; then
+    alias h=hh
+    alias gh=hh
+elif command -v history >/dev/null 2>&1 ; then
+    alias h=history
+    alias gh='history | grep'
+fi
+
+if command -v mkpasswd  >/dev/null 2>&1 ; then
+    alias chpass=mkpasswd
+elif command -v passwd  >/dev/null 2>&1 ; then
+    alias chpass=passwd
+fi
+
+#----------------------------------------------------------------------
+#-- Perl stuff
+#----------------------------------------------------------------------
+command -v perl         >/dev/null 2>&1 && {
+    alias perlinc='perl -e "print @INC";echo'
+    alias lint-perl='perl -MO=Lint'
+}
+
+#----------------------------------------------------------------------
+#-- Puppet stuff
+#----------------------------------------------------------------------
+command -v puppet       >/dev/null 2>&1 && {
+    alias ppv='puppet parser validate'
+    alias ppl='puppet-lint'
+    alias lint-pup='puppet-lint'
+}
