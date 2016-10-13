@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.2.0
+#      VERSION: 2.2.1
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-10
+#     REVISION: 2016-10-13
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -83,7 +83,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     export RPROMPT=''
 else
     export PROMPT='---
-Z ($(uname -s)) %n@%m: ${PWD/#$HOME/~}
+Z (${OSTYPE}) %n@%m: ${PWD/#$HOME/~}
 Z !%! [%l] %#$ '
     export RPROMPT=''
 fi

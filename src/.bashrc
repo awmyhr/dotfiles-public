@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.1.0
+#      VERSION: 2.1.1
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-11
+#     REVISION: 2016-10-13
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -61,11 +61,11 @@ if [[ "${ISSET_COLORS}" ]]; then
     TTY=${TTY#/dev/}
     # \j = # of jobs ; \l basname of terminal device
     PS1="---${c_pnorm}
-${s_bash}┌${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h: ${c_yellow}\w${c_pnorm} 
+${s_bash}┌${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h: ${c_yellow}\w \$(_git_prompt)${c_pnorm} 
 ${s_bash}└${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_pnorm} "
 else
     PS1="---
-B ($(uname -s)) \u@\h: \w 
+B (${OSTYPE}) \u@\h: \w 
 B \041\! \$ "
 fi
 export PS1
