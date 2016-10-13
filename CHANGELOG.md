@@ -27,6 +27,19 @@ more of a suggestion than anything else...
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.3.0] - 2016-10-13
+### Added
 - time output formating for bash/zsh
 - auto-time and login/logout reporting for zsh
 - lib/aliases file [considered released]
@@ -45,8 +58,6 @@ more of a suggestion than anything else...
 - bash/zsh use $OSTYPE for vanilla prompt instead of calling out to uname
 - now calling _git_prompt from bash -- however, this feature is not working 100%
 
-### Deprecated
-
 ### Removed
 - .profile.d/alias.general
 - .profile.d/profile.Linux
@@ -56,8 +67,6 @@ more of a suggestion than anything else...
 - no longer blanket exporting all functions in Bash, instead these are explicitly
 exported when declared via 'declare -fx'. POSIX shells will complain, but those
 complaints are sent to /dev/null and will be dealt with there...
-
-### Security
 
 ## [1.2.0] - 2016-10-07
 ### Added
