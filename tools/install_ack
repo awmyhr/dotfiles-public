@@ -1,0 +1,43 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: tools/install_ack.sh
+#
+#        USAGE: (should be run by shell bootstrap)
+#
+#  DESCRIPTION: Install ack in $HOME/bin. ack is beyond grep. See more here:
+#                   http://beyondgrep.com/
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               curl (via 'curl')
+#               perl 5.8.8+ (via 'perl')
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-alpha
+#      CREATED: 2016-10-10
+#     REVISION: 2016-10-11
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#   TODO: check for installed version of Perl first
+#----------------------------------------------------------------------
+
+if [ "$(id -u)" = 0 ]; then
+    TARGET='/usr/local/bin/ack'
+    mkdir -p /usr/local/bin/
+else
+    TARGET="${HOME}/bin/ack"
+fi
+
+DOWNLOAD='http://beyondgrep.com/ack-2.14-single-file'
+
+curl -L "${DOWNLOAD}" -o "${TARGET}" || exit "${?}"
+
+chmod 0755 "${TARGET}"
+
+printf "%s\n" "Successfully installed ack to ${TARGET}:"
+
+${TARGET} --version

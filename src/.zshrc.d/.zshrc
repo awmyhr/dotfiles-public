@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0
+#      VERSION: 2.2.1
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-07
+#     REVISION: 2016-10-13
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -60,6 +60,7 @@ unsetopt beep
 #-- Prompt configuration
 #----------------------------------------------------------------------
 if [[ "${ISSET_COLORS}" ]]; then
+    # Goint to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
     # zsh needs special formating for prompt colors
     c_pEMERG="%{${c_EMERG}%}"
     c_pALERT="%{${c_ALERT}%}"
@@ -77,12 +78,12 @@ if [[ "${ISSET_COLORS}" ]]; then
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
     export PROMPT='---${c_pnorm}
-%{%K{${c_black}}%}Z┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
-%{%K{${c_black}}%}Z└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
+%{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
+%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
     export RPROMPT=''
 else
     export PROMPT='---
-Z ($(uname -s)) %n@%m: ${PWD/#$HOME/~}
+Z (${OSTYPE}) %n@%m: ${PWD/#$HOME/~}
 Z !%! [%l] %#$ '
     export RPROMPT=''
 fi
@@ -142,81 +143,12 @@ compdef _gnu_generic openssl
 # also: _pids works for commands which expect a pid
 #   maybe other functions in /usr/share/zsh/5.2/functions/_gnu_generic
 
-
 #----------------------------------------------------------------------
-#-- Some notes for future reference
+#-- Take advantage of some zsh built-in features
 #----------------------------------------------------------------------
-## ZSH has "builtin" support for VCS. see:
-# ls /usr/share/zsh/5.2/functions/[vV]*
-#
-#like this:
-# autoload -Uz vcs_info
-# zstyle ':vcs_info:*' enable git svn hg
-# zstyle ':vcs_info:*' check-for-changes true
-# zstyle ':vcs_info:*' formats "%{$fg[yellow]%}%c%{$fg[green]%}%u%{$reset_color%} [%{$fg[blue]%}%b%{$reset_color%}] %{$fg[yellow]%}%s%{$reset_color%}:%r"
-# precmd() {  # run before each prompt
-#   vcs_info
-# }
-# color="blue"
-# RPROMPT='${vcs_info_msg_0_}'
-
-# special functions:
-# chpwd ()    - Executed whenever the current working directory is changed.
-# periodic () - If  the parameter PERIOD is set, this function is executed every $PERIOD sec‐
-#   onds, just before a prompt.  Note that  if  multiple  functions  are  defined
-#   using the array periodic_functions only one period is applied to the complete
-#   set of functions, and the scheduled time is not reset if the  list  of  func‐
-#   tions is altered.  Hence the set of functions is always called together.
-
-# precmd ()   - Executed  before each prompt.  Note that precommand functions are not re-exe‐
-#   cuted simply because the command line is redrawn, as  happens,  for  example,
-#   when a notification about an exiting job is displayed.
-
-# preexec ()  - Executed  just after a command has been read and is about to be executed.  If
-#   the history mechanism is active (regardless of whether the line was discarded
-#   from  the  history  buffer),  the string that the user typed is passed as the
-#   first argument, otherwise it is an empty string.   The  actual  command  that
-#   will  be  executed  (including  expanded  aliases) is passed in two different
-#   forms: the second argument is a single-line, size-limited version of the com‐
-#   mand  (with  things like function bodies elided); the third argument contains
-#   the full text that is being executed.
-
-# zshaddhistory () - Executed when a history line has been read interactively, but  before  it  is
-#   executed.  The sole argument is the complete history line (so that any termi‐
-#   nating newline will still be present).
-
-# zshexit () - Executed  at  the point where the main shell is about to exit normally.  This
-#   is not called by exiting subshells, nor when the exec precommand modifier  is
-#   used  before  an  external  command.  Also, unlike TRAPEXIT, it is not called
-#   when functions exit.
-
-# EXPORTING FUNCTIONS
-# If you are using ksh or zsh:
-
-# You can use the environment variable FPATH, wherein you can place all your functions.
-
-# If FPATH is set on an interactive interpreter, and a command or function is not found in the current shell environment or the PATH, the directories listed there are searched for the existence of a file named after the missing command. If one is found, it is sourced in the current shell environment, and expected to define the function.
-
-# So, you can place all your functions in a location in FPATH, and child scripts will also be able to find it.
-
-# You can use the autoload command in shell scripts to load the functions you require:
-
-# autoload fun_a fun_b
-# In zsh, autoload is required for FPATH to work. In ksh and its close relatives, I believe it simply causes functions defined in FPATH to override regular command in your PATH, as they would if defined directly.
-
-# Some details on FPATH and autoload:
-
-# http://docstore.mik.ua/orelly/unix3/upt/ch29_13.htm
-# http://users.speakeasy.net/~arkay/216-7.4KshFunctions.html
-
-### suffix aliases - matches the end of a filename to tie it to a program
-# alias -s md=sublime_text
-### now simply typing <filename>.md will open it in sublime_text
-
-### global aliases - replaced anywhere in a command line
-# alias -g ...='../..'
-### now you can: cd ...
-
-### built in less-alike, just type this to read textfilename
-# <textfilename
-
+REPORTTIME=60                     # report time if runs more than >60 seconds
+WATCH=all                         # watch for all login/logout events
+LOGCHECK=30                       # check for above every 30 seconds
+# format for watch/log, ex: 
+# amyhr@:0 has logged on [pts/0] at 2016-10-07 18:14
+WATCHFMT="%(a:${c_blue}:${c_cyan})%n@%m has %B%a%b%(a:${c_blue}:${c_cyan}) [%l] at 20%D %T${c_norm}"

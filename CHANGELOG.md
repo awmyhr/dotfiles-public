@@ -18,6 +18,7 @@ more of a suggestion than anything else...
     - v_  version string
     - IS_ Flag to describe an environment (i.e., IS_BASH)
     - ISSET_ Flag to confirm a library has been loaded
+    - PROG_  Holds which program to use for a service (i.d., PROG_BECOME='sudo')
 - re-work colors to enable themeing
 - implement said themeing 
 - optimize calling of variables/functions to take advantage of login vs subshells
@@ -37,11 +38,41 @@ more of a suggestion than anything else...
 
 ### Security
 
+## [1.3.0] - 2016-10-13
+### Added
+- time output formating for bash/zsh
+- auto-time and login/logout reporting for zsh
+- lib/aliases file [considered released]
+- platform/Linux file [considered released]
+- package/yum file
+- install_ack -- installs single-file version of ack (as opposed to repo package)
+- function psz (ps grep for zombies -- used to be an alias)
+- function mymemuse (report current users memory use)
+- s_(shellname) vars for prompts, etc
+- git package done for prompts [considered released]
+
+### Changed
+- install_SublimeText renamed and overhauled
+- all VCS_ symbol vars have been renamed to s_
+- overhauled .gitconfig, including adding aliases
+- bash/zsh use $OSTYPE for vanilla prompt instead of calling out to uname
+- now calling _git_prompt from bash -- however, this feature is not working 100%
+
+### Removed
+- .profile.d/alias.general
+- .profile.d/profile.Linux
+
+### Fixed
+- dusort alias had some issues w/directories which didn't match both globs
+- no longer blanket exporting all functions in Bash, instead these are explicitly
+exported when declared via 'declare -fx'. POSIX shells will complain, but those
+complaints are sent to /dev/null and will be dealt with there...
+
 ## [1.2.0] - 2016-10-07
 ### Added
 - real .zlogin/.zlogout
 - .zshenv, .zprofile (which is read *before* .zshrc, .zlogin is read *after*)
-- zsh profile files are now considered released
+- all zsh profile files [considered released]
 
 ### Changed
 - bring .zshrc in-line with previous work
@@ -63,6 +94,9 @@ more of a suggestion than anything else...
 ### Changed
 - more ISSET_ variables
 - many minor functions/variables/settings moved to more sensible locations
+
+### Deprecated
+- all .profile.d/[alias|profile].* files
 
 ### Removed
 - removed (mis-)use of SHELL
