@@ -186,6 +186,54 @@ mymemuse() {
 }
 command -v declare >/dev/null 2>&1 && declare -fx mymemuse 2>/dev/null
 
+#=== FUNCTION ==================================================================
+# NAME: extract
+# DESCRIPTION: one command alias to several different unarchivers
+#              originally from: https://gist.github.com/825ad8643dfe4a8f54e4+&cd=3&hl=en&ct=clnk&gl=us
+#    REQURIED: name of archive
+#===============================================================================
+extract () {
+    if [ -z "${1}" ]; then
+        printf "%s\n" 'Must provide archive name!'
+    elif [ -f "${1}" ] ; then
+      case "${1}" in
+        *.tar.bz2)   tar xjf "${1}"         ;;
+        *.tar.gz)    tar xzf "${1}"         ;;
+        *.tar.xz)    tar xJf "${1}"         ;;
+        *.tar.Z)     tar xZf "${1}"         ;;
+        *.bz2)       bunzip2 "${1}"         ;;
+        *.rar)       unrar e "${1}"         ;;
+        *.gz)        gunzip "${1}"          ;;
+        *.tar)       tar xf "${1}"          ;;
+        *.tbz2)      tar xjf "${1}"         ;;
+        *.tgz)       tar xzf "${1}"         ;;
+        *.zip)       unzip "${1}"           ;;
+        *.Z)         uncompress "${1}"      ;;
+        *.xz)        xz -d "${1}"   ;;
+        *.7z)        7z x "${1}"            ;;
+        *)     printf "%s\n" "'${1}' cannot be extracted via extract()." ;;
+         esac
+     else
+         printf "%s\n" "'${1}' is not a valid file!"
+     fi
+}
+command -v declare >/dev/null 2>&1 && declare -fx extract 2>/dev/null
+
+#=== FUNCTION ==================================================================
+# NAME: mans
+# DESCRIPTION: search a term in a manpage
+#              originally from: https://gist.github.com/825ad8643dfe4a8f54e4+&cd=3&hl=en&ct=clnk&gl=us
+#    REQURIED: manpage name & search term
+#===============================================================================
+mans () {
+    if [ "${#}" -ne 2 ]; then
+        printf "%s\n" 'Usage: mans <manpage> <searchterm>'
+    else
+        man "${1}" | grep -iC2 --color=always "${2}" | less
+    fi
+}
+command -v declare >/dev/null 2>&1 && declare -fx mans 2>/dev/null
+
 #===============================================================================
 #----------------------------------------------------------------------
 export ISSET_FUNCTIONS=1
