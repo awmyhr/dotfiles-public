@@ -16,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.2.1
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-12
+#     REVISION: 2016-10-14
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -98,7 +98,7 @@ manpathmunge() {
 #===============================================================================
 # This is originally from: http://blog.isonoe.net/post/2010/10/01/Split-a-string-by-character(s)-in-POSIX-shell
 splitvar() {
-    local string IFS
+    string IFS
  
     string="${1}"
     IFS="${2}"
