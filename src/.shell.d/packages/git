@@ -133,7 +133,7 @@ _git_prompt_status() {
 
     printf "%s" " ${STATUS}"                # Put a space at the beginning
 }
-declare -fx _git_prompt_status 1>/dev/null 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx _git_prompt_status 1>/dev/null 2>/dev/null
 
 #=== FUNCTION ==================================================================
 # NAME: _git_parse_dirty
@@ -155,7 +155,7 @@ _git_parse_dirty() {
         printf "%s" " ${c_pINFO}${s_CLEAN}"
     fi
 }
-declare -fx _git_parse_dirty 1>/dev/null 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx _git_parse_dirty 1>/dev/null 2>/dev/null
 
 #=== FUNCTION ==================================================================
 # NAME: _git_prompt
@@ -170,7 +170,7 @@ _git_prompt() {
         printf "%s" "${c_pDEBUG}‹${ref#refs/heads/}$(_git_parse_dirty)${c_pDEBUG}›"
     fi
 }
-declare -fx _git_prompt 1>/dev/null 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx _git_prompt 1>/dev/null 2>/dev/null
 
 #===============================================================================
 #----------------------------------------------------------------------
