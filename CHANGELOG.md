@@ -38,6 +38,12 @@ more of a suggestion than anything else...
 
 ### Security
 
+## [1.3.1] - 2016-10-14
+### Fixed
+- splitvar() declared a local variable (not supported in some shells)
+- whereis alias should be set if whereis *doesn't* exist, and the -all flag
+is not supported by some shells, so -a only
+
 ## [1.3.0] - 2016-10-13
 ### Added
 - time output formating for bash/zsh
