@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
+#      VERSION: 1.1.1
 #      CREATED: 2016-10-10
-#     REVISION: 2016-10-11
+#     REVISION: 2016-10-14
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -64,7 +64,7 @@ alias clr='clear;printf "%s\n" "${c_white}Currently logged into ${c_bold}$HOSTNA
 #----------------------------------------------------------------------
 #-- Conditional aliases
 #----------------------------------------------------------------------
-command -v whereis      >/dev/null 2>&1 && alias whereis='type -all'
+command -v whereis      >/dev/null 2>&1 || alias whereis='type -a'
 command -v shellcheck   >/dev/null 2>&1 && alias lint-sh='shellcheck'
 command -v phpcs        >/dev/null 2>&1 && alias lint-php='phpcs'
 command -v csslint      >/dev/null 2>&1 && alias lint-css='csslint'
