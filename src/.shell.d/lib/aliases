@@ -16,7 +16,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.1
+#      VERSION: 1.2.0
 #      CREATED: 2016-10-10
 #     REVISION: 2016-10-14
 #===============================================================================
@@ -30,6 +30,11 @@
 alias    ..='cd ..'
 alias   ...='cd ../..'
 alias  ....='cd ../../..'
+
+alias aliast='alias | grep -i '
+
+alias fname='find . -name '
+
 alias    ls='ls -F $LS_OPTS'
 alias    l.='ls -F $LS_OPTS -d .*'
 alias    l1='ls -F $LS_OPTS -1Ss'
@@ -38,21 +43,18 @@ alias    ll='ls -F $LS_OPTS -l'
 alias   lsa='ls -F $LS_OPTS -lA'
 alias   lln='ls -F $LS_OPTS -nA'
 alias  latr='ls -F $LS_OPTS -lAtr'
-if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
-    alias dusort='du -kscx (*|.[a-zA-Z0-9_]*) | sort -n'
-else
-    alias dusort='du -kscx .[[:alnum:]]* * 2>/dev/null |sort -n'
-fi
 
 alias  mkdir='mkdir -p'
 
 alias   psef='ps -ef'
-alias    psa='ps -eo "user,pid,ppid,%cpu,%mem,tty,stime,state,command"'
-alias    psg="psa | grep -v \"^\${LOGNAME} .* \${$} .* grep.*\" | grep "
-alias  psmem='ps -eo "user,pid,ppid,vsz,args"  |sort -rk4 | head '
-alias  pscpu='ps -eo "user,pid,ppid,%cpu,args" |sort -rk4 | head '
+alias    psa='ps -eo "user,pid,ppid,%cpu,%mem,state,start,time,tty,command"'
+alias    psm='ps -u "${USER}" -o "pid,ppid,%cpu,%mem,state,start,time,tty,command"'
+alias    psg='psa | grep -v "^\${USER} .* \${$} .* grep.*" | grep '
+alias   psgm='psm | grep -v           ".* \${$} .* grep.*" | grep '
+alias  psmem='ps -eo "user,pid,ppid,state,vsz,rss,time,args"   |sort -rk5 | head '
+alias  pscpu='ps -eo "user,pid,ppid,state,%cpu,time,args"  |sort -rk5 | head '
 
-alias      _="\${PROG_BECOME}"
+alias      _='${PROG_BECOME}'
 alias    ssu="_ su -"
 
 #----------------------------------------------------------------------
@@ -64,6 +66,12 @@ alias clr='clear;printf "%s\n" "${c_white}Currently logged into ${c_bold}$HOSTNA
 #----------------------------------------------------------------------
 #-- Conditional aliases
 #----------------------------------------------------------------------
+if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
+    alias dusort='du -kscx (*|.[a-zA-Z0-9_]*) | sort -n'
+else
+    alias dusort='du -kscx .[[:alnum:]]* * 2>/dev/null |sort -n'
+fi
+
 command -v whereis      >/dev/null 2>&1 || alias whereis='type -a'
 command -v shellcheck   >/dev/null 2>&1 && alias lint-sh='shellcheck'
 command -v phpcs        >/dev/null 2>&1 && alias lint-php='phpcs'
@@ -83,6 +91,25 @@ if command -v mkpasswd  >/dev/null 2>&1 ; then
 elif command -v passwd  >/dev/null 2>&1 ; then
     alias chpass=passwd
 fi
+
+if [ -f "${HOME}/.shell.d/lib/greeting" ] ; then
+    alias hi="${HOME}/.shell.d/lib/greeting"
+else
+    alias hi='uname -a'
+fi
+
+#----------------------------------------------------------------------
+#-- lsof stuff
+#----------------------------------------------------------------------
+command -v lsof         >/dev/null 2>&1 && {
+    alias lsof='_ lsof'                     # automagically execute sudo
+    alias lsock='lsof -i'                   # Display all open sockets (name)
+    alias lsocknum='lsof -i -P'             # Display all open sockets (number)
+    alias lsockU='lsof -nP | grep UDP'      # Display only open UDP sockets
+    alias lsockT='lsof -nP | grep TCP'      # Display only open TCP sockets
+    alias openPorts='lsof -i | grep LISTEN' # All listening connections
+    alias findPid='lsof -t -c'              # find pid(s) of specified process(es)
+}
 
 #----------------------------------------------------------------------
 #-- Perl stuff

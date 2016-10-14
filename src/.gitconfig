@@ -4,27 +4,62 @@
 [core]
      whitespace = fix,space-before-tab,trailing-space
      excludesfile = ~/.gitignore
+     editor = vim
+     
 [color]
      ui = auto
      branch = auto
      diff = auto
+     grep = auto
+     interactive = auto
      status = auto
 
 [color "branch"]
      current = red reverse
      local = blue
+     ; plain = 
      remote = green
+     ; upstream = 
+
+[color "decorate"]
+     ; branch = 
+     ; HEAD = 
+     ; remoteBranch = 
+     ; stash = 
+     ; tag = 
 
 [color "diff"]
-     meta = yellow
+     ; commit = 
+     context = white
      frag = magenta
-     old = red bold
+     meta = yellow
      new = green
-     plain = white
+     old = red bold
+     ; whitespace = 
+
+[color "grep"]
+     ; context = 
+     ; filename = 
+     ; linenumber = 
+     ; match = 
+     ; matchContext = 
+     ; matchSelected = 
+     ; selected = 
+     ; seperator = 
+
+[color "interactive"]
+     ; error =
+     ; header =
+     ; help =
+     ; prompt =
 
 [color "status"]
      added = yellow
+     ; branch =
      changed = green
+     ; header = 
+     nobranch = red
+     ; unmerged = 
      untracked = cyan
 
 [alias]
@@ -68,7 +103,7 @@
      unmerged = diff --name-only --diff-filter=U
      unstage = reset -q HEAD --
 
-     # Others I've found
+     # Others I've found (from various, inc https://github.com/GitAlias/gitalias/blob/master/gitalias.txt )
      aliases = "!git config -l | grep alias | cut -c 7-"
      branchlist = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
      prune-all = "!git remote | xargs -n 1 git remote prune"
@@ -76,12 +111,16 @@
      whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
      whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
      wipe = "!git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard"
-
+     churn = "churn = !git log --all --find-copies --find-renames --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print "count\tfile"} {print $1 "\t" $2}' | sort -g"
+          #^^^ try git churn --since='1 month ago' app/ | tail
+     whois = "!sh -c 'git log --regexp-ignore-case -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+     
      # Some log/info aliases
      pipelog = log --pretty=format:"%h\\ %s\\ [%cn]"
      lasttag = describe --tags --abbrev=0
      log-fresh = log ORIG_HEAD.. --stat --no-merges
      log-standup = "!git log --since yesterday --author $(git config user.email) --pretty=short"
+     log-key = log --graph --topo-order --abbrev-commit --date=short --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset'
 
 [credential]
      helper = cache
