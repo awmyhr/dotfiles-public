@@ -8,7 +8,25 @@
 #-#
 
 #-# To Be executed inside the git repo - recommended to accept defaults
-git flow init
+#-#     NOTE: this can also be used to start a new git repo
+git flow init [-d]
+
+#-#
+#-# General - most <thing> have these options as well
+#-#     Where <thing> is [bugfix|feature|hotfix|release] 
+#-#
+
+#-# Publish a <thing> (publishes branch to remote server)
+git flow <thing> publish <thing-name>
+
+#-# Track a <thing> (pulls branch into local repo)
+git flow <thing> track <thing-name>
+
+#-# Show all changes in <thing-name> not in <develop>
+git flow <thing> diff [<thing-name>]
+
+#-# Switch to <thing> branch
+git flow <thing> checkout [<thing-name>]
 
 #-#
 #-# Features
@@ -16,12 +34,6 @@ git flow init
 
 #-# Start a feature (auto-branches from 'develop')
 git flow feature start <feature-name>
-
-#-# Publish a feature (publishes branch to remote server)
-git flow feature publish <feature-name>
-
-#-# Track a feature (pulls branch into local repo)
-git flow feature track <feature-name>
 
 #-# Finish a feature (merges changes to 'develop', removes branch)
 git flow feature finish <feature-name>
@@ -33,14 +45,8 @@ git flow feature finish <feature-name>
 #-# Start a release (auto-branches from 'develop', or the commit-hash in 'develop')
 git flow release start <release-name> [commit-hash]
 
-#-# Publish a release (publishes branch to remote server)
-git flow release publish <release-name>
-
-#-# Track a release (pulls branch into local repo)
-git flow release track <release-name>
-
 #-# Finish a release (merges changes to 'develop' and 'master', removes branch)
-git flow release finish <release-name> -p
+git flow release finish <release-name>
 
 #-#
 #-# Hotfixes
@@ -51,3 +57,13 @@ git flow hotfix start <hotfix-name> [branch]
 
 #-# Finish a hotfix (merges changes to 'develop' and 'master', removes branch)
 git flow hotfix finish <hotfix-name>
+
+#-#
+#-# Bugfix
+#-#
+
+#-# Start a bugfix (auto-branches from 'develop', or 'commit-hash' if given)
+git flow bugfix start <bugfix-name> [commit-hash]
+
+#-# Finish a bugfix (merges changes to 'develop', removes branch)
+git flow bugfix finish <bugfix-name>
