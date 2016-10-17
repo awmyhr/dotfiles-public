@@ -1,0 +1,69 @@
+#-#
+#-# Commands enable by the git-flow package
+#-#     Credit to: http://danielkummer.github.io/git-flow-cheatsheet
+#-#
+
+#-#
+#-# Enable a repo for git flow
+#-#
+
+#-# To Be executed inside the git repo - recommended to accept defaults
+#-#     NOTE: this can also be used to start a new git repo
+git flow init [-d]
+
+#-#
+#-# General - most <thing> have these options as well
+#-#     Where <thing> is [bugfix|feature|hotfix|release] 
+#-#
+
+#-# Publish a <thing> (publishes branch to remote server)
+git flow <thing> publish <thing-name>
+
+#-# Track a <thing> (pulls branch into local repo)
+git flow <thing> track <thing-name>
+
+#-# Show all changes in <thing-name> not in <develop>
+git flow <thing> diff [<thing-name>]
+
+#-# Switch to <thing> branch
+git flow <thing> checkout [<thing-name>]
+
+#-#
+#-# Features
+#-#
+
+#-# Start a feature (auto-branches from 'develop')
+git flow feature start <feature-name>
+
+#-# Finish a feature (merges changes to 'develop', removes branch)
+git flow feature finish <feature-name>
+
+#-#
+#-# Releases
+#-#
+
+#-# Start a release (auto-branches from 'develop', or the commit-hash in 'develop')
+git flow release start <release-name> [commit-hash]
+
+#-# Finish a release (merges changes to 'develop' and 'master', removes branch)
+git flow release finish <release-name>
+
+#-#
+#-# Hotfixes
+#-#
+
+#-# Start a hotfix (auto-branches from 'master', or 'branch' if given)
+git flow hotfix start <hotfix-name> [branch]
+
+#-# Finish a hotfix (merges changes to 'develop' and 'master', removes branch)
+git flow hotfix finish <hotfix-name>
+
+#-#
+#-# Bugfix
+#-#
+
+#-# Start a bugfix (auto-branches from 'develop', or 'commit-hash' if given)
+git flow bugfix start <bugfix-name> [commit-hash]
+
+#-# Finish a bugfix (merges changes to 'develop', removes branch)
+git flow bugfix finish <bugfix-name>
