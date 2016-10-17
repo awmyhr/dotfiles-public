@@ -7,6 +7,8 @@ and this project tries to adhere to [Semantic Versioning](http://semver.org/).
 Most files will have their own version number, project release numbers are 
 more of a suggestion than anything else...
 
+---
+
 ## TODO
 - refactor variables for uniformity
     - c_  colors
@@ -25,6 +27,8 @@ more of a suggestion than anything else...
 - optimize functions for bash and zsh
 - 'build' system, probably using make
 
+---
+
 ## [Unreleased]
 ### Added
 
@@ -37,6 +41,27 @@ more of a suggestion than anything else...
 ### Fixed
 
 ### Security
+
+---
+
+## [1.3.2] - 2016-10-17
+### Added
+- git-flow cheatsheet for SublimeText "Cheatsheet" plugin
+- a bunch of new (hopefully useful) aliases
+- extract() to act as single entry point for several unarchivers
+- mans() to search a term in a manpage
+
+### Changed
+- tweaks/additions to ps related aliases
+- for exported functins, use a command -v instead of letting posix fail
+- removed unneeded call to ls in for loops for bashrc/zshrc
+
+### Removed
+- splitvar() is gone, too fragile see sysinfo protion of shellinit for replacement
+
+### Fixed
+- rolled back changes in git package which somehow found their way into the 
+wrong place (i.e., master and develop branches)
 
 ## [1.3.1] - 2016-10-14
 ### Fixed
