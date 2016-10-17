@@ -39,6 +39,7 @@ more of a suggestion than anything else...
 ### Changed
 - tweaks/additions to ps related aliases
 - for exported functins, use a command -v instead of letting posix fail
+- removed unneeded call to ls in for loops for bashrc/zshrc
 
 ### Deprecated
 
