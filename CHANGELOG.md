@@ -31,6 +31,21 @@ more of a suggestion than anything else...
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+---
+
+## [1.3.2] - 2016-10-17
+### Added
 - git-flow cheatsheet for SublimeText "Cheatsheet" plugin
 - a bunch of new (hopefully useful) aliases
 - extract() to act as single entry point for several unarchivers
@@ -41,18 +56,12 @@ more of a suggestion than anything else...
 - for exported functins, use a command -v instead of letting posix fail
 - removed unneeded call to ls in for loops for bashrc/zshrc
 
-### Deprecated
-
 ### Removed
 - splitvar() is gone, too fragile see sysinfo protion of shellinit for replacement
 
 ### Fixed
 - rolled back changes in git package which somehow found their way into the 
 wrong place (i.e., master and develop branches)
-
-### Security
-
----
 
 ## [1.3.1] - 2016-10-14
 ### Fixed
