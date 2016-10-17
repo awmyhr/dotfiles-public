@@ -39,6 +39,9 @@ more of a suggestion than anything else...
 ### Removed
 
 ### Fixed
+-'type <command>' was not working as expected in zshrc, this has been replaced
+with 'whence -w <command>'. Also, check for existance of command before doing a
+compdef
 
 ### Security
 
@@ -63,11 +66,15 @@ more of a suggestion than anything else...
 - rolled back changes in git package which somehow found their way into the 
 wrong place (i.e., master and develop branches)
 
+---
+
 ## [1.3.1] - 2016-10-14
 ### Fixed
 - splitvar() declared a local variable (not supported in some shells)
 - whereis alias should be set if whereis *doesn't* exist, and the -all flag
 is not supported by some shells, so -a only
+
+---
 
 ## [1.3.0] - 2016-10-13
 ### Added
@@ -99,6 +106,8 @@ is not supported by some shells, so -a only
 exported when declared via 'declare -fx'. POSIX shells will complain, but those
 complaints are sent to /dev/null and will be dealt with there...
 
+---
+
 ## [1.2.0] - 2016-10-07
 ### Added
 - real .zlogin/.zlogout
@@ -112,6 +121,8 @@ complaints are sent to /dev/null and will be dealt with there...
 ### Fixed
 - fixed loading BASHD ancillary scripts
 - put bash login stuff in the bash_login file
+
+---
 
 ## [1.1.0] - 2016-10-06
 ### Added
@@ -132,6 +143,8 @@ complaints are sent to /dev/null and will be dealt with there...
 ### Removed
 - removed (mis-)use of SHELL
 - no longer trying to second-guess system profiles (for PATH, etc)
+
+---
 
 ## [1.0.0] - 2016-10-04
 ### Added
