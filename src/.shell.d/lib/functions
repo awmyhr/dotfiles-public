@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.3.1
+#      VERSION: 1.3.2
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-14
+#     REVISION: 2016-10-17
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -89,24 +89,6 @@ manpathmunge() {
                 MANPATH="${1}:${MANPATH}"
             fi
     esac
-}
-
-#=== FUNCTION ==================================================================
-# NAME: splitvar
-# DESCRIPTION: split a series of words into different varaibles
-#       USAGE: splitvar "word list" ' ' VAR1 VAR2
-#===============================================================================
-# This is originally from: http://blog.isonoe.net/post/2010/10/01/Split-a-string-by-character(s)-in-POSIX-shell
-splitvar() {
-    IFSback="${IFS}"
- 
-    string="${1}"
-    IFS="${2}"
-    shift 2
-    read -r -- "$@" <<EOF
-$string
-EOF
-IFS="${IFSback}"
 }
 
 #=== FUNCTION ==================================================================

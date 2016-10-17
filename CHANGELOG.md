@@ -44,6 +44,7 @@ more of a suggestion than anything else...
 ### Deprecated
 
 ### Removed
+- splitvar() is gone, too fragile see sysinfo protion of shellinit for replacement
 
 ### Fixed
 
