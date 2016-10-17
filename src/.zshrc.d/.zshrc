@@ -14,7 +14,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.2.2
+#      VERSION: 2.2.3
 #      CREATED: ????-??-??
 #     REVISION: 2016-10-17
 #===============================================================================
@@ -93,7 +93,7 @@ fi
 #----------------------------------------------------------------------
 bindkey -v                                       # Use VIM bindings
 bindkey ' ' magic-space                          # History expansion on space
-if [[ $(type hh >/dev/null) == file ]]; then     # Bind Ctrl-r to history search
+if [[ "$(whence -w hh)" == 'hh: command' ]]; then # Bind Ctrl-r to history search
     function _hh { hh }                          # Create hh widget first
     zle -N _hh
     bindkey '^R' _hh
@@ -135,10 +135,12 @@ zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~
 # format: :completion::complete:dvips:option-o-1:files
 
 # _gnu_generic completion works with commands that understand std --help
-compdef _gnu_generic gcc
-compdef _gnu_generic r2
-compdef _gnu_generic gdb
-compdef _gnu_generic openssl
+[[ "$(whence -w gcc)"     == 'gcc: command' ]]     && compdef _gnu_generic gcc
+[[ "$(whence -w r2)"      == 'r2: command' ]]      && compdef _gnu_generic r2
+[[ "$(whence -w gdb)"     == 'gdb: command' ]]     && compdef _gnu_generic gdb
+[[ "$(whence -w ack)"     == 'ack: command' ]]     && compdef _gnu_generic ack
+[[ "$(whence -w openssl)" == 'openssl: command' ]] && compdef _gnu_generic openssl
+
 # format: compdef <function> <program>
 # also: _pids works for commands which expect a pid
 #   maybe other functions in /usr/share/zsh/5.2/functions/_gnu_generic
