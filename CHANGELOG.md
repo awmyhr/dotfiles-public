@@ -47,6 +47,8 @@ more of a suggestion than anything else...
 - splitvar() is gone, too fragile see sysinfo protion of shellinit for replacement
 
 ### Fixed
+- rolled back changes in git package which somehow found their way into the 
+wrong place (i.e., master and develop branches)
 
 ### Security
 
