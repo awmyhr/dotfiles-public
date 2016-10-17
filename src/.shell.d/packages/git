@@ -16,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.0.1
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-14
+#     REVISION: 2016-10-17
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -62,9 +62,8 @@ _git_prompt_status() {
     staged_A=0      # A*      ) staged & added
     staged_C=0      # C*      ) staged & copied
 
-    exec 3<&1
-    git status -b --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null
-    while IFS= read -u 3 -r line ;do       
+    git status -b --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null |
+    while IFS= read -r line; do       
         case "${line}" in
             \#\#*   ) [ "${state}" -eq 0 ] && \
                       case "${line}" in
@@ -123,7 +122,6 @@ _git_prompt_status() {
             *       ) STATUS="${STATUS}" ;;
         esac
     done
-    exec 3<&-
 
     if [ "${GITSTAT}" = 0 ]; then
         STATUS="${c_pINFO}${s_CLEAN}${STATUS}"
