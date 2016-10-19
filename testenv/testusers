@@ -3,7 +3,7 @@
 #
 #         FILE: testenv/testusers
 #
-#        USAGE: sudo testusers (del|add) (clean|default|test|all)
+#        USAGE: sudo testusers (del|add) (clean|default|old|test|all)
 #
 #  DESCRIPTION: Should be run as root to create or remove test users
 #
@@ -15,12 +15,13 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
+#      VERSION: 1.2.0
 #      CREATED: 2016-10-06
-#     REVISION: 2016-10-06
+#     REVISION: 2016-10-19
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
+#   TODO: add a 'update old' which will push older files to 'old' users
 #----------------------------------------------------------------------
 
 SRCFILES="/home/awmyhr/projects/dotfiles-public/src"
@@ -43,6 +44,26 @@ delclean() {
     userdel -f -r cfish    2>/dev/null && printf -- 'Removed: cfish\n'
     userdel -f -r ctmux    2>/dev/null && printf -- 'Removed: ctmux\n'
     userdel -f -r crc      2>/dev/null && printf -- 'Removed: crc\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: delold
+# DESCRIPTION: Remove the old users
+#===============================================================================
+delold() {
+    userdel -f -r odefault 2>/dev/null && printf -- 'Removed: odefault\n'
+    userdel -f -r obash    2>/dev/null && printf -- 'Removed: obash\n'
+    userdel -f -r osh      2>/dev/null && printf -- 'Removed: osh\n'
+    userdel -f -r odash    2>/dev/null && printf -- 'Removed: odash\n'
+    userdel -f -r oyash    2>/dev/null && printf -- 'Removed: oyash\n'
+    userdel -f -r ozsh     2>/dev/null && printf -- 'Removed: ozsh\n'
+    userdel -f -r oksh     2>/dev/null && printf -- 'Removed: oksh\n'
+    userdel -f -r omksh    2>/dev/null && printf -- 'Removed: omksh\n'
+    userdel -f -r ocsh     2>/dev/null && printf -- 'Removed: ocsh\n'
+    userdel -f -r otcsh    2>/dev/null && printf -- 'Removed: otcsh\n'
+    userdel -f -r ofish    2>/dev/null && printf -- 'Removed: ofish\n'
+    userdel -f -r otmux    2>/dev/null && printf -- 'Removed: otmux\n'
+    userdel -f -r orc      2>/dev/null && printf -- 'Removed: orc\n'
 }
 
 #=== FUNCTION ==================================================================
@@ -117,6 +138,40 @@ addclean() {
     useradd -u 9244 -b /home/clean -s /bin/rc       -m -U crc   2>/dev/null && \
                                                 printf -- 'created: crc\n'
     rm -Rf /home/clean/*/.[a-zA-Z]* 2>/dev/null && printf -- 'Clean users cleaned\n'
+}
+
+#=== FUNCTION ==================================================================
+# NAME: addold
+# DESCRIPTION: Add the clean users
+#===============================================================================
+addold() {
+    useradd -u 9100 -b /home/old -m -U odefault 2>/dev/null && \
+                                                printf -- 'created: odefault\n'
+    useradd -u 9110 -b /home/old -s /bin/bash     -m -U obash 2>/dev/null && \
+                                                printf -- 'created: obash\n'
+    useradd -u 9112 -b /home/old -s /bin/sh       -m -U osh   2>/dev/null && \
+                                                printf -- 'created: osh\n'
+    useradd -u 9114 -b /home/old -s /bin/dash     -m -U odash 2>/dev/null && \
+                                                printf -- 'created: odash\n'
+    useradd -u 9116 -b /home/old -s /bin/yash     -m -U oyash 2>/dev/null && \
+                                                printf -- 'created: oyash\n'
+    useradd -u 9118 -b /home/old -s /bin/zsh      -m -U ozsh  2>/dev/null && \
+                                                printf -- 'created: ozsh\n'
+    useradd -u 9120 -b /home/old -s /bin/ksh      -m -U oksh  2>/dev/null && \
+                                                printf -- 'created: oksh\n'
+    useradd -u 9122 -b /home/old -s /bin/mksh     -m -U omksh 2>/dev/null && \
+                                                printf -- 'created: omksh\n'
+    useradd -u 9130 -b /home/old -s /bin/csh      -m -U ocsh  2>/dev/null && \
+                                                printf -- 'created: ocsh\n'
+    useradd -u 9132 -b /home/old -s /bin/tcsh     -m -U otcsh 2>/dev/null && \
+                                                printf -- 'created: otcsh\n'
+    useradd -u 9140 -b /home/old -s /usr/bin/fish -m -U ofish 2>/dev/null && \
+                                                printf -- 'created: ofish\n'
+    useradd -u 9142 -b /home/old -s /bin/tmux     -m -U otmux 2>/dev/null && \
+                                                printf -- 'created: otmux\n'
+    useradd -u 9144 -b /home/old -s /bin/rc       -m -U orc   2>/dev/null && \
+                                                printf -- 'created: orc\n'
+    rm -Rf /home/old/*/.[a-zA-Z]* 2>/dev/null && printf -- 'old users cleaned\n'
 }
 
 #=== FUNCTION ==================================================================
@@ -220,6 +275,7 @@ usage() {
     printf "\n%s\n" "And GROUP is one of:"
     printf "\t%s\n" "clean   Users with no user profiles"
     printf "\t%s\n" "default Users with system default user profiles"
+    printf "\t%s\n" "old     Users with older user profiles"
     printf "\t%s\n" "test    Users where user profile testing will happen"
     printf "\t%s\n" "all     Do ACTION for all GROUPs"
     printf "\n%s\n" "NOTE: script must be executed as root"
@@ -229,6 +285,9 @@ case "${1}" in
     del) case "${2}" in
             clean)   init
                      delclean
+                ;;
+            old)     init
+                     delold
                 ;;
             default) init
                      deldefault
@@ -249,6 +308,9 @@ case "${1}" in
             clean)   init
                      addclean
                 ;;
+            old)     init
+                     addold
+                ;;
             default) init
                      adddefault
                 ;;
@@ -266,6 +328,10 @@ case "${1}" in
         ;;
     update) case "${2}" in
             clean)   init
+                     printf "%s\n" 'Update currently for test only.'
+                     printf "%s\n" 'No action taken.'
+                ;;
+            old)     init
                      printf "%s\n" 'Update currently for test only.'
                      printf "%s\n" 'No action taken.'
                 ;;
