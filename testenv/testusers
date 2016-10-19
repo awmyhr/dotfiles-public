@@ -15,7 +15,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.0
+#      VERSION: 1.2.1
 #      CREATED: 2016-10-06
 #     REVISION: 2016-10-19
 #===============================================================================
@@ -259,7 +259,7 @@ updatetest() {
 # DESCRIPTION: Add the t* users
 #===============================================================================
 init() {
-    [ ! "${UID}" = 0 ] && printf -- 'Must execute as root\n' && exit 77
+    [ ! "$(id -u)" = 0 ] && printf -- 'Must execute as root\n' && exit 77
 }
 
 #=== FUNCTION ==================================================================
