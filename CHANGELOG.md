@@ -31,8 +31,10 @@ more of a suggestion than anything else...
 
 ## [Unreleased]
 ### Added
+- tmux.conf
 
 ### Changed
+- alias 'ssu' now requires a user name, use 'ssr' for sudo to root
 
 ### Deprecated
 
