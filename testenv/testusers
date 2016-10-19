@@ -14,17 +14,17 @@
 #    OPTIONALS: ---
 #         BUGS: ---
 #        NOTES: ---
-#       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.1
-#      CREATED: 2016-10-06
-#     REVISION: 2016-10-19
 #===============================================================================
+AUTHOR='awmyhr (awmyhr@gmail.com)'
+VERSION='1.2.2'
+CREATED='2016-10-06'
+REVISION='2016-10-19'
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
-#   TODO: add a 'update old' which will push older files to 'old' users
+#   TODO: add an 'update old' which will push older files to 'old' users
 #----------------------------------------------------------------------
 
-SRCFILES="/home/awmyhr/projects/dotfiles-public/src"
+SRCFILES='/home/awmyhr/projects/dotfiles-public/src'
 
 #=== FUNCTION ==================================================================
 # NAME: delclean
@@ -276,10 +276,18 @@ usage() {
     printf "\t%s\n" "clean   Users with no user profiles"
     printf "\t%s\n" "default Users with system default user profiles"
     printf "\t%s\n" "old     Users with older user profiles"
-    printf "\t%s\n" "test    Users where user profile testing will happen"
+    printf "\t%s\n" "test    Users with current test user profiles"
     printf "\t%s\n" "all     Do ACTION for all GROUPs"
+    printf "\n%s\n" "Created: ${CREATED} By: ${AUTHOR}" 
+    printf "%s\n"   "Revised: ${REVISION} Version: ${VERSION}"
     printf "\n%s\n" "NOTE: script must be executed as root"
 }
+
+if [ "$#" -gt 2 ] || [ "$#" -eq 0 ];then
+    printf "%s\n" "Invalid number of arguments"
+    usage
+    exit 64
+fi
 
 case "${1}" in
     del) case "${2}" in
@@ -300,7 +308,7 @@ case "${1}" in
                      deldefault
                      deltest
                 ;;
-            *)       printf "%s\n\n" "${2} is an invalid group." && \
+            *)       printf "%s\n\n" "'${2}' is an invalid group." && \
                         usage && exit 64;;
          esac
         ;;
@@ -322,7 +330,7 @@ case "${1}" in
                      adddefault
                      addtest
                 ;;
-            *)       printf "%s\n\n" "${2} is an invalid group." && \
+            *)       printf "%s\n\n" "'${2}' is an invalid group." && \
                         usage && exit 64;;
          esac
         ;;
@@ -346,12 +354,12 @@ case "${1}" in
                      printf "%s\n" 'Update currently for test only.'
                      printf "%s\n" 'No action taken.'
                 ;;
-            *)       printf "%s\n\n" "${2} is an invalid group." && \
+            *)       printf "%s\n\n" "'${2}' is an invalid group." && \
                         usage && exit 64;;
          esac
         ;;
     -h|help)    usage && exit 0;;
-    -v|version) printf "%s\n" 'Version: 1.0.0-alpha' && exit 0;;
-    *)   printf "%s\n\n" "${1} is an invalid action." && usage && exit 64
+    -v|version) printf "%s\n" "Version: $VERSION" && exit 0;;
+    *)   printf "%s\n\n" "'${1}' is an invalid action." && usage && exit 64
         ;;
 esac
