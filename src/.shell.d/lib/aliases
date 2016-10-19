@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.0
+#      VERSION: 1.2.1
 #      CREATED: 2016-10-10
-#     REVISION: 2016-10-14
+#     REVISION: 2016-10-19
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -55,7 +55,8 @@ alias  psmem='ps -eo "user,pid,ppid,state,vsz,rss,time,args"   |sort -rk5 | head
 alias  pscpu='ps -eo "user,pid,ppid,state,%cpu,time,args"  |sort -rk5 | head '
 
 alias      _='${PROG_BECOME}'
-alias    ssu="_ su -"
+alias    ssr="_ -i"
+alias    ssu="_ -iu"
 
 #----------------------------------------------------------------------
 #-- 'new' command aliases
