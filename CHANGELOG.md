@@ -32,6 +32,7 @@ more of a suggestion than anything else...
 ## [Unreleased]
 ### Added
 - tmux.conf
+- loginspeedtest script to test speed of profiles upon login 
 
 ### Changed
 - alias 'ssu' now requires a user name, use 'ssr' for sudo to root
