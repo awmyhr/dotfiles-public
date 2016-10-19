@@ -35,6 +35,10 @@ more of a suggestion than anything else...
 
 ### Changed
 - alias 'ssu' now requires a user name, use 'ssr' for sudo to root
+- testusers:
+    - added meta info variables
+    - output improved
+    - now tests for too few/too many arguments
 
 ### Deprecated
 
