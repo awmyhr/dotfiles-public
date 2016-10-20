@@ -32,7 +32,6 @@ set editing-mode vi
 set horizontal-scroll-mode off
 set keyseq-timeout 500
 set mark-symlinked-directories on
-set prefer-visible-bell on
 set revert-all-at-newline off
 set show-mode-in-prompt off
 
