@@ -26,6 +26,7 @@ more of a suggestion than anything else...
 - optimize calling of variables/functions to take advantage of login vs subshells
 - optimize functions for bash and zsh
 - 'build' system, probably using make
+- git prompt status not working in bash
 
 ---
 
@@ -40,6 +41,7 @@ more of a suggestion than anything else...
     - added meta info variables
     - output improved
     - now tests for too few/too many arguments
+- inputrc overhauled, considered released
 
 ### Deprecated
 

@@ -1,53 +1,126 @@
-###############################################################################
-### General settings
-# Allow the command prompt to wrap to the next line
-set horizontal-scroll-mode Off
-# Show all completions as soon as I press tab, even if there's more than one
-set show-all-if-ambiguous on
-# Ignore case
-set completion-ignore-case on
+#===============================================================================
+#
+#         FILE: .inputrc
+#
+#        USAGE: (automagically loaded by Readline compatible programs)
+#
+#  DESCRIPTION: My personalized bash inputrc, based on tons of things I've
+#               found/learned over the years.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Readline compatible progream (such as Bash shell)
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-
+#      CREATED: ????-??-??
+#     REVISION: 2016-10-20
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- General Settings
+#----------------------------------------------------------------------
+set bell-style none
+set prefer-visible-bell off
+set bind-tty-special-chars on
+set blink-matching-paren on
+set byte-oriented off
+set editing-mode vi
+set horizontal-scroll-mode off
+set keyseq-timeout 500
+set mark-symlinked-directories on
+set prefer-visible-bell on
+set revert-all-at-newline off
+set show-mode-in-prompt off
+
+# Enable 8bit input (UTF-8)
+set input-meta on
+set meta-flag on
+# Turns off 8th bit stripping
+set convert-meta off
+# Keep the 8th bit for display
+set output-meta on
+
+#----------------------------------------------------------------------
+#-- Completion Oriented
+#----------------------------------------------------------------------
+set disable-completion off
 # Show files type in completions
 set colored-stats on
+set completion-display-width -1
+set completion-ignore-case on
+set completion-map-case off
+set completion-prefix-display-length 0
+set completion-query-items 20
+set match-hidden-files on
 # on menu-complete, 1st display common prefix, then cycle through options w/TAB
 set menu-complete-display-prefix on
+set page-completions on
+set print-completions-horizontally off
+# Show all completions as soon tab pressed, even if theres more than one
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set skip-completed-text off
+set visible-stats on
 
-###############################################################################
-### Use Vi, not Emacs, style editing
-###     from http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal
-set editing-mode vi
+#----------------------------------------------------------------------
+#-- Keybindings
+#----------------------------------------------------------------------
+# reload file
+"\C-x\C-r": re-read-init-file
 
-###############################################################################
-### Keymaps for when we're in command mode (e.g., after hitting ESC)
-set keymap vi-command
+$if mode=vi
+    #-- Keymaps for when we're in command mode (e.g., after hitting ESC)
+    set keymap vi-command
 
-# Insert the arguments from the last command
-"p": "i !!*\r"
+    # Insert the arguments from the last command
+    "p": "i !!*\r"
 
-# When hitting option-up/option-down, cycle through the previous commands
-# which start with the prefix you've entered, rather than just cycling through
-# the last entered commands.
-# In OS X's Terminal.app preferences, I have 'Use option as meta key' off, and
-# have mapped "option cursor up" to "\033\033[A" and "option cursor down" to
-# "\033\033[B".
-# Feel free to bind to whatever you want. Delete the first '\e' in the keymap
-# to set plain up/down to do a history search by default.
-"\e\e[A": history-search-backward
-"\e\e[B": history-search-forward
+    # When hitting option-up/option-down, cycle through the previous commands
+    # which start with the prefix you've entered, rather than just cycling through
+    # the last entered commands.
+    # In OS X's Terminal.app preferences, I have 'Use option as meta key' off, and
+    # have mapped "option cursor up" to "\033\033[A" and "option cursor down" to
+    # "\033\033[B".
+    # Feel free to bind to whatever you want. Delete the first '\e' in the keymap
+    # to set plain up/down to do a history search by default.
+    "\e\e[A": history-search-backward
+    "\e\e[B": history-search-forward
 
-###############################################################################
-### Keymaps for when we're in insert (i.e., typing stuff in) mode
-set keymap vi-insert
+    #-- Keymaps for when we're in insert (i.e., typing stuff in) mode
+    set keymap vi-insert
 
-# Pressing tab will list all completions & select the first one.
-# Pressing it again will cycle through available completions.
-TAB: menu-complete
-# Shift-TAB cycles completions backward
-"\e[Z": menu-complete-backward
+    # Pressing tab will list all completions & select the first one.
+    # Pressing it again will cycle through available completions.
+    "\t": menu-complete
+    # Shift-TAB cycles completions backward
+    "\e[Z": menu-complete-backward
 
-# Option-up/option-down should also apply to insert mode
-"\e\e[A": history-search-backward
-"\e\e[B": history-search-forward
+    # Option-up/option-down should also apply to insert mode
+    "\e\e[A": history-search-backward
+    "\e\e[B": history-search-forward
 
-# Needed because binding 'p' in command mode above wipes its insert mode
-# function, too. This fixes that, and will insert 'p' when you type 'p'.
-"p": self-insert
+    # Needed because binding 'p' in command mode above wipes its insert mode
+    # function, too. This fixes that, and will insert 'p' when you type 'p'.
+    "p": self-insert
+$endif
+
+#----------------------------------------------------------------------
+#-- Bash specific
+#----------------------------------------------------------------------
+$if Bash
+$endif
+
+#----------------------------------------------------------------------
+#-- Python specific
+#----------------------------------------------------------------------
+$if Python
+    TAB: complete
+$endif
+
+# IPython needs this to appear at the bottom of the
+# file for clear-screen to work
+set keymap vi
