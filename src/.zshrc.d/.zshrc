@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.2.3
+#      VERSION: 2.2.4
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-17
+#     REVISION: 2016-10-20
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -78,7 +78,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
     export PROMPT='---${c_pnorm}
-%{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m:%{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
+%{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m: %{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
 %{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
     export RPROMPT=''
 else
@@ -151,6 +151,6 @@ zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~
 REPORTTIME=60                     # report time if runs more than >60 seconds
 WATCH=all                         # watch for all login/logout events
 LOGCHECK=30                       # check for above every 30 seconds
-# format for watch/log, ex: 
+# format for watch/log, ex:
 # amyhr@:0 has logged on [pts/0] at 2016-10-07 18:14
 WATCHFMT="%(a:${c_blue}:${c_cyan})%n@%m has %B%a%b%(a:${c_blue}:${c_cyan}) [%l] at 20%D %T${c_norm}"
