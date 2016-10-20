@@ -32,6 +32,7 @@ more of a suggestion than anything else...
 
 ## [Unreleased]
 ### Added
+- Major: ansible deploymet, inspired in part by [Steven Loria](https://github.com/sloria/dotfiles)
 - tmux.conf
 - loginspeedtest script to test speed of profiles upon login 
 
