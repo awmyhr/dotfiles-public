@@ -12,7 +12,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0-
+#      VERSION: 1.0.1
 #      CREATED: ????-??-??
 #     REVISION: 2016-10-20
 #===============================================================================
@@ -54,7 +54,7 @@ set completion-display-width -1
 set completion-ignore-case on
 set completion-map-case off
 set completion-prefix-display-length 0
-set completion-query-items 20
+set completion-query-items 50
 set match-hidden-files on
 # on menu-complete, 1st display common prefix, then cycle through options w/TAB
 set menu-complete-display-prefix on
