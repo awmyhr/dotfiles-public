@@ -1,0 +1,20 @@
+# vi: set ft=yaml :
+
+local_user_home: "{{ '~' | expanduser }}"
+
+# Automagically populate git variables
+tasks: 
+
+  - shell: git rev-parse --show-toplevel
+    register: local_git_repo
+    ignore_errors: False
+
+  - shell: git config --get user.name
+    register: git_user
+    ignore_errors: False
+
+  - shell: git config --get user.email
+    register: git_email
+    ignore_errors: False
+
+full_name: ""
