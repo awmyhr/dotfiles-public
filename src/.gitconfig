@@ -5,7 +5,7 @@
      whitespace = fix,space-before-tab,trailing-space
      excludesfile = ~/.gitignore
      editor = vim
-     
+
 [color]
      ui = auto
      branch = auto
@@ -17,35 +17,35 @@
 [color "branch"]
      current = red reverse
      local = blue
-     ; plain = 
+     ; plain =
      remote = green
-     ; upstream = 
+     ; upstream =
 
 [color "decorate"]
-     ; branch = 
-     ; HEAD = 
-     ; remoteBranch = 
-     ; stash = 
-     ; tag = 
+     ; branch =
+     ; HEAD =
+     ; remoteBranch =
+     ; stash =
+     ; tag =
 
 [color "diff"]
-     ; commit = 
+     ; commit =
      context = white
      frag = magenta
      meta = yellow
      new = green
      old = red bold
-     ; whitespace = 
+     ; whitespace =
 
 [color "grep"]
-     ; context = 
-     ; filename = 
-     ; linenumber = 
-     ; match = 
-     ; matchContext = 
-     ; matchSelected = 
-     ; selected = 
-     ; seperator = 
+     ; context =
+     ; filename =
+     ; linenumber =
+     ; match =
+     ; matchContext =
+     ; matchSelected =
+     ; selected =
+     ; seperator =
 
 [color "interactive"]
      ; error =
@@ -57,9 +57,9 @@
      added = yellow
      ; branch =
      changed = green
-     ; header = 
+     ; header =
      nobranch = red
-     ; unmerged = 
+     ; unmerged =
      untracked = cyan
 
 [alias]
@@ -114,8 +114,9 @@
      churn = "churn = !git log --all --find-copies --find-renames --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print "count\tfile"} {print $1 "\t" $2}' | sort -g"
           #^^^ try git churn --since='1 month ago' app/ | tail
      whois = "!sh -c 'git log --regexp-ignore-case -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
-     
+
      # Some log/info aliases
+     root = rev-parse --show-toplevel
      pipelog = log --pretty=format:"%h\\ %s\\ [%cn]"
      lasttag = describe --tags --abbrev=0
      log-fresh = log ORIG_HEAD.. --stat --no-merges
