@@ -34,6 +34,10 @@ call plug#begin('~/.vim/plugged')
     " https://github.com/itchyny/lightline.vim
     Plug 'itchyny/lightline.vim'
 
+    " Super simple vim plugin to show the list of buffers in the command bar
+    " https://github.com/bling/vim-bufferline
+    Plug 'bling/vim-bufferline'
+
     " sensible.vim: universal set of defaults (hopefully) everyone can agree on
     " https://github.com/tpope/vim-sensible
     Plug 'tpope/vim-sensible'
