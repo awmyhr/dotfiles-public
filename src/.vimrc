@@ -30,10 +30,9 @@ call plug#begin('~/.vim/plugged')
     " https://github.com/tpope/vim-fugitive
     Plug 'tpope/vim-fugitive'
 
-    " Lean & mean status/tabline for vim that's light as air; REQ 7.2 (7.3 perferred)
-    " https://github.com/vim-airline/vim-airline
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    " A light and configurable statusline/tabline for Vim
+    " https://github.com/itchyny/lightline.vim
+    Plug 'itchyny/lightline.vim'
 
     " sensible.vim: universal set of defaults (hopefully) everyone can agree on
     " https://github.com/tpope/vim-sensible
@@ -67,52 +66,38 @@ set laststatus=2        " always show the status line
 set ruler               " always show current positions along the bottom
 
 " ------------------------------------------------------------------
-" Status Line Format
+" Built-in Status Line Format
 " ------------------------------------------------------------------
 " set statusline=%f\ %h%w%m%r\ %=%(%l,%c%V\ %=\ (%P)%) " close to default
 " set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P     " another close default
-set statusline=[%{strlen(&fenc)?&fenc:&enc}]%r%h%w\ %n:%<%f%m\ %y[%{&ff}]%=%(l:%l\/%L\ c:%c\ %=\ %P%)
-" Add %{fugitive#statusline()} to 'statusline' to get an indicator with the current branch in (surprise!) your statusline.
-" set statusline=[%{strlen(&fenc)?&fenc:&enc}]%r%h%w\ %n:%<%f%m\ %y[%{&ff}]\ %{fugitive#statusline()}%=%(l:%l\/%L\ c:%c\ %=\ %P%)
 
-" ------------------------------------------------------------------
-" Airline Settings
-" ------------------------------------------------------------------
-let g:airline_theme='solarized'
-
-let g:airline_section_b = '%{fugitive#statusline()}'
-let g:airline_section_c = '%t'
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
+if has('fugitive')
+    " Add %{fugitive#statusline()} to 'statusline' to get an indicator with the current branch in (surprise!) your statusline.
+    set statusline=%{fugitive#statusline()}\ %r\ %n:%<%f%m\ %=[%{&ff}][%{strlen(&fenc)?&fenc:&enc}]%y\ %P%%\ %l:%c
+else
+    set statusline=%r\ %n:%<%f%m\ %=[%{&ff}][%{strlen(&fenc)?&fenc:&enc}]%y\ %P%%\ %l:%c
 endif
 
-let g:airline_left_sep = '▶'
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = '◀'
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.maxlinenr = '☰'
-let g:airline_symbols.notexists = '∄'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" define short text to display for each mode (i.e, Normal, Insert, Command, etc)
-let g:airline_mode_map = {
-    \ '__' : '-',
-    \ 'n'  : 'N',
-    \ 'i'  : 'I',
-    \ 'R'  : 'R',
-    \ 'c'  : 'C',
-    \ 'v'  : 'V',
-    \ 'V'  : 'V',
-    \ '^V' : 'V',
-    \ 's'  : 'S',
-    \ 'S'  : 'S',
-    \ '^S' : 'S',
-    \ }
-
+" ------------------------------------------------------------------
+" Lightline Status formats
+" ------------------------------------------------------------------
+"if has('lightline')
+    set noshowmode
+    let g:lightline={
+        \ 'colorscheme': 'solarized',
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ],
+        \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+        \   },
+        \ 'component': {
+        \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
+        \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+        \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+        \   },
+        \ 'component_visible_condition': {
+        \   'readonly': '(&filetype!="help"&& &readonly)',
+        \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+        \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+        \   },
+        \ }
+"endif
