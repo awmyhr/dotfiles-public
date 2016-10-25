@@ -62,6 +62,10 @@ silent! if plug#begin('~/.vim/plugged')
     " https://github.com/tpope/vim-sensible
     Plug 'tpope/vim-sensible'
 
+    " An extension of sensible-vim
+    " https://github.com/rstacruz/vim-opinion
+    Plug 'rstacruz/vim-opinion'
+
     " EditorConfig -- only if python support detected;
     " https://github.com/editorconfig/editorconfig-vim
     if has('python') ||  has('python3')
@@ -92,11 +96,12 @@ set ruler               " always show current positions along the bottom
 
 " ------------------------------------------------------------------
 " Temporary/Auxillary Files
+"   Make sure directories exist
 " ------------------------------------------------------------------
-set backupdir=/tmp//,.
-set directory=/tmp//,.
+set backupdir=$HOME/.vim/.backup//,.
+set directory=$HOME/.vim/.swap//,.
 if v:version >= 703
-  set undodir=/tmp//,.
+  set undodir=$HOME/.vim/.undo//,.
 endif
 
 " ------------------------------------------------------------------
