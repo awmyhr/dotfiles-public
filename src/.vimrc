@@ -1,8 +1,28 @@
-" ----------------------------------------------------------------------
-"   awmyhr
-"   vimrc
-"   Modified: 2016-10-24
-" ----------------------------------------------------------------------
+"===============================================================================
+"
+"         FILE: .vimrc
+"
+"        USAGE: (automagically loaded by vim)
+"
+"  DESCRIPTION: My personalized vim profile, based on tons of things I've
+"               found/learned over the years.
+"
+"      OPTIONS: ---
+" REQUIREMENTS: vim 7.x
+"               git
+"    OPTIONALS: ---
+"         BUGS: ---
+"        NOTES: ---
+"       AUTHOR: awmyhr, awmyhr@gmail.com
+"      VERSION: 1.0.0-alpha
+"      CREATED: 2016-10-24
+"     REVISION: 2016-10-25
+"===============================================================================
+"----------------------------------------------------------------------
+"-- Notes/known bugs/other issues
+"       Does not fail gracefully
+"       Don't really want to auto-download vim-plug
+"----------------------------------------------------------------------
 
 set nocompatible                " explicitly leave vi-compatibility mode
                                 " (must be first as may impact options below)
@@ -44,7 +64,7 @@ call plug#begin('~/.vim/plugged')
 
     " EditorConfig -- only if python support detected;
     " https://github.com/editorconfig/editorconfig-vim
-    if has('python')
+    if has('python') ||  has('python3')
         Plug 'editorconfig/editorconfig-vim'
     endif
 
