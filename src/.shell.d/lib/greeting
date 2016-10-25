@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-04
+#     REVISION: 2016-10-25
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -30,8 +30,8 @@ printf "%s\n" "${c_white}You're logged into ${c_bold}$HOSTNAME${c_norm}${c_white
 printf "\t%s\n" "${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}"
 printf "\t%s\n" " ${c_white}${c_bold}Shell:${c_norm} ${c_purple}${SHELLSTRING}${c_norm}"
 printf "\t%s\n" " ${c_white}${c_bold}Pager:${c_norm} ${c_purple}${PAGER}${c_norm}"
-printf "\t%s\n" "${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR}${c_norm}"
-printf "\t%s\n" "   ${c_white}${c_bold}VCS:${c_norm} ${c_purple}${DEFAULT_VCS}${c_norm}"
+printf "\t%s\n" "${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR} (${EDITOR_VERSION})${c_norm}"
+printf "\t%s\n" "   ${c_white}${c_bold}VCS:${c_norm} ${c_purple}${DEFAULT_VCS} (${DEFAULT_VCS_VERSION})${c_norm}"
 
 # Print the Discordian date.
 command -v ddate >/dev/null 2>&1 && {
