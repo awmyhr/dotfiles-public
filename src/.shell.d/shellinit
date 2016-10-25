@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.3
+#      VERSION: 1.2.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-17
+#     REVISION: 2016-10-25
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -41,6 +41,8 @@ umask 022
 [ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
     [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
        . "${SHELLD}/packages/${DEFAULT_VCS}"
+    DEFAULT_VCS_VERSION=$(${DEFAULT_VCS} --version 2>/dev/null)
+    export DEFAULT_VCS_VERSION
 }
 
 #----------------------------------------------------------------------
@@ -104,7 +106,9 @@ command -v sublime_text >/dev/null 2>&1 && {
     alias st='sublime_text'
 }
 
-export EDITOR VISUAL
+EDITOR_VERSION=$(${EDITOR} --version 2>/dev/null)
+
+export EDITOR VISUAL EDITOR_VERSION
 
 if command -v less >/dev/null 2>&1 ; then
     export PAGER='less -FIMRSw -z-2'
