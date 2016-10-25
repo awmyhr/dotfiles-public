@@ -25,7 +25,7 @@ more of a suggestion than anything else...
 - implement said themeing 
 - optimize calling of variables/functions to take advantage of login vs subshells
 - optimize functions for bash and zsh
-- 'build' system, probably using make
+- build/deploy system using ansible
 - git prompt status not working in bash
 
 ---
@@ -33,7 +33,8 @@ more of a suggestion than anything else...
 ## [Unreleased]
 ### Added
 - tmux.conf
-- loginspeedtest script to test speed of profiles upon login 
+- loginspeedtest script to test speed of profiles upon login
+- vimrc
 
 ### Changed
 - alias 'ssu' now requires a user name, use 'ssr' for sudo to root
