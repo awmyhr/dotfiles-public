@@ -36,6 +36,7 @@ more of a suggestion than anything else...
 - loginspeedtest script to test speed of profiles upon login
 - vimrc
 - variables to hold default editor/vcs version, and display in greeting
+- adding vim-plug subtree
 
 ### Changed
 - alias 'ssu' now requires a user name, use 'ssr' for sudo to root
@@ -46,6 +47,7 @@ more of a suggestion than anything else...
 - inputrc overhauled, considered released
 
 ### Deprecated
+- will be removing the eidtorconfig-vim subtree
 
 ### Removed
 

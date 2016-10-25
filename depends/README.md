@@ -4,9 +4,9 @@ These are projects I intend to use to some extent with little or no modification
 ---
 ## Projects Subtreed
 
-[EditorConfig plugin for VIM](https://github.com/editorconfig/editorconfig-vim)
+[vim-plug minimalist Vim plugin manager](https://github.com/junegunn/vim-plug)
 
-    git subtree add --prefix depends/vim/editorconfig-vim git@github.com:editorconfig/editorconfig-vim.git master --squash
+    git subtree add --prefix depends/vim-plug git@github.com:junegunn/vim-plug.git master --squash
 
 [The Solarized Project](https://github.com/altercation/solarized)
 
@@ -27,3 +27,8 @@ These are projects I intend to use to some extent with little or no modification
 I basically re-wrote this to the point it's unrecognizable
 
     git subtree add --prefix depends/misc git@gist.github.com:8ba3f51313c1781cc571.git master --squash
+
+[EditorConfig plugin for VIM](https://github.com/editorconfig/editorconfig-vim)
+Vim pluigns will now be managed by vim-plug
+
+    git subtree add --prefix depends/vim/editorconfig-vim git@github.com:editorconfig/editorconfig-vim.git master --squash
