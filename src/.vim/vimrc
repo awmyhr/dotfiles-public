@@ -31,16 +31,16 @@ set nocompatible                " explicitly leave vi-compatibility mode
 " Setup Plugin Support
 " Download the vim-plug manager if it doesn't exist already
 " ------------------------------------------------------------------
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
-endif
+"if empty(glob('~/.vim/autoload/plug.vim'))
+"  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+"    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"  autocmd VimEnter * PlugInstall | source $MYVIMRC
+"endif
 
 " ----------------------------------------------------------------------
 " Load Plugins
 " ------------------------------------------------------------------
-call plug#begin('~/.vim/plugged')
+silent! if plug#begin('~/.vim/plugged')
 
     " Solarized Color Scheme for Vim
     " https://github.com/altercation/vim-colors-solarized
@@ -69,6 +69,7 @@ call plug#begin('~/.vim/plugged')
     endif
 
 call plug#end()
+endif
 
 " ------------------------------------------------------------------
 " Colors/Syntax
@@ -90,17 +91,20 @@ set laststatus=2        " always show the status line
 set ruler               " always show current positions along the bottom
 
 " ------------------------------------------------------------------
+" Temporary/Auxillary Files
+" ------------------------------------------------------------------
+set backupdir=/tmp//,.
+set directory=/tmp//,.
+if v:version >= 703
+  set undodir=/tmp//,.
+endif
+
+" ------------------------------------------------------------------
 " Built-in Status Line Format
 " ------------------------------------------------------------------
 " set statusline=%f\ %h%w%m%r\ %=%(%l,%c%V\ %=\ (%P)%) " close to default
 " set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P     " another close default
-
-if has('fugitive')
-    " Add %{fugitive#statusline()} to 'statusline' to get an indicator with the current branch in (surprise!) your statusline.
-    set statusline=%{fugitive#statusline()}\ %r\ %n:%<%f%m\ %=[%{&ff}][%{strlen(&fenc)?&fenc:&enc}]%y\ %P%%\ %l:%c
-else
-    set statusline=%r\ %n:%<%f%m\ %=[%{&ff}][%{strlen(&fenc)?&fenc:&enc}]%y\ %P%%\ %l:%c
-endif
+set statusline=%{exists('g:loaded_fugitive')?fugitive#statusline():''}%r\ %n:%<%f%m\ %=[%{&ff}][%{strlen(&fenc)?&fenc:&enc}]%y\ %P%%\ %l:%c
 
 " ------------------------------------------------------------------
 " Lightline Status formats
