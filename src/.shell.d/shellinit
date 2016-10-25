@@ -15,7 +15,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.0
+#      VERSION: 1.2.1
 #      CREATED: 2016-09-28
 #     REVISION: 2016-10-25
 #===============================================================================
@@ -41,7 +41,7 @@ umask 022
 [ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
     [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
        . "${SHELLD}/packages/${DEFAULT_VCS}"
-    DEFAULT_VCS_VERSION=$(${DEFAULT_VCS} --version 2>/dev/null)
+    DEFAULT_VCS_VERSION=$(${DEFAULT_VCS} --version 2>/dev/null | head -1)
     export DEFAULT_VCS_VERSION
 }
 
@@ -106,7 +106,7 @@ command -v sublime_text >/dev/null 2>&1 && {
     alias st='sublime_text'
 }
 
-EDITOR_VERSION=$(${EDITOR} --version 2>/dev/null)
+EDITOR_VERSION=$(${EDITOR} --version 2>/dev/null | head -1)
 
 export EDITOR VISUAL EDITOR_VERSION
 
