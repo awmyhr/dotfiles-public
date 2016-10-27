@@ -13,9 +13,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
+#      VERSION: 1.1.1
 #      CREATED: 2016-10-05
-#     REVISION: 2016-10-11
+#     REVISION: 2016-10-27
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -32,7 +32,7 @@ export PROFILED="${HOME}/.profile.d"   # shell specific files
 [ "${0%%[a-z]*}" = "" ] && [ -r "${SHELLD}/shellinit" ] && . "${SHELLD}/shellinit"
 
 #----------------------------------------------------------------------
-#-- Load ancillary bash configs if they exist
+#-- Load ancillary shell configs if they exist
 #----------------------------------------------------------------------
 for i in ${PROFILED}/*.sh; do
     [ -r "$i" ] && . "$i"
@@ -45,10 +45,12 @@ if [ "${ISSET_COLORS}" ]; then
     PS1='---${c_norm}
 ${s_posix}┌${c_ALERT}$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}${USER}${c_green}@${c_blue}${HOSTNAME}: ${c_yellow}$PWD${c_norm}
 ${s_posix}└${c_DEBUG} $(_vcs_prompt_char) $ ${c_norm}'
+    PS2="${c_yellow}${s_NEXT} ${c_pnorm}"
 else
     PS1='---
 P ($(uname -s)) ${USER}@$(hostname): $PWD
 P $ '
+    PS2='> '
 fi
 
-export PS1
+export PS1 PS2
