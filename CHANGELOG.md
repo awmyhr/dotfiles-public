@@ -37,6 +37,8 @@ more of a suggestion than anything else...
 - vimrc
 - variables to hold default editor/vcs version, and display in greeting
 - adding vim-plug subtree
+- list of window roles & types which should float in i3 
+- minorly decorated PS2 for zsh/bash/posix
 
 ### Changed
 - alias 'ssu' now requires a user name, use 'ssr' for sudo to root
@@ -45,6 +47,7 @@ more of a suggestion than anything else...
     - output improved
     - now tests for too few/too many arguments
 - inputrc overhauled, considered released
+- small tweak to the way branch name in git is found
 
 ### Deprecated
 - will be removing the eidtorconfig-vim subtree

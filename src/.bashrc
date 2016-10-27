@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.1.2
+#      VERSION: 2.1.3
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-17
+#     REVISION: 2016-10-27
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -63,12 +63,14 @@ if [[ "${ISSET_COLORS}" ]]; then
     PS1="---${c_pnorm}
 ${s_bash}┌${c_ALERT}\$(_return_code)${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h: ${c_yellow}\w \$(_git_prompt)${c_pnorm} 
 ${s_bash}└${c_pDEBUG}\041\! [${TTY}] \$(_vcs_prompt_char) \$${c_pnorm} "
+    PS2="${c_yellow}${s_NEXT} ${c_pnorm}"
 else
     PS1="---
 B (${OSTYPE}) \u@\h: \w 
 B \041\! \$ "
+    PS2='> '
 fi
-export PS1
+export PS1 PS2
 # Record each line of history right away instead of at the end of the session
 PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 

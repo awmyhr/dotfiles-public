@@ -13,9 +13,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.0
+#      VERSION: 1.2.1
 #      CREATED: 2016-09-30
-#     REVISION: 2016-10-24
+#     REVISION: 2016-10-27
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -24,7 +24,7 @@
 #----------------------------------------------------------------------
 #-- Special characters cribbed partly from LiquidPrompt
 #--   Fallback to ASCII if the term not Unicode-capable.
-#--   Currently 'fancy' symbols are only set for UTF-8 characters.
+#--   Currently 'fancy' symbols are only set for UTF-8 locale.
 #----------------------------------------------------------------------
 CHARMAP=$(locale -k LC_CTYPE | sed -n 's/^charmap="\(.*\)"/\1/p')
 if stringmatch "UTF-8" "${CHARMAP}"; then
@@ -51,6 +51,7 @@ if stringmatch "UTF-8" "${CHARMAP}"; then
     export s_DIRTY='✘'
     export s_DIVERGED='↕'
     export s_MODIFIED='✱'
+    export s_NEXT='→'
     export s_RENAMED='➜'
     export s_STAGED='●'
     export s_STASHED='✭'
@@ -89,6 +90,7 @@ else
     export s_DIRTY='D'
     export s_DIVERGED='S'
     export s_MODIFIED='*'
+    export s_NEXT='>'
     export s_RENAMED='>'
     export s_STAGED='S'
     export s_STASHED='s'

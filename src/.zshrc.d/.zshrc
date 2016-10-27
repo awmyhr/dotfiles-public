@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.2.4
+#      VERSION: 2.2.5
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-20
+#     REVISION: 2016-10-27
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -81,11 +81,13 @@ if [[ "${ISSET_COLORS}" ]]; then
 %{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m: %{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
 %{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
     export RPROMPT=''
+    export PS2='${c_yellow}%_ ${s_NEXT} ${c_pnorm}'
 else
     export PROMPT='---
 Z (${OSTYPE}) %n@%m: ${PWD/#$HOME/~}
 Z !%! [%l] %#$ '
     export RPROMPT=''
+    export PS2='%_ > '
 fi
 
 #----------------------------------------------------------------------
