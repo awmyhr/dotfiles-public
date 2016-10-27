@@ -27,6 +27,11 @@ more of a suggestion than anything else...
 - optimize functions for bash and zsh
 - build/deploy system using ansible
 - git prompt status not working in bash
+- script templates
+- break down bash prompt building into a more 'complex' process, then work out posix
+and zsh versions. prompt should take queue from vim statusline
+- audit all variables to ensure there is no code in them per [BashFAQ 050](http://mywiki.wooledge.org/BashFAQ/050)
+unless there's a gosh-darned-good reason for it.
 
 ---
 
