@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.1
+#      VERSION: 1.0.2
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-17
+#     REVISION: 2016-10-27
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -161,11 +161,11 @@ command -v declare >/dev/null 2>&1 && declare -fx _git_parse_dirty 1>/dev/null 2
 #              (originally from .oh-my-zsh/lib/git.zsh)
 #===============================================================================
 _git_prompt() {
-    ref=$(git symbolic-ref HEAD 2>/dev/null) || return
+    ref=$(git symbolic-ref --quiet --short HEAD 2>/dev/null) || return
     if [ "${VCS_DETAILED_STATUS}" = "true" ]; then
-        printf "%s" "${c_pDEBUG}‹${ref#refs/heads/}$(_git_prompt_status)${c_pDEBUG}›"
+        printf "%s" "${c_pDEBUG}‹${ref}$(_git_prompt_status)${c_pDEBUG}›"
     else
-        printf "%s" "${c_pDEBUG}‹${ref#refs/heads/}$(_git_parse_dirty)${c_pDEBUG}›"
+        printf "%s" "${c_pDEBUG}‹${ref}$(_git_parse_dirty)${c_pDEBUG}›"
     fi
 }
 command -v declare >/dev/null 2>&1 && declare -fx _git_prompt 1>/dev/null 2>/dev/null
