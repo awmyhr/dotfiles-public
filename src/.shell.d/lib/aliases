@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.1
+#      VERSION: 1.2.2
 #      CREATED: 2016-10-10
-#     REVISION: 2016-10-19
+#     REVISION: 2016-11-03
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -78,6 +78,7 @@ command -v shellcheck   >/dev/null 2>&1 && alias lint-sh='shellcheck'
 command -v phpcs        >/dev/null 2>&1 && alias lint-php='phpcs'
 command -v csslint      >/dev/null 2>&1 && alias lint-css='csslint'
 command -v ping         >/dev/null 2>&1 && alias ping='ping -c 5'
+command -v screenfetch  >/dev/null 2>&1 && alias sf='screenfetch -c 61,33'
 
 if command -v hh        >/dev/null 2>&1 ; then
     alias h=hh
