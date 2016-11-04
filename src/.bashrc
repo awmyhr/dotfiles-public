@@ -53,24 +53,56 @@ if [[ "${ISSET_COLORS}" ]]; then
     export c_pDEBUG="\[${c_DEBUG}\]"
     export c_pnorm="\[${c_norm}\]"
 
-    if [[ ! -z ${SSH_TTY} ]]; then
-        TTY=${SSH_TTY}
-    elif [[ -z ${TTY} ]]; then
+    if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
+        TTY="${SSH_TTY}"
+        C_LOCATION="${c_cyan}"
+    else
+        C_LOCATION="${c_blue}"
+    fi
+
+    if [[ -z "${TTY}" ]]; then
         TTY=$(tty)
     fi
+
     TTY=${TTY#/dev/}
-    # \j = # of jobs ; \l basname of terminal device
-    PS1="---${c_pnorm}
-${s_bash}┌${c_ALERT}\$(exit_code=\"\${?}\" && [ \"\${exit_code}\" -ne 0 ] && printf -- \"\${exit_code} ↵\")${c_pnorm}${c_green}($UNAMES) ${c_blue}\u${c_green}@${c_blue}\h: ${c_yellow}\w \$(command -v _git_prompt >/dev/null && _git_prompt)${c_pnorm} 
-${s_bash}└${c_pDEBUG}\041\! [${TTY}] \$(command -v _vcs_prompt_char >/dev/null && _vcs_prompt_char) \$${c_pnorm} "
+
+    # Main Prompt line 1 -- Status info such as exit code, sudo user
+    PS1="${c_ALERT}"
+    PS1+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
+    PS1+="${c_pINFO}"
+    PS1+='$(if [ -z "${SUDO_USER}" ] ; then printf "%s" "---"; else printf "%s" "${SUDO_USER}"; fi)'
+    PS1+="---${c_pnorm}\n"
+    # Main Prompt line 2 -- host/current user/vcs info
+    PS1+="${s_bash}┌${c_pnorm}${c_green}($UNAMES) "
+    PS1+="${C_LOCATION}\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
+    PS1+='$(command -v _git_prompt >/dev/null && _git_prompt)'
+    PS1+=" ${c_pnorm}\n"
+    # Main Prompt line 3 -- command number, quick info/symbol
+    PS1+="${s_bash}└${c_pDEBUG}\041\! [${TTY}] "
+    PS1+='$(command -v _vcs_prompt_char >/dev/null && _vcs_prompt_char)'
+    PS1+=" \$ ${c_pnorm}"
+
+    # Secondary Prompt
     PS2="${c_yellow}${s_NEXT} ${c_pnorm}"
 else
-    PS1="---
-B (${OSTYPE}) \u@\h: \w 
-B \041\! \$ "
+    # Main Prompt line 1 -- Status info such as sudo
+    PS1='---\n'
+    # Main Prompt line 2 -- host/current user/vcs info
+    PS1+='B (${OSTYPE}) '
+    PS1+='\u@\h: \w \n'
+    # Main Prompt line 3 -- command number, quick info/symbol
+    PS1+='B \041\! \$ '
+
+    # Secondary Prompt
     PS2='> '
 fi
 export PS1 PS2
+
+# Update terminal title string
+# xterm*|vte*|rxvt*
+PROMPT_COMMAND='printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
+# screen*
+#PROMPT_COMMAND='printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
 # Record each line of history right away instead of at the end of the session
 PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 
