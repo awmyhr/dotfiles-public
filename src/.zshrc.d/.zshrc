@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.2.5
+#      VERSION: 2.2.6
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-27
+#     REVISION: 2016-11-22
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -59,6 +59,8 @@ unsetopt beep
 #----------------------------------------------------------------------
 #-- Prompt configuration
 #----------------------------------------------------------------------
+precmd () { printf '\033]0;%s@%s:%s\007' "${USER}" "${HOSTNAME}" "${PWD/#${HOME}/~}" }
+
 if [[ "${ISSET_COLORS}" ]]; then
     # Goint to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
     # zsh needs special formating for prompt colors
