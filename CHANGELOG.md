@@ -44,6 +44,7 @@ unless there's a gosh-darned-good reason for it.
 - adding vim-plug subtree
 - list of window roles & types which should float in i3 
 - minorly decorated PS2 for zsh/bash/posix
+- precmd for zsh to display user@host:pwd in terminal tital bar
 
 ### Changed
 - alias 'ssu' now requires a user name, use 'ssr' for sudo to root
