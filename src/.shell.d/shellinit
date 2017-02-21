@@ -52,7 +52,7 @@ umask 022
 [ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
 
 if [ -r "${SHELLD}/etc/paths" ]; then
-    while read line 
+    while read line
     do
         if [ -d "${line}" ]; then
             pathmunge "${line}" after
@@ -61,7 +61,7 @@ if [ -r "${SHELLD}/etc/paths" ]; then
 fi; unset line
 
 if [ -e "${SHELLD}/etc/manpaths" ]; then
-    while read line 
+    while read line
     do
         if [ -d "${line}" ]; then
             manpathmunge "${line}" after
@@ -83,6 +83,8 @@ EOF
     export UNAMES UNAMER PLATFORM
     [ -r "${SHELLD}/platform/${UNAMES}" ] && . "${SHELLD}/platform/${UNAMES}"
 }
+
+[ -r "${SHELLD}/location/${HOSTNAME}" ]    && . "${SHELLD}/location/${HOSTNAME}"
 
 #----------------------------------------------------------------------
 #-- Set up editor & pager variables
