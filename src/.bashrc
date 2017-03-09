@@ -74,6 +74,9 @@ if [[ "${ISSET_COLORS}" ]]; then
     PS1+="---${c_pnorm}\n"
     # Main Prompt line 2 -- host/current user/vcs info
     PS1+="${s_bash}┌${c_pnorm}${c_green}($UNAMES) "
+    # This is not working, since once user is changed the c_ vars are lost
+    # PS1+='$(if [ ${UID} -eq 0 ] ; then printf "%s" "${c_red}"; else printf "%s" "${C_LOCATION}"; fi)'
+    # PS1+="\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
     PS1+="${C_LOCATION}\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
     PS1+='$(command -v _git_prompt >/dev/null && _git_prompt)'
     PS1+=" ${c_pnorm}\n"
