@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.1
+#      VERSION: 1.3.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-25
+#     REVISION: 2017-03-09
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -43,6 +43,14 @@ umask 022
        . "${SHELLD}/packages/${DEFAULT_VCS}"
     DEFAULT_VCS_VERSION=$(${DEFAULT_VCS} --version 2>/dev/null | head -1)
     export DEFAULT_VCS_VERSION
+}
+
+command -v docker >/dev/null 2>&1 && {
+    [ -r "${SHELLD}/packages/docker" ] && \
+       . "${SHELLD}/packages/docker"
+    DOCKER_CLIENT_VERSION=$($docker version --format '{{.Client.Version}} 2>/dev/null')
+    DOCKER_SERVER_VERSION=$($docker version --format '{{.Server.Version}} 2>/dev/null')
+    export DOCKER_CLIENT_VERSION DOCKER_SERVER_VERSION
 }
 
 #----------------------------------------------------------------------
