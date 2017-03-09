@@ -48,8 +48,8 @@ umask 022
 command -v docker >/dev/null 2>&1 && {
     [ -r "${SHELLD}/packages/docker" ] && \
        . "${SHELLD}/packages/docker"
-    DOCKER_CLIENT_VERSION=$($docker version --format '{{.Client.Version}} 2>/dev/null')
-    DOCKER_SERVER_VERSION=$($docker version --format '{{.Server.Version}} 2>/dev/null')
+    DOCKER_CLIENT_VERSION=$(docker version --format '{{.Client.Version}} 2>/dev/null')
+    DOCKER_SERVER_VERSION=$(docker version --format '{{.Server.Version}} 2>/dev/null')
     export DOCKER_CLIENT_VERSION DOCKER_SERVER_VERSION
 }
 
