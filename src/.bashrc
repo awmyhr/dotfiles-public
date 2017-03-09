@@ -74,7 +74,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     PS1+="---${c_pnorm}\n"
     # Main Prompt line 2 -- host/current user/vcs info
     PS1+="${s_bash}┌${c_pnorm}${c_green}($UNAMES) "
-    # This is not working, since once user is changed the c_ vars are lost
+    # This is not working because once user is changed the c_ vars are lost
     # PS1+='$(if [ ${UID} -eq 0 ] ; then printf "%s" "${c_red}"; else printf "%s" "${C_LOCATION}"; fi)'
     # PS1+="\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
     PS1+="${C_LOCATION}\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
@@ -89,7 +89,10 @@ if [[ "${ISSET_COLORS}" ]]; then
     PS2="${c_yellow}${s_NEXT} ${c_pnorm}"
 else
     # Main Prompt line 1 -- Status info such as sudo
-    PS1='---\n'
+    PS1=''
+    PS1+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
+    PS1+='$(if [ -z "${SUDO_USER}" ] ; then printf "%s" "---"; else printf "%s" "${SUDO_USER}"; fi)'
+    PS1+="---\n"
     # Main Prompt line 2 -- host/current user/vcs info
     PS1+='B (${OSTYPE}) '
     PS1+='\u@\h: \w \n'
