@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.2
+#      VERSION: 1.0.4
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-27
+#     REVISION: 2017-03-09
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -32,7 +32,9 @@ alias g='git'
 # NOTE: this may not work in git versions older than 1.7.2
 # NOTE: the <() form of process substitution doesn't work in POSIX, thus we use
 #       <command> | while. This may cause issues with some shells, as the while
-#       loop is now run in a subshell, which may hide the variables
+#       loop is now run in a subshell, which may hide the variables. We can 
+#       get around that problem with <command> | { while }. As of now, I am not
+#       aware of any further problems with that...
 #===============================================================================
 _git_prompt_status() {
     IGNORE_SUBMODULES=''
@@ -62,74 +64,75 @@ _git_prompt_status() {
     staged_A=0      # A*      ) staged & added
     staged_C=0      # C*      ) staged & copied
 
-    git status -b --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null |
-    while IFS= read -r line; do       
-        case "${line}" in
-            \#\#*   ) [ "${state}" -eq 0 ] && \
-                      case "${line}" in
-                        *ahead* )    STATUS="${c_pDEBUG}${s_AHEAD}${STATUS} " ;;
-                        *behind* )   STATUS="${c_pCRIT}${s_BEHIND}${STATUS} " ;;
-                        *diverged* ) STATUS="${c_pEMERG}${s_DIVERGED}${STATUS} "  ;;
-                        * ) STATUS="${STATUS}" ;;
-                      esac
-                      state=$((state+1))  ;;
-            \?\?\ * ) [ "${unstaged_UT}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pNOTICE}${s_UNTRACKED}" 
-                      unstaged_M=$((unstaged_UT+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            UU\ *   ) [ "${unstaged_UM}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pCRIT}${s_UNMERGED}" 
-                      unstaged_M=$((unstaged_UM+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            \ D\ *  ) [ "${unstaged_D}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pCRIT}${s_DELETED}" 
-                      unstaged_M=$((unstaged_D+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
+    git status -b --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null | {
+      while IFS= read -r line; do       
+          case "${line}" in
+              \#\#*   ) [ "${state}" -eq 0 ] && \
+                        case "${line}" in
+                          *ahead* )    STATUS="${c_DEBUG}${s_AHEAD}${STATUS} " ;;
+                          *behind* )   STATUS="${c_CRIT}${s_BEHIND}${STATUS} " ;;
+                          *diverged* ) STATUS="${c_EMERG}${s_DIVERGED}${STATUS} "  ;;
+                          * ) STATUS="${STATUS}" ;;
+                        esac
+                        state=$((state+1))  ;;
+              \?\?\ * ) [ "${unstaged_UT}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_NOTICE}${s_UNTRACKED}" 
+                        unstaged_M=$((unstaged_UT+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              UU\ *   ) [ "${unstaged_UM}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_CRIT}${s_UNMERGED}" 
+                        unstaged_M=$((unstaged_UM+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              \ D\ *  ) [ "${unstaged_D}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_CRIT}${s_DELETED}" 
+                        unstaged_M=$((unstaged_D+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
 
-            \ M\ *  ) [ "${unstaged_M}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}" 
-                      unstaged_M=$((unstaged_M+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            AM\ *   ) [ "${unstaged_M}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}" 
-                      unstaged_M=$((unstaged_M+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            \ T\ *  ) [ "${unstaged_M}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pWARNING}${s_MODIFIED}" 
-                      unstaged_M=$((unstaged_M+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
+              \ M\ *  ) [ "${unstaged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_WARNING}${s_MODIFIED}" 
+                        unstaged_M=$((unstaged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              AM\ *   ) [ "${unstaged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_WARNING}${s_MODIFIED}" 
+                        unstaged_M=$((unstaged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              \ T\ *  ) [ "${unstaged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_WARNING}${s_MODIFIED}" 
+                        unstaged_M=$((unstaged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
 
-            D\ \ *  ) [ "${staged_D}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pINFO}${s_DELETED}" 
-                      staged_D=$((staged_D+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            R*      ) [ "${staged_R}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pINFO}${s_RENAMED}" 
-                      staged_R=$((staged_R+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            M*      ) [ "${staged_M}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pINFO}${s_MODIFIED}" 
-                      staged_M=$((staged_M+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            A*      ) [ "${staged_A}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pINFO}${s_ADDED}" 
-                      staged_A=$((staged_A+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            C*      ) [ "${staged_C}" -eq 0 ] && \
-                        STATUS="${STATUS}${c_pINFO}${s_COPIED}" 
-                      staged_C=$((staged_C+1))
-                      GITSTAT=$((GITSTAT+1))  ;;
-            *       ) STATUS="${STATUS}" ;;
-        esac
-    done
+              D\ \ *  ) [ "${staged_D}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_DELETED}" 
+                        staged_D=$((staged_D+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              R*      ) [ "${staged_R}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_RENAMED}" 
+                        staged_R=$((staged_R+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              M*      ) [ "${staged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_MODIFIED}" 
+                        staged_M=$((staged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              A*      ) [ "${staged_A}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_ADDED}" 
+                        staged_A=$((staged_A+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              C*      ) [ "${staged_C}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_COPIED}" 
+                        staged_C=$((staged_C+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              *       ) STATUS="${STATUS}" ;;
+          esac
+      done
 
-    if [ "${GITSTAT}" = 0 ]; then
-        STATUS="${c_pINFO}${s_CLEAN}${STATUS}"
-    else
-        STATUS="${c_pCRIT}${s_DIRTY}${STATUS}"
-    fi
+      if [ "${GITSTAT}" = 0 ]; then
+          STATUS="${c_INFO}${s_CLEAN}${STATUS}"
+      else
+          STATUS="${c_CRIT}${s_DIRTY}${STATUS}"
+      fi
 
-    printf "%s" " ${STATUS}"                # Put a space at the beginning
+      printf "%s" " ${STATUS}"                # Put a space at the beginning
+    }
 }
 command -v declare >/dev/null 2>&1 && declare -fx _git_prompt_status 1>/dev/null 2>/dev/null
 
@@ -148,9 +151,9 @@ _git_parse_dirty() {
                     IGNORE_UNTRACKED_FILES=$(printf -- " --untracked-files=no")
 
     if [ "$(git status --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null)" ]; then
-        printf "%s" " ${c_pCRIT}${s_DIRTY}"
+        printf "%s" " ${c_CRIT}${s_DIRTY}"
     else
-        printf "%s" " ${c_pINFO}${s_CLEAN}"
+        printf "%s" " ${c_INFO}${s_CLEAN}"
     fi
 }
 command -v declare >/dev/null 2>&1 && declare -fx _git_parse_dirty 1>/dev/null 2>/dev/null
@@ -163,9 +166,9 @@ command -v declare >/dev/null 2>&1 && declare -fx _git_parse_dirty 1>/dev/null 2
 _git_prompt() {
     ref=$(git symbolic-ref --quiet --short HEAD 2>/dev/null) || return
     if [ "${VCS_DETAILED_STATUS}" = "true" ]; then
-        printf "%s" "${c_pDEBUG}‹${ref}$(_git_prompt_status)${c_pDEBUG}›"
+        printf "%s" "${c_DEBUG}‹${ref}$(_git_prompt_status)${c_DEBUG}›"
     else
-        printf "%s" "${c_pDEBUG}‹${ref}$(_git_parse_dirty)${c_pDEBUG}›"
+        printf "%s" "${c_DEBUG}‹${ref}$(_git_parse_dirty)${c_DEBUG}›"
     fi
 }
 command -v declare >/dev/null 2>&1 && declare -fx _git_prompt 1>/dev/null 2>/dev/null

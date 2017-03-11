@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.1
+#      VERSION: 1.3.0
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-25
+#     REVISION: 2017-03-09
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -45,6 +45,14 @@ umask 022
     export DEFAULT_VCS_VERSION
 }
 
+command -v docker >/dev/null 2>&1 && {
+    [ -r "${SHELLD}/packages/docker" ] && \
+       . "${SHELLD}/packages/docker"
+    DOCKER_CLIENT_VERSION=$(docker version --format '{{.Client.Version}} 2>/dev/null')
+    DOCKER_SERVER_VERSION=$(docker version --format '{{.Server.Version}} 2>/dev/null')
+    export DOCKER_CLIENT_VERSION DOCKER_SERVER_VERSION
+}
+
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
 #----------------------------------------------------------------------
@@ -52,7 +60,7 @@ umask 022
 [ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
 
 if [ -r "${SHELLD}/etc/paths" ]; then
-    while read line 
+    while read line
     do
         if [ -d "${line}" ]; then
             pathmunge "${line}" after
@@ -61,7 +69,7 @@ if [ -r "${SHELLD}/etc/paths" ]; then
 fi; unset line
 
 if [ -e "${SHELLD}/etc/manpaths" ]; then
-    while read line 
+    while read line
     do
         if [ -d "${line}" ]; then
             manpathmunge "${line}" after
@@ -83,6 +91,8 @@ EOF
     export UNAMES UNAMER PLATFORM
     [ -r "${SHELLD}/platform/${UNAMES}" ] && . "${SHELLD}/platform/${UNAMES}"
 }
+
+[ -r "${SHELLD}/location/${HOSTNAME}" ]    && . "${SHELLD}/location/${HOSTNAME}"
 
 #----------------------------------------------------------------------
 #-- Set up editor & pager variables

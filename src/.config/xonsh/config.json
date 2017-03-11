@@ -1,0 +1,17 @@
+{
+    "env": {
+        "AUTO_CD": true,
+        "AUTO_PUSHD": true,
+        "SHELLD": "~/.shell.d",
+        "SHELL_TYPE": "best",
+        "XONSH_COLOR_STYLE": "lovelace",
+        "XONSHD": "~/.xonshrc.d",
+        "PROMPT_FIELDS": {
+            "header": "{ret_code_color}{ret_code}---{NO_COLOR}\n"
+        }
+    },
+
+    "xontribs": [
+        "prompt_ret_code"
+    ]
+}

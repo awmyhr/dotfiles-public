@@ -1,9 +1,18 @@
-# dotfiles-public
+# awmyhr's public dotfiles _(dotfiles-public)_
 
-Yet another .file repo...
+> Yet another .file repo...
 
+## Table of Contents
 
-## pre-1.0.0; aka 'What Has Come Before'
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [References](#references)
+- [Maintainers](#maintainers)
+- [Contribute](#contribute)
+- [License](#license)
+
+## Background
 
 Over the many years I've worked with many systems. From the old TI/99-4a to the
 newest release of Red Hat Enterprise Linux, I've strived to learn all I could not
@@ -35,6 +44,16 @@ I've dicided to use this particular 'fresh' start to re-version the entire proje
 as '1.0.0' and call everything before it an extended alpha/beta test. Feel free
 to poke around, use stuff, learn stuff, teach me stuff, and share alike...
 
+## Install
+
+```
+```
+
+## Usage
+
+```
+```
+
 ## References
 
 This project attempts to use/borrow from concepts and ideas I've seen from across
@@ -49,3 +68,17 @@ For reference, here are just some:
 - [Keep A Changelog](http://keepachangelog.com/en/0.3.0/)
 - [The Solarized Project](https://github.com/altercation/solarized)
 - [base16](http://chriskempson.com/projects/base16/)
+- [standard-readme](https://github.com/RichardLitt/standard-readme)
+
+## Maintaniers
+
+- awmyhr <awmyhr@gmail.com>
+
+## Contribute
+
+PRs accepted.
+
+## License
+
+{{ software_license|default("TODO: CHANGEME", true) }} © {{ software_copyright|default("TODO: CHANGEME", true) }}
+
