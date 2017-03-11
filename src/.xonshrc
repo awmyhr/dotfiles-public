@@ -1,0 +1,77 @@
+"""
+configuration file for xonsh
+"""
+
+def _set_prompt():
+    ''' Build a prompt '''
+    import os, sys, platform
+
+    unames = platform.system()
+    ttyname = os.ttyname(sys.__stdout__.fileno()).replace('/dev/','')
+
+    result = '{ret_code_color}{ret_code}---{NO_COLOR}\n'
+    result += 'X┌{GREEN}(' + unames + ') {BLUE}{user}@{hostname}: {YELLOW}{cwd}{NO_COLOR} {gitstatus: <{}>}{NO_COLOR}\n'
+    result += 'X└{BLUE}[' + ttyname + '] {prompt_end} {NO_COLOR}'
+
+    return result
+
+def _ddate():
+    ''' return ddate output'''
+    from subprocess import check_output, CalledProcessError
+
+    try:
+        return check_output(['ddate', "+Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H'"], universal_newlines=True)
+    except (OSError, CalledProcessError):
+        return
+
+def _fortune():
+    ''' return ddate output'''
+    from subprocess import check_output, CalledProcessError
+
+    try:
+        return check_output(['fortune', '-s'], universal_newlines=True)
+    except (OSError, CalledProcessError):
+        return
+
+def hi():
+    ''' Greetings '''
+    import os, sys, platform
+    from prompt_toolkit.shortcuts import print_tokens
+    from prompt_toolkit.styles import style_from_dict
+    from pygments.token import Token
+
+    style = style_from_dict({
+        Token.Purple: '#6c71c4',
+        Token.Cyan: '#2aa198',
+        Token.Blue: '#268bd2',
+        Token.White: '#fdf6e3',
+        Token.WhiteBold: '#fdf6e3 bold',
+    })
+
+    ddate = _ddate()
+    fortune = _fortune()
+    tokens = [
+        (Token.White, "You're logged into "),
+        (Token.WhiteBold, platform.node()),
+        (Token.White, " with:\n"),
+        (Token.WhiteBold, '       System: '),
+        (Token.Purple, '{} ({})\n'.format(platform.system(), platform.release())),
+        (Token.WhiteBold, '        Shell: '),
+        (Token.Purple, 'xonsh ({})\n'.format($XONSH_VERSION)),
+        (Token.WhiteBold, '        Pager: '),
+        (Token.Purple, '{}\n'.format($PAGER)),
+        (Token.WhiteBold, '       Editor: '),
+        (Token.Purple, '{}\n'.format($EDITOR)),
+        (Token.WhiteBold, '          VCS: '),
+        (Token.Purple, '{} ({})\n'.format($DEFAULT_VCS, $DEFAULT_VCS_VERSION)),
+        (Token.Cyan, '{}'.format(ddate)),
+        (Token.Blue, '{}'.format(fortune)),
+        (Token, '\n'),
+        (Token.Purple, 'May U Live 2 See The Dawn... \n'),
+    ]
+
+    print_tokens(tokens, style=style)
+
+$PROMPT = _set_prompt
+
+hi()
