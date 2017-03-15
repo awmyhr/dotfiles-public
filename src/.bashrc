@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.2.0
+#      VERSION: 2.3.0
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-09
+#     REVISION: 2017-03-15
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -78,11 +78,11 @@ if [[ "${ISSET_COLORS}" ]]; then
     # PS1+='$(if [ ${UID} -eq 0 ] ; then printf "%s" "${c_red}"; else printf "%s" "${C_LOCATION}"; fi)'
     # PS1+="\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
     PS1+="${C_LOCATION}\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
-    PS1+='$(command -v _git_prompt >/dev/null && _git_prompt)'
+    PS1+='${VCS_MESS}'
     PS1+=" ${c_pnorm}\n"
     # Main Prompt line 3 -- command number, quick info/symbol
     PS1+="${s_bash}└${c_pDEBUG}\041\! [${TTY}] "
-    PS1+='$(command -v _vcs_prompt_char >/dev/null && _vcs_prompt_char)'
+    PS1+='${VCS_CHAR}'
     PS1+=" \$ ${c_pnorm}"
 
     # Secondary Prompt
@@ -104,13 +104,22 @@ else
 fi
 export PS1 PS2
 
-# Update terminal title string
-# xterm*|vte*|rxvt*
-PROMPT_COMMAND='printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
-# screen*
-#PROMPT_COMMAND='printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
-# Record each line of history right away instead of at the end of the session
-PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
+_prompt_command() {
+    history -a
+    history -n
+    # Update terminal title string
+    # xterm*|vte*|rxvt*
+    printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+    # screen*
+    # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+    VCS_CHAR=$(_vcs_prompt_char)
+    if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
+        VCS_MESS=$(_git_prompt)
+    else
+        VCS_MESS=''
+    fi
+}
+PROMPT_COMMAND=_prompt_command
 
 #----------------------------------------------------------------------
 #-- Let's set some shell options...
