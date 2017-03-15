@@ -107,7 +107,6 @@ rtrav() {
 #               current directory is a repo for that command, and return
 #               a symbol (defined in shell.d/lib/symbols)
 #===============================================================================
-# need a solid, quick way to detect svn/fossil/darcs repos (copied and modified from some zsh thing)
 _vcs_prompt_char() {
     command -v git >/dev/null 2>&1 && {
         #[ "$(git rev-parse --is-inside-work-tree)" = 'true' ]
@@ -117,13 +116,13 @@ _vcs_prompt_char() {
         rtrav .hg "${PWD}" >/dev/null 2>&1  && printf -- "${s_HG}" && return
     }
     # command -v svn    >/dev/null 2>&1 && {
-    #     svn info >/dev/null 2>&1 && printf -- "${s_SVN}"    && return
+    #     rtrav .svn "${PWD}" >/dev/null 2>&1 && printf -- "${s_SVN}" && return
     # }
     # command -v fossil >/dev/null 2>&1 && {
-    #     fossil STATUS >/dev/null 2>&1 && printf -- "${s_FOSSIL}" && return
+    #     rtrav _FOSSIL_ "${PWD}" >/dev/null 2>&1 && printf -- "${s_FOSSIL}" && return
     # }
     # command -v darcs  >/dev/null 2>&1 && {
-    #     darcs  STATUS >/dev/null 2>&1 && printf -- "${s_DARCS}"  && return
+    #     rtrav _darcs "${PWD}" >/dev/null 2>&1 && printf -- "${s_DARCS}" && return
     # }
     printf -- "${s_NOVCS}"
 }
