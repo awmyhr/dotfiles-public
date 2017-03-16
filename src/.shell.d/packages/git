@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.0
+#      VERSION: 2.0.1
 #      CREATED: 2016-10-04
-#     REVISION: 2017-03-15
+#     REVISION: 2017-03-16
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -36,10 +36,16 @@ alias g='git'
 _git_prompt() {
     IGNORE_SUBMODULES=''
     IGNORE_UNTRACKED_FILES=''
-    [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
-                    IGNORE_SUBMODULES=$(printf -- " --ignore-submodules")
-    [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
-                    IGNORE_UNTRACKED_FILES=$(printf -- " --untracked-files=no")
+    # BUG: Very strange. When git is in a container, and run with exec in
+    #      this function with this command:
+    #      git status -b --porcelain --ignore-submodules
+    #      it will instead ignore untracked files. This does not happen 
+    #      running the same command from the command line (still using exec
+    #      to call it from a container.) No explination I can think of...
+    # [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
+    #                 IGNORE_SUBMODULES=$(printf -- " --ignore-submodules")
+    # [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
+    #                 IGNORE_UNTRACKED_FILES=$(printf -- " --untracked-files=no")
 
     GITSTAT=0
     STATUS=''
