@@ -26,10 +26,9 @@ more of a suggestion than anything else...
 - optimize calling of variables/functions to take advantage of login vs subshells
 - optimize functions for bash and zsh
 - build/deploy system using ansible
-- git prompt status not working in bash
 - script templates
-- break down bash prompt building into a more 'complex' process, then work out posix
-and zsh versions. prompt should take queue from vim statusline
+- standardize prompt building accross shells
+- prompt should take queue from vim statusline
 - audit all variables to ensure there is no code in them per [BashFAQ 050](http://mywiki.wooledge.org/BashFAQ/050)
 unless there's a gosh-darned-good reason for it.
 
@@ -54,6 +53,7 @@ unless there's a gosh-darned-good reason for it.
     - now tests for too few/too many arguments
 - inputrc overhauled, considered released
 - small tweak to the way branch name in git is found
+- reduced prompt call outs to git down to 1, and only if needed
 
 ### Deprecated
 - will be removing the eidtorconfig-vim subtree
@@ -64,6 +64,7 @@ unless there's a gosh-darned-good reason for it.
 -'type <command>' was not working as expected in zshrc, this has been replaced
 with 'whence -w <command>'. Also, check for existance of command before doing a
 compdef
+- git prompt status fully functional in Bash
 
 ### Security
 

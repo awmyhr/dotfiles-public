@@ -43,6 +43,7 @@ ShellTest() {
     done
     printf "\t%s\n" "Creating a strace..."
     strace -o "${LOGFILE}.trace.${TUSER}.$(date +%Y%m%d-%H%M%S)" -cf su - "${TUSER}" -c exit
+    #sudo strace -u <user> -o <file> -E HOME=<user-home> -qcf <command>
 }
 
 #=== FUNCTION ==================================================================

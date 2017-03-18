@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.2.6
+#      VERSION: 2.3.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-11-22
+#     REVISION: 2017-03-15
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -59,7 +59,15 @@ unsetopt beep
 #----------------------------------------------------------------------
 #-- Prompt configuration
 #----------------------------------------------------------------------
-precmd () { printf '\033]0;%s@%s:%s\007' "${USER}" "${HOSTNAME}" "${PWD/#${HOME}/~}" }
+precmd () {
+    printf '\033]0;%s@%s:%s\007' "${USER}" "${HOSTNAME}" "${PWD/#${HOME}/~}"
+    VCS_CHAR=$(_vcs_prompt_char)
+    if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
+        VCS_MESS=$(_git_prompt)
+    else
+        VCS_MESS=''
+    fi
+}
 
 if [[ "${ISSET_COLORS}" ]]; then
     # Goint to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
@@ -80,8 +88,8 @@ if [[ "${ISSET_COLORS}" ]]; then
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
     export PROMPT='---${c_pnorm}
-%{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m: %{${c_yellow}%}${PWD/#$HOME/~} $(_git_prompt)%E${c_pnorm}
-%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] $(_vcs_prompt_char) %#${c_pnorm} '
+%{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m: %{${c_yellow}%}${PWD/#$HOME/~} ${VCS_MESS}%E${c_pnorm}
+%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] ${VCS_CHAR} %#${c_pnorm} '
     export RPROMPT=''
     export PS2='${c_yellow}%_ ${s_NEXT} ${c_pnorm}'
 else

@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.3.2
+#      VERSION: 1.4.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-17
+#     REVISION: 2017-03-15
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -92,28 +92,37 @@ manpathmunge() {
 }
 
 #=== FUNCTION ==================================================================
+# NAME: rtrav
+# DESCRIPTION: reverse traverse directory structure looking for a file/directory
+#               originally from http://stackoverflow.com/questions/3585169/how-do-you-climb-up-the-parent-directory-structure-of-a-bash-script
+#       USAGE: rtrav [file|directory] [start_path]
+#===============================================================================
+rtrav() {
+    test -e $2/$1 && echo $2 || { test $2 != / && rtrav $1 `dirname $2`;};
+}
+
+#=== FUNCTION ==================================================================
 # NAME: _vcs_prompt_char
 # DESCRIPTION: This will detect the presence of a vcs command, check if the
 #               current directory is a repo for that command, and return
 #               a symbol (defined in shell.d/lib/symbols)
 #===============================================================================
-# need a solid, quick way to detect svn/fossil/darcs repos (copied and modified from some zsh thing)
 _vcs_prompt_char() {
     command -v git >/dev/null 2>&1 && {
         #[ "$(git rev-parse --is-inside-work-tree)" = 'true' ]
-        git branch >/dev/null 2>&1 && printf -- "${s_GIT}" && return
+        rtrav .git "${PWD}" >/dev/null 2>&1 && printf -- "${s_GIT}" && return
     }
     command -v hg  >/dev/null 2>&1 && {
-        hg  root   >/dev/null 2>&1 && printf -- "${s_HG}"  && return
+        rtrav .hg "${PWD}" >/dev/null 2>&1  && printf -- "${s_HG}" && return
     }
     # command -v svn    >/dev/null 2>&1 && {
-    #     svn info >/dev/null 2>&1 && printf -- "${s_SVN}"    && return
+    #     rtrav .svn "${PWD}" >/dev/null 2>&1 && printf -- "${s_SVN}" && return
     # }
     # command -v fossil >/dev/null 2>&1 && {
-    #     fossil STATUS >/dev/null 2>&1 && printf -- "${s_FOSSIL}" && return
+    #     rtrav _FOSSIL_ "${PWD}" >/dev/null 2>&1 && printf -- "${s_FOSSIL}" && return
     # }
     # command -v darcs  >/dev/null 2>&1 && {
-    #     darcs  STATUS >/dev/null 2>&1 && printf -- "${s_DARCS}"  && return
+    #     rtrav _darcs "${PWD}" >/dev/null 2>&1 && printf -- "${s_DARCS}" && return
     # }
     printf -- "${s_NOVCS}"
 }
