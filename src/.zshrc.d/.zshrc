@@ -14,7 +14,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.4.0
+#      VERSION: 2.4.1
 #      CREATED: ????-??-??
 #     REVISION: 2017-03-23
 #===============================================================================
@@ -117,7 +117,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     # Main Prompt line 3 -- command number, quick info/symbol
     PROMPT+="%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] "
     PROMPT+='${VCS_CHAR}'
-    PROMPT+=" \$ ${c_pnorm}"
+    PROMPT+=" %# ${c_pnorm}"
 
     # Secondary Prompt
     PS2="${c_yellow}%_ ${s_NEXT} ${c_pnorm}"
@@ -126,12 +126,11 @@ else
     PROMPT=''
     PROMPT+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
     PROMPT+='$(if [ -z "${SUDO_USER}" ] ; then printf "%s" "---"; else printf "%s" "${SUDO_USER}"; fi)'
-    PROMPT+="---${Z_NL}"
+    PROMPT+=$'---\n'
     # Main Prompt line 2 -- host/current user/vcs info
-    PROMPT+='Z (${OSTYPE}) '
-    PROMPT+='%n@%m: ${PWD/#$HOME/~}\n'
+    PROMPT+=$'Z (${OSTYPE}) %n@%m: %~\n'
     # Main Prompt line 3 -- command number, quick info/symbol
-    PROMPT+='Z !%! [%l] %#$ '
+    PROMPT+='Z !%! [%l] %# '
 
     # Secondary Prompt
     PS2='%_ > '
