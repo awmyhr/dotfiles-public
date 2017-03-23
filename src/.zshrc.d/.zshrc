@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.3.0
+#      VERSION: 2.4.0
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-15
+#     REVISION: 2017-03-23
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -60,7 +60,11 @@ unsetopt beep
 #-- Prompt configuration
 #----------------------------------------------------------------------
 precmd () {
-    printf '\033]0;%s@%s:%s\007' "${USER}" "${HOSTNAME}" "${PWD/#${HOME}/~}"
+    # Update terminal title string
+    # xterm*|vte*|rxvt*
+    printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+    # screen*
+    # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
     VCS_CHAR=$(_vcs_prompt_char)
     if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
         VCS_MESS=$(_git_prompt)
@@ -70,35 +74,69 @@ precmd () {
 }
 
 if [[ "${ISSET_COLORS}" ]]; then
-    # Goint to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
+    # Going to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
     # zsh needs special formating for prompt colors
-    c_pEMERG="%{${c_EMERG}%}"
-    c_pALERT="%{${c_ALERT}%}"
-    c_pCRIT="%{${c_CRIT}%}"
-    c_pERR="%{${c_ERR}%}"
-    c_pWARNING="%{${c_WARNING}%}"
-    c_pNOTICE="%{${c_NOTICE}%}"
-    c_pINFO="%{${c_INFO}%}"
-    c_pDEBUG="%{${c_DEBUG}%}"
-    c_pnorm="%{$c_norm%}"
+    export c_pEMERG="%{${c_EMERG}%}"
+    export c_pALERT="%{${c_ALERT}%}"
+    export c_pCRIT="%{${c_CRIT}%}"
+    export c_pERR="%{${c_ERR}%}"
+    export c_pWARNING="%{${c_WARNING}%}"
+    export c_pNOTICE="%{${c_NOTICE}%}"
+    export c_pINFO="%{${c_INFO}%}"
+    export c_pDEBUG="%{${c_DEBUG}%}"
+    export c_pnorm="%{$c_norm%}"
+
+    if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
+        C_LOCATION="${c_cyan}"
+    else
+        C_LOCATION="${c_blue}"
+    fi
+
     # %B sets bold, %b turns it off
     # %F{color} sets forground color, %f turns it off
     # %K(color} sets background color, $k turns it off
     # %{ and %} tell zsh to not count characters inbetween
     # %n username, %m hostname
     # see http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html for more
-    export PROMPT='---${c_pnorm}
-%{%K{${c_black}}%}${s_zsh}┌${c_pALERT}$(_return_code)%{%b%K{${c_black}}${c_green}%}($UNAMES) %{${c_blue}%}%n%{${c_green}%}@%{${c_blue}%}%m: %{${c_yellow}%}${PWD/#$HOME/~} ${VCS_MESS}%E${c_pnorm}
-%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] ${VCS_CHAR} %#${c_pnorm} '
-    export RPROMPT=''
-    export PS2='${c_yellow}%_ ${s_NEXT} ${c_pnorm}'
+    Z_NL=$'\n'
+
+    # Main Prompt line 1 -- Status info such as exit code, sudo user
+    PROMPT="${c_ALERT}"
+    PROMPT+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
+    PROMPT+="${c_pINFO}"
+    PROMPT+='$(if [ -z "${SUDO_USER}" ] ; then printf "%s" "---"; else printf "%s" "${SUDO_USER}"; fi)'
+    PROMPT+="---${c_pnorm}${Z_NL}"
+    # Main Prompt line 2 -- host/current user/vcs info
+    PROMPT+="%{%K{${c_black}}%}${s_zsh}┌%{%b%K{${c_black}}${c_green}%}($UNAMES) "
+    # This is not working because once user is changed the c_ vars are lost
+    # PROMPT+='$(if [ ${UID} -eq 0 ] ; then printf "%s" "${c_red}"; else printf "%s" "${C_LOCATION}"; fi)'
+    # PROMPT+="\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
+    PROMPT+="%{${C_LOCATION}%}%n%{${c_green}%}@%{${C_LOCATION}%}%m: %{${c_yellow}%}%~ "
+    PROMPT+='${VCS_MESS}'
+    PROMPT+=" ${c_pnorm}${Z_NL}"
+    # Main Prompt line 3 -- command number, quick info/symbol
+    PROMPT+="%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] "
+    PROMPT+='${VCS_CHAR}'
+    PROMPT+=" \$ ${c_pnorm}"
+
+    # Secondary Prompt
+    PS2="${c_yellow}%_ ${s_NEXT} ${c_pnorm}"
 else
-    export PROMPT='---
-Z (${OSTYPE}) %n@%m: ${PWD/#$HOME/~}
-Z !%! [%l] %#$ '
-    export RPROMPT=''
-    export PS2='%_ > '
+    # Main Prompt line 1 -- Status info such as sudo
+    PROMPT=''
+    PROMPT+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
+    PROMPT+='$(if [ -z "${SUDO_USER}" ] ; then printf "%s" "---"; else printf "%s" "${SUDO_USER}"; fi)'
+    PROMPT+="---${Z_NL}"
+    # Main Prompt line 2 -- host/current user/vcs info
+    PROMPT+='Z (${OSTYPE}) '
+    PROMPT+='%n@%m: ${PWD/#$HOME/~}\n'
+    # Main Prompt line 3 -- command number, quick info/symbol
+    PROMPT+='Z !%! [%l] %#$ '
+
+    # Secondary Prompt
+    PS2='%_ > '
 fi
+export PROMPT PS2
 
 #----------------------------------------------------------------------
 #-- key bindings
