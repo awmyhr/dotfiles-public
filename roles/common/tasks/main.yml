@@ -1,0 +1,17 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-03-23
+# Created:   2017-03-23
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+# Based on:  https://gist.github.com/hongqn/62d528116eb5a4a9e4b7
+#===============================================================================
+---
+- name: Add ssh public key to remote system.
+  authorized_key: 
+    user: "{{ remoteuser }}" 
+    key: "{{ lookup('file', localkeyfile) }}"
+    state: present
+    exclusive: no
+    manage_dir: yes
