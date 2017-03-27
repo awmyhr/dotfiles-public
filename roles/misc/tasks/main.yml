@@ -26,4 +26,4 @@
 - name: Misc config files.
   copy:
     src: .config/
-    dest: ~/config/
+    dest: ~/.config/
