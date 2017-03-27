@@ -31,4 +31,6 @@
     dest: ~/.shell.d/
 
 - name: Set execute.
-  file: path=.shell.d/lib/greeting mode=0755
+  file: 
+    path: ~/.shell.d/lib/greeting
+    mode: 0755
