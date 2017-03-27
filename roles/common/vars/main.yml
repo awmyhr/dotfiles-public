@@ -1,12 +1,10 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-23
+# Revised:   2017-03-27
 # Created:   2017-03-23
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-localhome: "{{ lookup('env', 'HOME') }}"
-localkeyfile: "{{ localhome }}/.ssh/id_rsa.pub"
-remoteuser: "{{ lookup('env', 'USER') }}"
+localkeyfile: "{{  lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
