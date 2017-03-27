@@ -1,0 +1,29 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-03-27
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Verify directories.
+  file: path={{ item }} state=directory
+  with_items:
+    - ~/.profile.d
+    - ~/.shell.d
+    - ~/.shell.d/etc
+    - ~/.shell.d/lib
+    - ~/.shell.d/location
+    - ~/.shell.d/packages
+    - ~/.shell.d/platform
+  
+- name: Profile files.
+  copy: src={{ item }} dest=~/
+  with_items:
+    - .inputrc
+    - .profile
+    - .profilerc
+
+- name: ShellD files.
+  copy: src=.shell.d/ dest=~/.shell.d/

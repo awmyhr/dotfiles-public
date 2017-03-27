@@ -1,0 +1,23 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-03-27
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Verify directories.
+  file: path={{ item }} state=directory
+  with_items:
+    - ~/.bashrc.d
+  
+- name: Bash files.
+  copy: src={{ item }} dest=~/
+  with_items:
+    - .bash_logout
+    - .bash_profile
+    - .bashrc
+
+- name: BashrcD files.
+  copy: src=.bashrc.d/ dest=~/.bashrc.d/
