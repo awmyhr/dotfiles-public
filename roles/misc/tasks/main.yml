@@ -8,15 +8,22 @@
 #===============================================================================
 ---
 - name: Verify directories.
-  file: path={{ item }} state=directory mode=0755
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
   with_items:
     - ~/.config
   
 - name: Misc dotfiles.
-  copy: src={{ item }} dest=~/
+  copy:
+    src: "{{ item }}"
+    dest: ~/
   with_items:
     - .csslintrc
     - .editorconfig
 
 - name: Misc config files.
-  copy: src=.config/ dest=~/config/
+  copy:
+    src: .config/
+    dest: ~/config/
