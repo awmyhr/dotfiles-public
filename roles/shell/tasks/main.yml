@@ -8,20 +8,27 @@
 #===============================================================================
 ---
 - name: Verify directories.
-  file: path={{ item }} state=directory mode=0755
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
   with_items:
     - ~/.profile.d
     - ~/.shell.d
   
 - name: Profile files.
-  copy: src={{ item }} dest=~/
+  copy:
+    src: "{{ item }}"
+    dest: ~/
   with_items:
     - .inputrc
     - .profile
     - .profilerc
 
 - name: ShellD files.
-  copy: src=.shell.d/ dest=~/.shell.d/
+  copy:
+    src: .shell.d/
+    dest: ~/.shell.d/
 
 - name: Set execute.
   file: path=.shell.d/lib/greeting mode=0755

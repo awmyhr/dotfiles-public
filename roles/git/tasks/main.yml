@@ -8,6 +8,8 @@
 #===============================================================================
 ---
 - name: Git files.
-  copy: src={{ item }} dest=~/
+  copy:
+    src: "{{ item }}"
+    dest: ~/
   with_items:
     - .gitconfig
