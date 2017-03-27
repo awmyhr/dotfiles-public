@@ -1,0 +1,24 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-03-27
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Verify directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.config
+    - ~/.config/terminator
+  
+- name: terminator files.
+  copy:
+    src: .config/terminator/
+    dest: ~/.config/terminator/
+    force: no
+    backup: yes
