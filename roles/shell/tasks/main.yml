@@ -12,11 +12,6 @@
   with_items:
     - ~/.profile.d
     - ~/.shell.d
-    - ~/.shell.d/etc
-    - ~/.shell.d/lib
-    - ~/.shell.d/location
-    - ~/.shell.d/packages
-    - ~/.shell.d/platform
   
 - name: Profile files.
   copy: src={{ item }} dest=~/
