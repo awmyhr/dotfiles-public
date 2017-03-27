@@ -1,0 +1,13 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-03-27
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+ansible_connection: local
+ansible_user: awmyhr
+gui_host: true
+cli_host: true
