@@ -2,20 +2,15 @@
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
 # Revised:   2017-03-27
-# Created:   2017-03-23
+# Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
 - hosts: all
-  name: Basic Setup.
+  name: GUI items.
   become: False
   roles:
-  - common
-  - shell
-
-- include: cli.yml
-  when: cli_host
-
-- include: gui.yml
-  when: gui_host
+  - i3
+  - dunst
+  - terminator
