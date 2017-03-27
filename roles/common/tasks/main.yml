@@ -1,17 +1,33 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-23
+# Revised:   2017-03-27
 # Created:   2017-03-23
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 # Based on:  https://gist.github.com/hongqn/62d528116eb5a4a9e4b7
 #===============================================================================
 ---
-- name: Add ssh public key to remote system.
+- name: Ensure ssh public key.
   authorized_key: 
-    user: "{{ remoteuser }}" 
+    user: "{{ ansible_user }}" 
     key: "{{ lookup('file', localkeyfile) }}"
     state: present
     exclusive: no
     manage_dir: yes
+
+- name: Verify directories.
+  file: path={{ item }} state=directory
+  with_items:
+    - ~/.config
+    - ~/bin
+    - ~/etc
+    - ~/lib
+    - ~/man
+    - ~/projects
+    - ~/share
+    - ~/store
+    - ~/tmp
+    - ~/var
+    - ~/var/log
+    - ~/work
