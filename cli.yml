@@ -13,6 +13,7 @@
   roles:
   - bash
   - git
+  - inxi
   - misc
   - tmux
   - vim
