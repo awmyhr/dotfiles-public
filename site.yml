@@ -1,0 +1,16 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-03-27
+# Created:   2017-03-23
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- hosts: all
+  become: False
+  roles:
+  - common
+  - shell
+  - bash
+  - zsh
