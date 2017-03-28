@@ -53,6 +53,13 @@ command -v docker >/dev/null 2>&1 && {
     export DOCKER_CLIENT_VERSION DOCKER_SERVER_VERSION
 }
 
+command -v pcs >/dev/null 2>&1 && {
+    [ -r "${SHELLD}/packages/pcs" ] && \
+       . "${SHELLD}/packages/pcs"
+    PCS_VERSION=$(pcs --version)
+    export PCS_VERSION
+}
+
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH
 #----------------------------------------------------------------------

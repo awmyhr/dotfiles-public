@@ -1,0 +1,42 @@
+#!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
+#===============================================================================
+#
+#         FILE: .shell.d/packages/pcs
+#
+#        USAGE: (should be sourced by .shell.d/settings)
+#
+#  DESCRIPTION: Docker functions, aliases, etc for use across shells.
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               pcs (via 'docker')
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0
+#      CREATED: 2017-03-28
+#     REVISION: 2017-03-28
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+alias p='_ pcs'
+alias prs='p resource show'
+alias pstat='p status'
+
+#=== FUNCTION ================================================================
+# NAME:
+# DESCRIPTION:
+# NOTE:
+#===============================================================================
+# _func() {
+# }
+# command -v declare >/dev/null 2>&1 && declare -fx _func 1>/dev/null 2>/dev/null
+
+#===============================================================================
+#----------------------------------------------------------------------
+export ISSET_PCS=1
+#----------------------------------------------------------------------
+#===============================================================================
