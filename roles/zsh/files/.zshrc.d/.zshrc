@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.4.1
+#      VERSION: 2.5.0
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-23
+#     REVISION: 2017-03-28
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -66,12 +66,39 @@ precmd () {
     # screen*
     # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
     VCS_CHAR=$(_vcs_prompt_char)
+    if [[ -f /var/run/docker.pid ]];then
+        STAT_DOCKER='[D]'
+    else
+        STAT_DOCKER='---'
+    fi
+    if [[ -f /var/run/pcsd.pid ]];then
+        STAT_PCS='[P]'
+    else
+        STAT_PCS='---'
+    fi
     if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
         VCS_MESS=$(_git_prompt)
     else
         VCS_MESS=''
     fi
 }
+
+if [[ -f /var/run/vboxadd-service.sh ]];then
+    STAT_VM='[V]'
+elif [[ -f /var/run/vmtoolsd.pid ]];then
+    STAT_VM='[V]'
+elif [[ ! $(systemctl is-active vmtoolsd --quiet 2>/dev/null) ]];then
+    STAT_VM='[V]'
+elif [[ "${container}" == 'docker' ]];then
+    STAT_VM='[C]'
+else
+    STAT_VM='---'
+fi
+if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
+    STAT_SSH='[R]'
+else
+    STAT_SSH='---'
+fi
 
 if [[ "${ISSET_COLORS}" ]]; then
     # Going to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
@@ -103,8 +130,9 @@ if [[ "${ISSET_COLORS}" ]]; then
     # Main Prompt line 1 -- Status info such as exit code, sudo user
     PROMPT="${c_ALERT}"
     PROMPT+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
-    PROMPT+="${c_pINFO}"
-    PROMPT+='$(if [ -z "${SUDO_USER}" ] ; then printf "%s" "---"; else printf "%s" "${SUDO_USER}"; fi)'
+    PROMPT+='$([ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]")'
+    PROMPT+="${c_pINFO}${STAT_VM}${STAT_SSH}"
+    PROMPT+='${STAT_DOCKER}${STAT_PCS}'
     PROMPT+="---${c_pnorm}${Z_NL}"
     # Main Prompt line 2 -- host/current user/vcs info
     PROMPT+="%{%K{${c_black}}%}${s_zsh}┌%{%b%K{${c_black}}${c_green}%}($UNAMES) "
@@ -125,7 +153,9 @@ else
     # Main Prompt line 1 -- Status info such as sudo
     PROMPT=''
     PROMPT+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
-    PROMPT+='$(if [ -z "${SUDO_USER}" ] ; then printf "%s" "---"; else printf "%s" "${SUDO_USER}"; fi)'
+    PROMPT+='$([ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]")'
+    PROMPT+="${STAT_VM}${STAT_SSH}"
+    PROMPT+='${STAT_DOCKER}${STAT_PCS}'
     PROMPT+=$'---\n'
     # Main Prompt line 2 -- host/current user/vcs info
     PROMPT+=$'Z (${OSTYPE}) %n@%m: %~\n'
