@@ -14,7 +14,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.6.0
+#      VERSION: 2.7.0
 #      CREATED: ????-??-??
 #     REVISION: 2017-03-30
 #===============================================================================
@@ -67,7 +67,7 @@ precmd () {
     # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
     VCS_CHAR=$(_vcs_prompt_char)
     if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
-        VCS_MESS=$(_git_prompt)
+        VCS_MESS=$(_vcs_prompt)
     else
         VCS_MESS=''
     fi
@@ -118,6 +118,12 @@ if [[ "${ISSET_COLORS}" ]]; then
     Z_NL=$'\n'
 
     # Main Prompt line 1 -- Status info such as exit code, sudo user
+    # These should be VERY simple checks (i.e., if a variable or file exists)
+    # In modern systems one can reasonably rely on 80 columns, but building
+    #   in a margin of error is reasonable. Target no more than 60 at this time.
+    # exit_code -> upto 5, SUDO_USER -> upto 12, service checks -> 3 each
+    # current checks: (static) VM? SSH? / (dynamic) Docker? PCS?
+    # current total: 29
     PROMPT="${c_ALERT}"
     PROMPT+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
     PROMPT+='$([ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]")'

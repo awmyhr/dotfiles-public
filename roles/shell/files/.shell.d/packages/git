@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.0.1
+#      VERSION: 2.1.0
 #      CREATED: 2016-10-04
-#     REVISION: 2017-03-16
+#     REVISION: 2017-03-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -25,7 +25,7 @@
 alias g='git'
 
 #=== FUNCTION ================================================================
-# NAME: _git_prompt
+# NAME: _vcs_prompt
 # DESCRIPTION:  parse status of current repo, return string of symbols
 #               (originally from some oh-my-zsh theme files,
 #                however by this point I've totally re-written it)
@@ -33,7 +33,7 @@ alias g='git'
 # NOTE: Have solved the subshell problem (YAY!) However, may not work in
 #       strict POSIX shell (BOO!). Oh well...
 #===============================================================================
-_git_prompt() {
+_vcs_prompt() {
     IGNORE_SUBMODULES=''
     IGNORE_UNTRACKED_FILES=''
     # BUG: Very strange. When git is in a container, and run with exec in
@@ -147,7 +147,7 @@ _git_prompt() {
 
     printf "%s" "${c_DEBUG}‹${GIT_REF} ${STATUS}${c_DEBUG}›"
 }
-command -v declare >/dev/null 2>&1 && declare -fx _git_prompt 1>/dev/null 2>/dev/null
+# command -v declare >/dev/null 2>&1 && declare -fx _vcs_prompt 1>/dev/null 2>/dev/null
 
 #===============================================================================
 #----------------------------------------------------------------------

@@ -16,7 +16,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.5.0
+#      VERSION: 2.6.0
 #      CREATED: ????-??-??
 #     REVISION: 2017-03-30
 #===============================================================================
@@ -42,6 +42,23 @@ done; unset i
 #----------------------------------------------------------------------
 #-- Prompt time
 #----------------------------------------------------------------------
+_prompt_command() {
+    history -a
+    history -n
+    # Update terminal title string
+    # xterm*|vte*|rxvt*
+    printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+    # screen*
+    # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+    VCS_CHAR=$(_vcs_prompt_char)
+    if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
+        VCS_MESS=$(_vcs_prompt)
+    else
+        VCS_MESS=''
+    fi
+}
+PROMPT_COMMAND=_prompt_command
+
 if [[ -f /var/run/vboxadd-service.sh ]];then
     STAT_VM='[V]'
 elif [[ -f /var/run/vmtoolsd.pid ]];then
@@ -83,8 +100,14 @@ if [[ "${ISSET_COLORS}" ]]; then
 
     TTY=${TTY#/dev/}
 
-    # Main Prompt line 1 -- Status info such as exit code, sudo user
     # NOTE: Bash under MINGW64 does not like $() in PS1. Why? IDK && Li2S...
+    # Main Prompt line 1 -- Status info such as exit code, sudo user
+    # These should be VERY simple checks (i.e., if a variable or file exists)
+    # In modern systems one can reasonably rely on 80 columns, but building
+    #   in a margin of error is reasonable. Target no more than 60 at this time.
+    # exit_code -> upto 5, SUDO_USER -> upto 12, service checks -> 3 each
+    # current checks: (static) VM? SSH? / (dynamic) Docker? PCS?
+    # current total: 29
     PS1="${c_ALERT}"
     PS1+='`exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}"`'
     PS1+='`[ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]"`'
@@ -126,23 +149,6 @@ else
     PS2='> '
 fi
 export PS1 PS2
-
-_prompt_command() {
-    history -a
-    history -n
-    # Update terminal title string
-    # xterm*|vte*|rxvt*
-    printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
-    # screen*
-    # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
-    VCS_CHAR=$(_vcs_prompt_char)
-    if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
-        VCS_MESS=$(_git_prompt)
-    else
-        VCS_MESS=''
-    fi
-}
-PROMPT_COMMAND=_prompt_command
 
 #----------------------------------------------------------------------
 #-- Let's set some shell options...
