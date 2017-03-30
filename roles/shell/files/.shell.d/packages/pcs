@@ -28,6 +28,7 @@ alias pstat='p status'
 
 PCS_VERSION=$(pcs --version 2>/dev/null)
 export PCS_VERSION
+
 #=== FUNCTION ================================================================
 # NAME:
 # DESCRIPTION:
