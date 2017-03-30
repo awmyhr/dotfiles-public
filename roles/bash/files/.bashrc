@@ -46,7 +46,7 @@ if [[ -f /var/run/vboxadd-service.sh ]];then
     STAT_VM='[V]'
 elif [[ -f /var/run/vmtoolsd.pid ]];then
     STAT_VM='[V]'
-elif [[ ! $(systemctl is-active vmtoolsd --quiet 2>/dev/null) ]];then
+elif [[ $(systemctl is-active vmtoolsd 2>/dev/null) == 'active' ]];then
     STAT_VM='[V]'
 elif [[ "${container}" == 'docker' ]];then
     STAT_VM='[C]'
@@ -85,11 +85,11 @@ if [[ "${ISSET_COLORS}" ]]; then
 
     # Main Prompt line 1 -- Status info such as exit code, sudo user
     PS1="${c_ALERT}"
-    PS1+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
-    PS1+='$([ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]")'
+    PS1+='`exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}"`'
+    PS1+='`[ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]"`'
     PS1+="${c_pINFO}${STAT_VM}${STAT_SSH}"
-    PS1+='$(if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi)'
-    PS1+='$(if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi)'
+    PS1+='`if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi`'
+    PS1+='`if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi`'
     PS1+="---${c_pnorm}\n"
     # Main Prompt line 2 -- host/current user/vcs info
     PS1+="${s_bash}┌${c_pnorm}${c_green}($UNAMES) "
@@ -109,11 +109,11 @@ if [[ "${ISSET_COLORS}" ]]; then
 else
     # Main Prompt line 1 -- Status info such as sudo
     PS1=''
-    PS1+='$(exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}")'
-    PS1+='$([ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]")'
+    PS1+='`exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}"`'
+    PS1+='`[ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]"`'
     PS1+="${STAT_VM}${STAT_SSH}"
-    PS1+='$(if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi)'
-    PS1+='$(if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi)'
+    PS1+='`if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi`'
+    PS1+='`if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi`'
     PS1+="---\n"
     # Main Prompt line 2 -- host/current user/vcs info
     PS1+='B (${OSTYPE}) '
