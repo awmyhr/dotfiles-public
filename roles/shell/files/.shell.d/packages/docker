@@ -16,7 +16,7 @@
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.0.0
 #      CREATED: 2017-03-09
-#     REVISION: 2017-03-09
+#     REVISION: 2017-03-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -26,6 +26,9 @@ alias d='docker'
 alias dimages='d images --format "table {{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"'
 alias dps='d ps --format "table {{.Names}}\t{{.Image}}\t[{{.Label \"org.label-schema.version\"}}]\t{{.Command}}\t{{.Status}}"'
 
+DOCKER_CLIENT_VERSION=$(docker version --format '{{.Client.Version}}' 2>/dev/null)
+DOCKER_SERVER_VERSION=$(docker version --format '{{.Server.Version}}' 2>/dev/null)
+export DOCKER_CLIENT_VERSION DOCKER_SERVER_VERSION
 #=== FUNCTION ================================================================
 # NAME:
 # DESCRIPTION:

@@ -24,6 +24,9 @@
 
 alias g='git'
 
+DEFAULT_VCS_VERSION=$(git --version 2>/dev/null | head -1 | tr -d '\r')
+export DEFAULT_VCS_VERSION
+
 #=== FUNCTION ================================================================
 # NAME: _vcs_prompt
 # DESCRIPTION:  parse status of current repo, return string of symbols
