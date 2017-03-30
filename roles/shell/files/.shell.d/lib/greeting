@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
+#      VERSION: 1.2.0
 #      CREATED: 2016-10-04
-#     REVISION: 2016-10-25
+#     REVISION: 2016-10-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -26,24 +26,26 @@
 #----------------------------------------------------------------------
 #-- Display some useful information
 #----------------------------------------------------------------------
-printf "%s\n" "${c_white}You're logged into ${c_bold}$HOSTNAME${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}"
+printf "%s\n" "${c_white}You're logged into ${c_bold}${HOSTNAME}${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}"
 printf "\t%s\n" "${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}"
 printf "\t%s\n" " ${c_white}${c_bold}Shell:${c_norm} ${c_purple}${SHELLSTRING}${c_norm}"
 printf "\t%s\n" " ${c_white}${c_bold}Pager:${c_norm} ${c_purple}${PAGER}${c_norm}"
 printf "\t%s\n" "${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR} (${EDITOR_VERSION})${c_norm}"
 printf "\t%s\n" "   ${c_white}${c_bold}VCS:${c_norm} ${c_purple}${DEFAULT_VCS} (${DEFAULT_VCS_VERSION})${c_norm}"
 
+[ -n "${SYS_VERSION}" ] && printf "%s\n" "${c_white}System calls itself: ${c_bold}${SYS_VERSION}${c_norm}${c_white}"
+
 # Print the Discordian date.
 command -v ddate >/dev/null 2>&1 && {
     DDATE=$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')
-    printf "%s\n" "${c_cyan}${DDATE}${c_norm}"
+    printf "\n%s\n" "${c_cyan}${DDATE}${c_norm}"
     unset DDATE
 }
 
 # Print a random, hopefully interesting, adage.
 command -v fortune >/dev/null 2>&1 && {
     FORTUNE=$(fortune -s)
-    printf "%s\n" "${c_blue}${FORTUNE}${c_norm}"
+    printf "\n%s\n" "${c_blue}${FORTUNE}${c_norm}"
     unset FORTUNE
 }
 

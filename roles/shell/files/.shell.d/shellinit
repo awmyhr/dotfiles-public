@@ -15,7 +15,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.5.0
+#      VERSION: 1.6.0
 #      CREATED: 2016-09-28
 #     REVISION: 2017-03-30
 #===============================================================================
@@ -95,6 +95,15 @@ EOF
     export UNAMES UNAMER PLATFORM
     [ -r "${SHELLD}/platform/${UNAMES}" ] && . "${SHELLD}/platform/${UNAMES}"
 }
+
+unset SYS_VERSION_FILE
+[ -f /etc/system-release ] && SYS_VERSION_FILE='/etc/system-release'
+[ -f /etc/redhat-release ] && SYS_VERSION_FILE='/etc/redhat-release'
+[ -f /etc/fedora-release ] && SYS_VERSION_FILE='/etc/fedora-release'
+
+[ -n "${SYS_VERSION_FILE}" ] \
+    && SYS_VERSION=$(cat "${SYS_VERSION_FILE}" | tr -d '\r\n') \
+    && export SYS_VERSION
 
 [ -r "${SHELLD}/location/${HOSTNAME}" ]    && . "${SHELLD}/location/${HOSTNAME}"
 
