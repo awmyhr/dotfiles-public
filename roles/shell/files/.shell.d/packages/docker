@@ -29,6 +29,7 @@ alias dps='d ps --format "table {{.Names}}\t{{.Image}}\t[{{.Label \"org.label-sc
 DOCKER_CLIENT_VERSION=$(docker version --format '{{.Client.Version}}' 2>/dev/null)
 DOCKER_SERVER_VERSION=$(docker version --format '{{.Server.Version}}' 2>/dev/null)
 export DOCKER_CLIENT_VERSION DOCKER_SERVER_VERSION
+
 #=== FUNCTION ================================================================
 # NAME:
 # DESCRIPTION:
