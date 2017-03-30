@@ -84,6 +84,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     TTY=${TTY#/dev/}
 
     # Main Prompt line 1 -- Status info such as exit code, sudo user
+    # NOTE: Bash under MINGW64 does not like $() in PS1. Why? IDK && Li2S...
     PS1="${c_ALERT}"
     PS1+='`exit_code="${?}" && [ "${exit_code}" -ne 0 ] && printf "¡%s¡" "${exit_code}"`'
     PS1+='`[ ! -z "${SUDO_USER+x}" ] && printf "%s" "[${SUDO_USER}]"`'
