@@ -15,7 +15,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.0
+#      VERSION: 1.2.1
 #      CREATED: 2016-10-04
 #     REVISION: 2017-03-30
 #===============================================================================
@@ -33,7 +33,7 @@ printf "\t%s\n" " ${c_white}${c_bold}Pager:${c_norm} ${c_purple}${PAGER}${c_norm
 printf "\t%s\n" "${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR} (${EDITOR_VERSION})${c_norm}"
 printf "\t%s\n" "   ${c_white}${c_bold}VCS:${c_norm} ${c_purple}${DEFAULT_VCS} (${DEFAULT_VCS_VERSION})${c_norm}"
 
-[ -n "${SYS_VERSION}" ] && printf "%s\n" "${c_white}System calls itself: ${c_bold}${SYS_VERSION}${c_norm}${c_white}"
+[ -n "${SYS_VERSION}" ] && printf "%s\n" "${c_white}System self-ids as: ${c_bold}${SYS_VERSION}${c_norm}${c_white}"
 
 # Print the Discordian date.
 command -v ddate >/dev/null 2>&1 && {
