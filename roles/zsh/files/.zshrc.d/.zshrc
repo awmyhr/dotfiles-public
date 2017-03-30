@@ -65,14 +65,19 @@ precmd () {
     printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
     # screen*
     # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
-    VCS_CHAR=$(_vcs_prompt_char)
-    if [[ "${VCS_CHAR}" == "${s_GIT}" ]];then
-        VCS_MESS=$(_vcs_prompt)
-    else
-        VCS_MESS=''
-    fi
+    command -v _vcs_prompt_char >/dev/null 2>&1 && {
+        VCS_CHAR=$(_vcs_prompt_char)
+    }
+    command -v _vcs_prompt >/dev/null 2>&1 && {
+        if [[ "${VCS_CHAR}" != "${s_NOVCS}" ]];then
+            VCS_MESS=$(_vcs_prompt)
+        else
+            VCS_MESS=''
+        fi
+    }
 }
 
+# (Static) Service Check: Is this a VM/Container? 
 if [[ -f /var/run/vboxadd-service.sh ]];then
     STAT_VM='[V]'
 elif [[ -f /var/run/vmtoolsd.pid ]];then
@@ -84,6 +89,8 @@ elif [[ "${container}" == 'docker' ]];then
 else
     STAT_VM='---'
 fi
+
+# (Static) Service Check: Are we connected remotely? 
 if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
     STAT_SSH='[R]'
 else
