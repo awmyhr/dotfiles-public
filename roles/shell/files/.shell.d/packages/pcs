@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
 #      CREATED: 2017-03-28
-#     REVISION: 2017-03-28
+#     REVISION: 2017-03-30
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -26,6 +26,8 @@ alias p='_ pcs'
 alias prs='p resource show'
 alias pstat='p status'
 
+PCS_VERSION=$(pcs --version 2>/dev/null)
+export PCS_VERSION
 #=== FUNCTION ================================================================
 # NAME:
 # DESCRIPTION:
