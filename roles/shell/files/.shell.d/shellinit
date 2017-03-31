@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.6.0
+#      VERSION: 1.7.0
 #      CREATED: 2016-09-28
-#     REVISION: 2017-03-30
+#     REVISION: 2017-03-31
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -87,8 +87,8 @@ export PATH MANPATH GOPATH
 #-- Set up sysinfo variables and load in platform specific things
 #----------------------------------------------------------------------
 command -v uname >/dev/null 2>&1 && {
-    read -r -- UNAMES SYSNAME UNAMER PLATFORM <<EOF
-    $(uname -nprs)
+    read -r -- UNAMES SYSNAME UNAMER PLATFORM UNAMEO <<EOF
+    $(uname -nprso)
 EOF
     [ -z "${HOSTNAME}" ] && HOSTNAME="${SYSNAME}" && export HOSTNAME
     [ -z "${OSTYPE}" ]   && OSTYPE="${UNAMES}"    && export OSTYPE
@@ -104,6 +104,25 @@ unset SYS_VERSION_FILE
 [ -n "${SYS_VERSION_FILE}" ] \
     && SYS_VERSION=$(cat "${SYS_VERSION_FILE}" | tr -d '\r\n') \
     && export SYS_VERSION
+
+# (Static) Service Check: Is this a VM/Container? 
+command -v systemctl >/dev/null 2>&1 && {
+    STAT_VM_CHECK=$(systemctl is-active vmtoolsd 2>/dev/null)
+}
+if [ -f /var/run/vboxadd-service.sh ]; then
+    STAT_VM='[V]'
+elif [ -f /var/run/vmtoolsd.pid ]; then
+    STAT_VM='[V]'
+elif [ "${STAT_VM_CHECK}" = 'active' ]; then
+    STAT_VM='[V]'
+elif [ "${container}" = 'docker' ]; then
+    STAT_VM='[C]'
+elif [ "${UNAMEO}" = 'Msys' ]; then
+    STAT_VM='[M]'
+else
+    STAT_VM='---'
+fi
+export STAT_VM
 
 [ -r "${SHELLD}/location/${HOSTNAME}" ]    && . "${SHELLD}/location/${HOSTNAME}"
 
@@ -148,6 +167,22 @@ if command -v dzdo      >/dev/null 2>&1 ; then
 elif command -v sudo    >/dev/null 2>&1 ; then
     export PROG_BECOME=sudo
 fi
+
+#----------------------------------------------------------------------
+#-- What command handles priviledge elavation
+#----------------------------------------------------------------------
+# (Static) Service Check: Are we connected remotely? 
+if [ -n "${SSH_CLIENT}" ]; then
+    STAT_SSH='[R]'
+elif [ -n "${SSH_CONNECTION}" ]; then
+    STAT_SSH='[R]'
+elif [ -n "${SSH_TTY}" ]; then
+    STAT_SSH='[R]'
+else
+    STAT_SSH='---'
+fi
+export STAT_SSH
+
 #===============================================================================
 #----------------------------------------------------------------------
 export ISSET_SHELLINIT=1

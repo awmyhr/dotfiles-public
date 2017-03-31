@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.6.0
+#      VERSION: 2.7.0
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-30
+#     REVISION: 2017-03-31
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -63,26 +63,6 @@ _prompt_command() {
 }
 PROMPT_COMMAND=_prompt_command
 
-# (Static) Service Check: Is this a VM/Container? 
-if [[ -f /var/run/vboxadd-service.sh ]];then
-    STAT_VM='[V]'
-elif [[ -f /var/run/vmtoolsd.pid ]];then
-    STAT_VM='[V]'
-elif [[ $(systemctl is-active vmtoolsd 2>/dev/null) == 'active' ]];then
-    STAT_VM='[V]'
-elif [[ "${container}" == 'docker' ]];then
-    STAT_VM='[C]'
-else
-    STAT_VM='---'
-fi
-
-# (Static) Service Check: Are we connected remotely? 
-if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
-    STAT_SSH='[R]'
-else
-    STAT_SSH='---'
-fi
-
 if [[ "${ISSET_COLORS}" ]]; then
     export c_pEMERG="\[${c_EMERG}\]"
     export c_pALERT="\[${c_ALERT}\]"
@@ -94,7 +74,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     export c_pDEBUG="\[${c_DEBUG}\]"
     export c_pnorm="\[${c_norm}\]"
 
-    if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
+    if [[ "${STAT_SSH}" != '---' ]] ; then
         TTY="${SSH_TTY}"
         C_LOCATION="${c_cyan}"
     else
