@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.7.0
+#      VERSION: 2.8.0
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-30
+#     REVISION: 2017-03-31
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -77,26 +77,6 @@ precmd () {
     }
 }
 
-# (Static) Service Check: Is this a VM/Container? 
-if [[ -f /var/run/vboxadd-service.sh ]];then
-    STAT_VM='[V]'
-elif [[ -f /var/run/vmtoolsd.pid ]];then
-    STAT_VM='[V]'
-elif [[ ! $(systemctl is-active vmtoolsd --quiet 2>/dev/null) ]];then
-    STAT_VM='[V]'
-elif [[ "${container}" == 'docker' ]];then
-    STAT_VM='[C]'
-else
-    STAT_VM='---'
-fi
-
-# (Static) Service Check: Are we connected remotely? 
-if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
-    STAT_SSH='[R]'
-else
-    STAT_SSH='---'
-fi
-
 if [[ "${ISSET_COLORS}" ]]; then
     # Going to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
     # zsh needs special formating for prompt colors
@@ -110,7 +90,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     export c_pDEBUG="%{${c_DEBUG}%}"
     export c_pnorm="%{$c_norm%}"
 
-    if [[ -n "${SSH_CLIENT}" || -n "${SSH_CONNECTION}" || -n "${SSH_TTY}" ]] ; then
+    if [[ "${STAT_SSH}" != '---' ]] ; then
         C_LOCATION="${c_cyan}"
     else
         C_LOCATION="${c_blue}"
