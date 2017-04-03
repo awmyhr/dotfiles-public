@@ -1,0 +1,19 @@
+- name: Verify directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.zshrc.d
+
+- name: Zsh files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .zshenv
+
+- name: ZshrcD files.
+  copy:
+    src: .zshrc.d/
+    dest: ~/.zshrc.d/

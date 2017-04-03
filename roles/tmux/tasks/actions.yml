@@ -2,19 +2,14 @@
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
 # Revised:   2017-04-03
-# Created:   2017-03-27
+# Created:   2017-04-04
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Check for /usr/bin/tmux
-  stat:
-    path: /usr/bin/tmux
-    get_md5: False
-    get_checksum: False
-  register: bin_tmux
-
-- name: Do tmux Actions.
-  include: actions.yml
-  when: bin_tmux.stat.executable is defined and bin_tmux.stat.executable
-
+- name: Tmux files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .tmux.conf
