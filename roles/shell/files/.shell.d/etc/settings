@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.0
+#      VERSION: 1.2.1
 #      CREATED: 2016-09-28
-#     REVISION: 2016-10-12
+#     REVISION: 2017-04-04
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -42,7 +42,7 @@ if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different forma
 U: %*U S: %*S (T: %*E) C: %P | M: (%K) %M W: %W | I/O: %I/%O"
 else
     export HISTIGNORE='&:[ ]*:exit:ls:history:[bf]g:reset:clear:cd:cd ..:cd..'
-    export TIMEFORMAT='U: %lU S: %lS (T: $lT) C: %P'
+    export TIMEFORMAT='U: %lU S: %lS (T: %lE) C: %P'
 fi
 
 #----------------------------------------------------------------------
