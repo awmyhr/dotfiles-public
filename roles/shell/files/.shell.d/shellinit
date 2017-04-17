@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.7.0
+#      VERSION: 1.8.0
 #      CREATED: 2016-09-28
-#     REVISION: 2017-03-31
+#     REVISION: 2017-04-12
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -119,6 +119,8 @@ elif [ "${container}" = 'docker' ]; then
     STAT_VM='[C]'
 elif [ "${UNAMEO}" = 'Msys' ]; then
     STAT_VM='[M]'
+elif [ "${UNAMEO}" = 'Cygwin' ]; then
+    STAT_VM='[Y]'
 else
     STAT_VM='---'
 fi
