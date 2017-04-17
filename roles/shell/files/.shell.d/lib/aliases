@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.2
+#      VERSION: 1.3.0
 #      CREATED: 2016-10-10
-#     REVISION: 2016-11-03
+#     REVISION: 2017-04-17
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -98,6 +98,12 @@ if [ -f "${HOME}/.shell.d/lib/greeting" ] ; then
     alias hi="${HOME}/.shell.d/lib/greeting"
 else
     alias hi='uname -a'
+fi
+
+if [ -f "${HOME}/.shell.d/lib/promptdash" ] ; then
+    alias promptdash="${HOME}/.shell.d/lib/promptdash | more"
+else
+    alias promptdash='printf "%s\n" "Sorry, promptdash not found."'
 fi
 
 #----------------------------------------------------------------------

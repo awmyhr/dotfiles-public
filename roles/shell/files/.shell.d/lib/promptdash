@@ -1,0 +1,68 @@
+#!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2039" ]
+#===============================================================================
+#
+#         FILE: .shell.d/lib/promptdash
+#
+#        USAGE: (should be run by shell alias)
+#
+#  DESCRIPTION: Describe the prompt 'dashboard'.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0
+#      CREATED: 2017-04-17
+#     REVISION: 2017-04-17
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+printf '%s'   'The prompt dashboard is intended to be a quick, non-difinitive '
+printf '%s'   'status for various services. This is convayed by a line of '
+printf '%s\n' 'stanzas. These checks are designed to be quick, not thorough.'
+printf '%s\n' 'In order, here are the stanzas:'
+
+printf '\n'
+printf '%s\n' 'Host Virtual Status'
+printf '\t%s\t%s\n' '[V]' 'VirtualBox or VMWare host'
+printf '\t%s\t%s\n' '[C]' 'Docker container'
+printf '\t%s\t%s\n' '[M]' 'MinGW environment'
+printf '\t%s\t%s\n' '[Y]' 'Cygwin environment'
+printf '\t%s\t%s\n' '---' 'Physical/Undetected'
+
+printf '\n'
+printf '%s\n' 'Connection Status'
+printf '\t%s\t%s\n' '[R]' 'Remote SSH connection'
+printf '\t%s\t%s\n' '---' 'Local/Undetected'
+
+printf '\n'
+printf '%s\n' 'Docker Status'
+printf '\t%s\t%s\n' '[D]' 'Docker daemon is running'
+printf '\t%s\t%s\n' '---' 'Not running/Undetected'
+
+printf '\n'
+printf '%s\n' 'Cluster Status'
+printf '\t%s\t%s\n' '[P]' 'PCS daemon is running'
+printf '\t%s\t%s\n' '---' 'Not running/Undetected'
+
+printf '\n'
+printf '%s\n' 'Directory Service Status'
+printf '\t%s\t%s\n' '[C]' 'Centrify daemon is running'
+printf '\t%s\t%s\n' '[W]' 'Winbindd daemon is running'
+printf '\t%s\t%s\n' '---' 'Not running/Undetected'
+
+printf '\n'
+printf '%s\n' 'Reserved for future use'
+printf '\t%s\t%s\n' '---' 'No status'
+
+printf '\n'
+printf '%s'   'Thus, when logged into a PCS clustered VM running Docker with '
+printf '%s\n' 'Winbind-based authentication, your dashboard would looke like:'
+printf '\n'
+printf '%s\n' '[V][R][D][P][W]---'
+printf '\n'
