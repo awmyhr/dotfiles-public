@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.8.0
+#      VERSION: 2.9.0
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-31
+#     REVISION: 2017-04-17
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -117,6 +117,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     PROMPT+="${c_pINFO}${STAT_VM}${STAT_SSH}"
     PROMPT+='$(if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi)'
     PROMPT+='$(if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi)'
+    PROMPT+='$(if [[ -f /var/run/winbindd.pid ]];then printf "%s" "[W]"; elif [[ -f /var/run/adclient.pid ]];then printf "%s" "[C]"; else printf "%s" "---"; fi)'
     PROMPT+="---${c_pnorm}${Z_NL}"
     # Main Prompt line 2 -- host/current user/vcs info
     PROMPT+="%{%K{${c_black}}%}${s_zsh}┌%{%b%K{${c_black}}${c_green}%}($UNAMES) "
@@ -141,6 +142,7 @@ else
     PROMPT+="${STAT_VM}${STAT_SSH}"
     PROMPT+='$(if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi)'
     PROMPT+='$(if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi)'
+    PROMPT+='$(if [[ -f /var/run/winbindd.pid ]];then printf "%s" "[W]"; elif [[ -f /var/run/adclient.pid ]];then printf "%s" "[C]"; else printf "%s" "---"; fi)'
     PROMPT+=$'---\n'
     # Main Prompt line 2 -- host/current user/vcs info
     PROMPT+=$'Z (${OSTYPE}) %n@%m: %~\n'

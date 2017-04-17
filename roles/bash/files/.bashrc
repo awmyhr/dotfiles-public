@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.7.0
+#      VERSION: 2.8.0
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-31
+#     REVISION: 2017-04-17
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -101,6 +101,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     PS1+="${c_pINFO}${STAT_VM}${STAT_SSH}"
     PS1+='`if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi`'
     PS1+='`if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi`'
+    PS1+='`if [[ -f /var/run/winbindd.pid ]];then printf "%s" "[W]"; elif [[ -f /var/run/adclient.pid ]];then printf "%s" "[C]"; else printf "%s" "---"; fi`'
     PS1+="---${c_pnorm}\n"
     # Main Prompt line 2 -- host/current user/vcs info
     PS1+="${s_bash}┌${c_pnorm}${c_green}($UNAMES) "
@@ -125,6 +126,7 @@ else
     PS1+="${STAT_VM}${STAT_SSH}"
     PS1+='`if [[ -f /var/run/docker.pid ]];then printf "%s" "[D]"; else printf "%s" "---"; fi`'
     PS1+='`if [[ -f /var/run/pcsd.pid ]];then printf "%s" "[P]"; else printf "%s" "---"; fi`'
+    PS1+='`if [[ -f /var/run/winbindd.pid ]];then printf "%s" "[W]"; elif [[ -f /var/run/adclient.pid ]];then printf "%s" "[C]"; else printf "%s" "---"; fi`'
     PS1+="---\n"
     # Main Prompt line 2 -- host/current user/vcs info
     PS1+='B (${OSTYPE}) '
