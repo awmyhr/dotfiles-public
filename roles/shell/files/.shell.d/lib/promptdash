@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
 #      CREATED: 2017-04-17
-#     REVISION: 2017-04-17
+#     REVISION: 2017-04-18
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -33,6 +33,7 @@ printf '\t%s\t%s\n' '[V]' 'VirtualBox or VMWare host'
 printf '\t%s\t%s\n' '[C]' 'Docker container'
 printf '\t%s\t%s\n' '[M]' 'MinGW environment'
 printf '\t%s\t%s\n' '[Y]' 'Cygwin environment'
+printf '\t%s\t%s\n' '[W]' 'Windows Subsystem for UNIX Apps'
 printf '\t%s\t%s\n' '---' 'Physical/Undetected'
 
 printf '\n'

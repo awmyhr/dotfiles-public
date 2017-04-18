@@ -15,9 +15,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.8.0
+#      VERSION: 1.9.0
 #      CREATED: 2016-09-28
-#     REVISION: 2017-04-12
+#     REVISION: 2017-04-18
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -87,9 +87,11 @@ export PATH MANPATH GOPATH
 #-- Set up sysinfo variables and load in platform specific things
 #----------------------------------------------------------------------
 command -v uname >/dev/null 2>&1 && {
-    read -r -- UNAMES SYSNAME UNAMER PLATFORM UNAMEO <<EOF
-    $(uname -nprso)
+    read -r -- UNAMES SYSNAME UNAMER PLATFORM <<EOF
+    $(uname -nprs)
 EOF
+    #-- The '-o' option is non-standard, so we'll try it seperately
+    UNAMEO=$(uname -o 2>/dev/null)
     [ -z "${HOSTNAME}" ] && HOSTNAME="${SYSNAME}" && export HOSTNAME
     [ -z "${OSTYPE}" ]   && OSTYPE="${UNAMES}"    && export OSTYPE
     export UNAMES UNAMER PLATFORM
@@ -121,6 +123,8 @@ elif [ "${UNAMEO}" = 'Msys' ]; then
     STAT_VM='[M]'
 elif [ "${UNAMEO}" = 'Cygwin' ]; then
     STAT_VM='[Y]'
+elif [ "${UNAMES}" = 'Interix' ]; then
+    STAT_VM='[W]'
 else
     STAT_VM='---'
 fi
