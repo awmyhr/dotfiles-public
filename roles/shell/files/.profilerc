@@ -13,9 +13,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.1
+#      VERSION: 1.2.0
 #      CREATED: 2016-10-05
-#     REVISION: 2016-10-27
+#     REVISION: 2017-04-18
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -43,8 +43,8 @@ done; unset i
 #----------------------------------------------------------------------
 if [ "${ISSET_COLORS}" ]; then
     PS1='---${c_norm}
-${s_posix}┌${c_ALERT}$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}${USER}${c_green}@${c_blue}${HOSTNAME}: ${c_yellow}$PWD${c_norm}
-${s_posix}└${c_DEBUG} $(_vcs_prompt_char) $ ${c_norm}'
+${s_SHELL}┌${c_ALERT}$(_return_code)${c_norm}${c_green}($UNAMES) ${c_blue}${USER}${c_green}@${c_blue}${HOSTNAME}: ${c_yellow}$PWD${c_norm}
+${s_SHELL}└${c_DEBUG} $(_vcs_prompt_char) $ ${c_norm}'
     PS2="${c_yellow}${s_NEXT} ${c_pnorm}"
 else
     PS1='---

@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 3.1.0
+#      VERSION: 3.2.0
 #      CREATED: ????-??-??
-#     REVISION: 2016-10-06
+#     REVISION: 2017-04-18
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -65,6 +65,15 @@ set -o noclobber -o notify -o vi
 #----------------------------------------------------------------------
 [ "${BASH##/[a-z]*/}" = "bash" ] && return
 [ "${ZSH_NAME}" ] && return
+if [ ! -n "${SHELL+set}" ]; then
+  SHELL=$(echo $0)
+fi
+
+if [ "${SHELL##/[a-z]*/}" = "ksh" ]; then
+    s_SHELL="${s_ksh}"
+else
+    s_SHELL="${s_posix}"
+fi
 
 #----------------------------------------------------------------------
 #-- Display some useful information
