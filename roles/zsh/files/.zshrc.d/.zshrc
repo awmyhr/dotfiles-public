@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.9.0
+#      VERSION: 2.9.1
 #      CREATED: ????-??-??
-#     REVISION: 2017-04-17
+#     REVISION: 2017-04-21
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -25,7 +25,7 @@
 #----------------------------------------------------------------------
 #-- Check for debug, and exit if not an interactive shell
 #----------------------------------------------------------------------
-[[ "${TRACE}" ]]  && set -x  # Run in debug mode if called for
+(( ${+TRACE} )) && set -x  # Run in debug mode if called for
 [[ -o interactive ]] || return  # Exit if not an interactive shell
 
 #----------------------------------------------------------------------
@@ -77,7 +77,7 @@ precmd () {
     }
 }
 
-if [[ "${ISSET_COLORS}" ]]; then
+if (( ${+ISSET_COLORS} )); then
     # Going to assume if ISSET_COLORS then ISSET_SYMBOLS and ISSET_FUNCTIONS
     # zsh needs special formating for prompt colors
     export c_pEMERG="%{${c_EMERG}%}"
@@ -120,7 +120,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     PROMPT+='$(if [[ -f /var/run/winbindd.pid ]];then printf "%s" "[W]"; elif [[ -f /var/run/adclient.pid ]];then printf "%s" "[C]"; else printf "%s" "---"; fi)'
     PROMPT+="---${c_pnorm}${Z_NL}"
     # Main Prompt line 2 -- host/current user/vcs info
-    PROMPT+="%{%K{${c_black}}%}${s_zsh}┌%{%b%K{${c_black}}${c_green}%}($UNAMES) "
+    PROMPT+="%{%K{${c_black}%}%}${s_zsh}┌%{%b%K{${c_black}%}${c_green}%}($UNAMES) "
     # This is not working because once user is changed the c_ vars are lost
     # PROMPT+='$(if [ ${UID} -eq 0 ] ; then printf "%s" "${c_red}"; else printf "%s" "${C_LOCATION}"; fi)'
     # PROMPT+="\u${c_green}@${C_LOCATION}\h: ${c_yellow}\w "
@@ -128,7 +128,7 @@ if [[ "${ISSET_COLORS}" ]]; then
     PROMPT+='${VCS_MESS}'
     PROMPT+=" ${c_pnorm}${Z_NL}"
     # Main Prompt line 3 -- command number, quick info/symbol
-    PROMPT+="%{%K{${c_black}}%}${s_zsh}└!${c_pDEBUG}%! [%l] "
+    PROMPT+="%{%K{${c_black}%}%}${s_zsh}└!${c_pDEBUG}%! [%l] "
     PROMPT+='${VCS_CHAR}'
     PROMPT+=" %# ${c_pnorm}"
 
