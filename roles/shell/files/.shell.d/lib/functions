@@ -14,9 +14,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.5.0
+#      VERSION: 1.5.1
 #      CREATED: ????-??-??
-#     REVISION: 2017-03-23
+#     REVISION: 2017-04-21
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -32,7 +32,7 @@
 timestamp() {
     date "${DEFAULT_TIMESTAMP}"
 }
-command -v declare >/dev/null 2>&1 && declare -fx timestamp 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx timestamp >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: stringmatch
@@ -51,7 +51,7 @@ stringmatch() {
     esac ;
     return 1        # This should never execute
 }
-command -v declare >/dev/null 2>&1 && declare -fx stringmatch 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx stringmatch >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: pathmunge
@@ -126,7 +126,7 @@ _vcs_prompt_char() {
     # }
     printf -- "${s_NOVCS}"
 }
-command -v declare >/dev/null 2>&1 && declare -fx _vcs_prompt_char 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx _vcs_prompt_char >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: _return_code
@@ -137,7 +137,7 @@ _return_code() {
     exit_code="${?}"
     [ "${exit_code}" -ne 0 ] && printf -- "¡${exit_code}¡"
 }
-command -v declare >/dev/null 2>&1 && declare -fx _return_code 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx _return_code >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: getip
@@ -158,7 +158,7 @@ getip() {
         nslookup  "${1:-$HOSTNAME}"
     fi
 }
-command -v declare >/dev/null 2>&1 && declare -fx getip 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx getip >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: psz
@@ -167,7 +167,7 @@ command -v declare >/dev/null 2>&1 && declare -fx getip 2>/dev/null
 psz() {
     ps -el | awk '{ if (\$2 == \"Z\") {print \$4}}'
 }
-command -v declare >/dev/null 2>&1 && declare -fx psz 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx psz >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: mymemuse
@@ -177,7 +177,7 @@ command -v declare >/dev/null 2>&1 && declare -fx psz 2>/dev/null
 mymemuse() {
     /bin/ps -u $(whoami) -o pid,rss,command | awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
 }
-command -v declare >/dev/null 2>&1 && declare -fx mymemuse 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx mymemuse >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: extract
@@ -210,7 +210,7 @@ extract () {
          printf "%s\n" "'${1}' is not a valid file!"
      fi
 }
-command -v declare >/dev/null 2>&1 && declare -fx extract 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx extract >/dev/null 2>&1
 
 #=== FUNCTION ==================================================================
 # NAME: mans
@@ -225,7 +225,7 @@ mans () {
         man "${1}" | grep -iC2 --color=always "${2}" | less
     fi
 }
-command -v declare >/dev/null 2>&1 && declare -fx mans 2>/dev/null
+command -v declare >/dev/null 2>&1 && declare -fx mans >/dev/null 2>&1
 
 #===============================================================================
 #----------------------------------------------------------------------
