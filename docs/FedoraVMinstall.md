@@ -2,25 +2,25 @@
 
 ## VirtualBox config
 
-General -> Advanced -> Shared Clipboard (Bidirectional)
-System -> Motherboard -> Base Memory (4096 MB)*
-System -> Motherboard -> Boot Order (deselect Floppy)
-System -> Processor -> Processors (2)*
-System -> Processor -> Extended Features (select Enable PAE/NX)
-System -> Acceleration -> Paravirtualization Interface (KVM)
-System -> Acceleration -> Hardware Virtulization (select Enable VT-x/AMD-V & Enable Nested Paging)
-Display -> Screen -> Video Memory (64 MB)
-Display -> Screen -> Acceleration (select Enable 3D)
-Display -> Remote Display -> Enable Server (deselect)
-Display -> Video Capture -> Enable Video Capture (deselect)
-Storage -> Storage Tree -> (remove cd-rom & IDE, select Use Host I/O Cache)
-Storage -> Stroage Tree -> on SATA controller, create (use vmdk):
-    base OS disk (64 GB Dynamic, check solid-state)
-    cd-rom 
-Audio -> (deslect Enable Audio)
-Network -> Adapter 1 -> Attach to NAT Network
-Network -> Adapter 1 -> Advanced -> set Adapter Type to Paravirtualized Network
-Shared Folders -> Machive Folders -> add home directory as auto-mount, make permanent
+* General -> Advanced -> Shared Clipboard (Bidirectional)
+* System -> Motherboard -> Base Memory (4096 MB)*
+* System -> Motherboard -> Boot Order (deselect Floppy)
+* System -> Processor -> Processors (2)*
+* System -> Processor -> Extended Features (select Enable PAE/NX)
+* System -> Acceleration -> Paravirtualization Interface (KVM)
+* System -> Acceleration -> Hardware Virtulization (select Enable VT-x/AMD-V & Enable Nested Paging)
+* Display -> Screen -> Video Memory (64 MB)
+* Display -> Screen -> Acceleration (select Enable 3D)
+* Display -> Remote Display -> Enable Server (deselect)
+* Display -> Video Capture -> Enable Video Capture (deselect)
+* Storage -> Storage Tree -> (remove cd-rom & IDE, select Use Host I/O Cache)
+* Storage -> Stroage Tree -> on SATA controller, create (use vmdk):
+    * base OS disk (64 GB Dynamic, check solid-state)
+    * cd-rom 
+* Audio -> (deslect Enable Audio)
+* Network -> Adapter 1 -> Attach to NAT Network
+* Network -> Adapter 1 -> Advanced -> set Adapter Type to Paravirtualized Network
+* Shared Folders -> Machive Folders -> add home directory as auto-mount, make permanent
 
 (*) Adjust to resource availablability
 
