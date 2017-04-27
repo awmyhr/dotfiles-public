@@ -7,6 +7,11 @@
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.16-windows">
   <Machine uuid="{400aa26b-b947-44cb-a6ac-f0b951564071}" name="fedora-vBox" OSType="Fedora_64" snapshotFolder="Snapshots" lastStateChange="2017-04-27T18:20:01Z">
+    <MediaRegistry>
+      <HardDisks>
+        <HardDisk uuid="{2d582f8b-43d2-4afb-96f9-44e8856e6989}" location="fedora-vBox-os.vdi" format="VDI" type="Normal"/>
+      </HardDisks>
+    </MediaRegistry>
     <ExtraData>
       <ExtraDataItem name="GUI/RestrictedRuntimeDevicesMenuActions" value="HardDrives"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeMachineMenuActions" value="SaveState,PowerOff"/>
@@ -62,12 +67,15 @@
       <RTC localOrUTC="UTC"/>
       <Clipboard mode="Bidirectional"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="en_US" timestamp="1493317470143424600" flags=""/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="en_US" timestamp="1493317604061202800" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>
-      <StorageController name="SATA" type="AHCI" PortCount="1" useHostIOCache="true" Bootable="true" IDE0MasterEmulationPort="0" IDE0SlaveEmulationPort="1" IDE1MasterEmulationPort="2" IDE1SlaveEmulationPort="3">
+      <StorageController name="SATA" type="AHCI" PortCount="2" useHostIOCache="true" Bootable="true" IDE0MasterEmulationPort="0" IDE0SlaveEmulationPort="1" IDE1MasterEmulationPort="2" IDE1SlaveEmulationPort="3">
         <AttachedDevice passthrough="false" type="DVD" hotpluggable="false" port="0" device="0"/>
+        <AttachedDevice type="HardDisk" hotpluggable="false" port="1" device="0">
+          <Image uuid="{2d582f8b-43d2-4afb-96f9-44e8856e6989}"/>
+        </AttachedDevice>
       </StorageController>
     </StorageControllers>
   </Machine>
