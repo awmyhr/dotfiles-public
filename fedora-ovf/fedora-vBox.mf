@@ -1,0 +1,2 @@
+SHA1 (fedora-vBox.ovf)= 217ba1a830189e185ae44b06075cb91dfc70d579
+SHA1 (fedora-vBox-disk001.vmdk)= c4bac093820f5f3ff4f32f6d4149d38c7e866045
