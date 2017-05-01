@@ -1,20 +1,37 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-04-03
+# Revised:   2017-05-01
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Check for /usr/bin/xonsh
-  stat:
-    path: /usr/bin/xonsh
-    get_md5: False
-    get_checksum: False
-  register: bin_xonsh
+- name: Verify directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.config
+    - ~/.config/xonsh
+    - ~/.local
+    - ~/.local/share
+    - ~/.local/share/xonsh
+  
+- name: Xonsh files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .xonshrc
 
-- name: Do xonsh Actions.
-  include: actions.yml
-  when: bin_xonsh.stat.executable is defined and bin_xonsh.stat.executable
+- name: Xonsh config files.
+  copy:
+    src: .config/xonsh/
+    dest: ~/.config/xonsh/
 
+- name: Xonsh local files.
+  copy:
+    src: .local/share/xonsh/
+    dest: ~/.local/share/xonsh/
