@@ -1,0 +1,44 @@
+#!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
+#===============================================================================
+#
+#         FILE: .shell.d/lib/ssh-check
+#
+#        USAGE: (should be run by shell login)
+#
+#  DESCRIPTION: Checks key strength for files in ~/.ssh
+#
+#      OPTIONS: ---
+# REQUIREMENTS: ssh-keygen
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0-alpha
+#     REVISION: 2017-05-01
+#      CREATED: 2017-05-01
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Based on the article https://blog.g3rt.nl/upgrade-your-ssh-keys.html
+#----------------------------------------------------------------------
+
+for SK_FILE in ~/.ssh/*; do
+    # Check ssh keys. Output is:
+    #   <bits> <fptype:fingerprint> <comment> <(type)>
+    read -r -- SK_BITS SK_FPRINTl SK_COMMENT SK_TYPE <<EOF
+        $(ssh-keygen -lf "${SK_FILE}" 2>/dev/null)
+EOF
+    #-- DSA or RSA 1024 bits: Flag insecure
+    #-- RSA 2048: Flag potentially insecure
+    #-- ECDSA: depends. Recommended to change (will not flag for now)
+    #-- RSA 3072/4096: No need to flag
+    #-- Ed25519: No need to flag
+    if [ "${SK_TYPE}" = '(DSA)' ]; then
+        printf "${c_EMERG}SSH Key insecure! %s-%s\t%s${c_norm}\n" "${SK_TYPE}" "${SK_BITS}" $(basename "${SK_FILE}")
+    elif [ "${SK_TYPE}" = '(RSA)' ] && [ "${SK_BITS}" -lt 2048 ]; then
+        printf "${c_EMERG}SSH Key insecure! %s-%s\t%s${c_norm}\n" "${SK_TYPE}" "${SK_BITS}" $(basename "${SK_FILE}")
+    elif [ "${SK_TYPE}" = '(RSA)' ] && [ "${SK_BITS}" -lt 3072 ]; then
+        printf "${c_WARNING}SSH Key potentially insecure. %s-%s\t%s${c_norm}\n" "${SK_TYPE}" "${SK_BITS}" $(basename "${SK_FILE}")
+    fi
+done
