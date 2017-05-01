@@ -1,13 +1,13 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-27
+# Revised:   2017-05-01
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Verify directories.
+- name: Terminator Directories.
   file:
     path: "{{ item }}"
     state: directory
@@ -15,8 +15,8 @@
   with_items:
     - ~/.config
     - ~/.config/terminator
-  
-- name: terminator files.
+
+- name: Terminator Files.
   copy:
     src: .config/terminator/
     dest: ~/.config/terminator/

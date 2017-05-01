@@ -1,20 +1,20 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-27
+# Revised:   2017-05-01
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Verify directories.
+- name: Misc Directories.
   file:
     path: "{{ item }}"
     state: directory
     mode: 0755
   with_items:
     - ~/.config
-  
+
 - name: Misc dotfiles.
   copy:
     src: "{{ item }}"
