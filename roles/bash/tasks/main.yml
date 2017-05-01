@@ -1,26 +1,30 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-04-03
+# Revised:   2017-05-01
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Set path for bash
-  include_vars:
-    file: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-    - defaults.yml
+- name: Verify directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.bashrc.d
+  
+- name: Bash files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .bash_logout
+    - .bash_profile
+    - .bashrc
 
-- name: Check for bash
-  stat:
-    path: "{{ path_bash }}"
-    get_md5: False
-    get_checksum: False
-  register: bin_bash
-
-- name: Do bash Actions.
-  include: actions.yml
-  when: bin_bash.stat.executable is defined and bin_bash.stat.executable
+- name: BashrcD files.
+  copy:
+    src: .bashrc.d/
+    dest: ~/.bashrc.d/
