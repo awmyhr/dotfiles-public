@@ -7,7 +7,7 @@
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Verify directories.
+- name: Bash Directories.
   file:
     path: "{{ item }}"
     state: directory
@@ -15,7 +15,7 @@
   with_items:
     - ~/.bashrc.d
   
-- name: Bash files.
+- name: Bash Files.
   copy:
     src: "{{ item }}"
     dest: ~/
@@ -24,7 +24,7 @@
     - .bash_profile
     - .bashrc
 
-- name: BashrcD files.
+- name: BashrcD Files.
   copy:
     src: .bashrc.d/
     dest: ~/.bashrc.d/
