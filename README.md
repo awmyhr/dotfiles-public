@@ -46,8 +46,10 @@ to poke around, use stuff, learn stuff, teach me stuff, and share alike...
 
 ## Install
 
-```
-```
+Initial ssh keygen:
+    
+    ssh-keygen -t ed25519 -C "Non-backward compat base key"
+    ssh-keygen -t rsa -b 4096 -C "Backward compat base key"
 
 ## Usage
 
