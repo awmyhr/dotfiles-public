@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-27
+# Revised:   2017-05-01
 # Created:   2017-03-23
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -11,9 +11,11 @@
 - name: Ensure ssh public key.
   authorized_key: 
     user: "{{ ansible_user }}" 
-    key: "{{ lookup('file', localkeyfile) }}"
+    key: |
+         {{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}
+         {{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}
     state: present
-    exclusive: no
+    exclusive: True
     manage_dir: yes
 
 - name: Verify directories.
