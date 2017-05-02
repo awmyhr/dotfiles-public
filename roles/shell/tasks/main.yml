@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-01
+# Revised:   2017-05-02
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -37,4 +37,5 @@
   with_items:
     - ~/.shell.d/lib/greeting
     - ~/.shell.d/lib/promptdash
+    - ~/.shell.d/lib/ssh-keycheck
 
