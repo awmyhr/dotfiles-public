@@ -9,7 +9,7 @@
 ---
 ssh_ControlPath: 'ControlPath ~/tmp/.ssh_mux-%r_%h_%p'
 ssh_ControlPersist: ''
-ssh_HostKeyAlgorithms: 'HostKeyAlgorithms ssh-rsa-cert-v01@openssh.com,ssh-rsa'
+ssh_HostKeyAlgorithms: 'HostKeyAlgorithms ssh-rsa'
 ssh_Ciphers: 'Ciphers aes256-ctr,aes192-ctr,aes128-ctr'
 ssh_KexAlgorithms: ''
 ssh_MACs: 'MACs hmac-ripemd160'
