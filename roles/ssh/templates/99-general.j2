@@ -1,0 +1,40 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-02
+# Created:   2016-09-23
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+#-- NOTE: OpenSSH version 7.3+ has an Include directive
+#-- This will be very useful once EL distros catch up...
+ 
+Host *
+    #-- These enable connection sharing
+    ControlMaster auto
+    #-- Ideally 'ContorlPath ~/tmp/.ssh_mux_%C', but %C is a relativley new option
+    {{ ssh_ControlPath }}
+    {{ ssh_ControlPersist }}
+    #-- Ensure KnownHosts are unreadable if known_hosts file is leaked.
+    #--     It is otherwise easier to know which hosts your keys have access to.
+    HashKnownHosts yes
+    IdentityFile ~/.ssh/id_ed25519
+    IdentityFile ~/.ssh/id_rsa
+    #-- If homedir is shared, set this to yes
+    NoHostAuthenticationForLocalhost no
+    PreferredAuthentications publickey,keyboard-interactive,password
+    ServerAliveInterval 60
+    StrictHostKeyChecking no
+    #-- BEGIN Secure based on info from 
+    #       https://wiki.mozilla.org/Security/Guidelines/OpenSSH
+    #       https://stribika.github.io/2015/01/04/secure-secure-shell.html
+    #-- Host keys the client accepts - order here is honored by OpenSSH
+    {{ ssh_HostKeyAlgorithms }}
+    {{ ssh_Ciphers }}
+    {{ ssh_KexAlgorithms }}
+    {{ ssh_MACs }}
+    #-- If need to support RHEL5, add:
+    ##      'diffie-hellman-group-exchange-sha1' to KexAlgorithms
+    ##      'hmac-ripemd160' to MACs
+    #-- END Secure
+
