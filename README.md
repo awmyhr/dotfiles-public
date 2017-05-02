@@ -48,8 +48,10 @@ to poke around, use stuff, learn stuff, teach me stuff, and share alike...
 
 Initial ssh keygen:
     
-    ssh-keygen -t ed25519 -C "Non-backward compat base key"
-    ssh-keygen -t rsa -b 4096 -C "Backward compat base key"
+    ssh-keygen -o -t ed25519 -f ~/.ssh/id_ed25519 -C "Non-backward compat base key"
+    ssh-keygen -o -t rsa -b 4096 -f ~/.ssh/id_rsa -C "Backward compat base key"
+
+(Note: -o is not supported in OpenSSH prior to 6.5)
 
 ## Usage
 
