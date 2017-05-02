@@ -11,19 +11,27 @@
 #      OPTIONS: ---
 # REQUIREMENTS: ssh-keygen
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
 #     REVISION: 2017-05-02
 #      CREATED: 2017-05-01
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
+#-- I'm checking all files in ~/.ssh as key files could be named anything
 
 #----------------------------------------------------------------------
 #-- Based on the article https://blog.g3rt.nl/upgrade-your-ssh-keys.html
 #----------------------------------------------------------------------
 
 for SK_FILE in ~/.ssh/*; do
+    # Skip well-known non-key files
+    case "${SK_FILE}" in
+        *authorized_keys*) continue ;;
+        *config*) continue ;;
+        *known_hosts*) continue ;;
+        *) : ;;
+    esac
     # Check ssh keys. Output is:
     #   <bits> <fptype:fingerprint> <comment> <(type)>
     read -r -- SK_BITS SK_FPRINTl SK_COMMENT SK_TYPE <<EOF
