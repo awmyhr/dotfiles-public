@@ -1,16 +1,16 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-28
+# Revised:   2017-05-03
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- hosts: gui-hosts
-  name: GUI items.
+- name: GUI items.
+  hosts: gui-hosts
   become: False
   roles:
-  - i3
-  - dunst
-  - terminator
+  - {role: 'i3',         tags: ''}
+  - {role: 'dunst',      tags: 'dunst'}
+  - {role: 'terminator', tags: 'terminator'}

@@ -1,22 +1,22 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-02
+# Revised:   2017-05-03
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- hosts: all
-  name: Command line items.
+- name: Command line items.
+  hosts: all
   become: False
   roles:
-  - bash
-  - git
-  - inxi
-  - misc
-  - ssh
-  - tmux
-  - vim
-  - xonsh
-  - zsh
+  - {role: 'bash',  tags: 'bash'}
+  - {role: 'git',   tags: 'git'}
+  - {role: 'inxi',  tags: 'inxi'}
+  - {role: 'misc',  tags: 'misc'}
+  - {role: 'ssh',   tags: 'ssh'}
+  - {role: 'tmux',  tags: 'tmux'}
+  - {role: 'vim',   tags: 'vim'}
+  - {role: 'xonsh', tags: 'xonsh'}
+  - {role: 'zsh',   tags: 'zsh'}
