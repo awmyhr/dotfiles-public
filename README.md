@@ -80,9 +80,8 @@ For reference, here are just some:
 
 ## Contribute
 
-PRs accepted.
+PRs will be reviewed.
 
 ## License
 
-{{ software_license|default("TODO: CHANGEME", true) }} © {{ software_copyright|default("TODO: CHANGEME", true) }}
-
+Apache-2.0 © 2017, awmyhr
