@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-03
+# Revised:   2017-05-04
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -11,12 +11,13 @@
   hosts: all
   become: False
   roles:
-  - {role: 'bash',  tags: 'bash'}
-  - {role: 'git',   tags: 'git'}
-  - {role: 'inxi',  tags: 'inxi'}
-  - {role: 'misc',  tags: 'misc'}
-  - {role: 'ssh',   tags: 'ssh'}
-  - {role: 'tmux',  tags: 'tmux'}
-  - {role: 'vim',   tags: 'vim'}
-  - {role: 'xonsh', tags: 'xonsh'}
-  - {role: 'zsh',   tags: 'zsh'}
+  - {role: 'ansible', tags: 'ansible'}
+  - {role: 'bash',    tags: 'bash'}
+  - {role: 'git',     tags: 'git'}
+  - {role: 'inxi',    tags: 'inxi'}
+  - {role: 'misc',    tags: 'misc'}
+  - {role: 'ssh',     tags: 'ssh'}
+  - {role: 'tmux',    tags: 'tmux'}
+  - {role: 'vim',     tags: 'vim'}
+  - {role: 'xonsh',   tags: 'xonsh'}
+  - {role: 'zsh',     tags: 'zsh'}

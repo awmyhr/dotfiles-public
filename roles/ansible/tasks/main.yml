@@ -1,0 +1,37 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-04
+# Created:   2017-05-04
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Ansible Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/etc/ansible/group_vars
+    - ~/etc/ansible/host_vars
+    - ~/etc/ansible/library
+    - ~/etc/ansible/roles
+    - ~/.ansible/cache
+    - ~/.ansible/cp
+    - ~/.ansible/repo
+    - ~/.ansible/retry
+    - ~/.ansible/tmp
+    - ~/var/log
+
+- name: Ansilbe Config File.
+  copy:
+    src: .ansible.cfg
+    dest: ~/
+
+- name: Ansible Inventory File.
+  copy:
+    src: etc/ansible/host_vars/localhost
+    dest: ~/etc/ansible/host_vars/
+    force: no
+    backup: yes
