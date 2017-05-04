@@ -41,12 +41,16 @@ not my first attempt at putting this code out there publicly, but I think I've
 learned enough from previous attempts that this one will be more successful.
 
 I've dicided to use this particular 'fresh' start to re-version the entire project 
-as '1.0.0' and call everything before it an extended alpha/beta test. Feel free
-to poke around, use stuff, learn stuff, teach me stuff, and share alike...
+as '1.0' and call everything before it an extended alpha/beta test. Since this
+project is a collection of things I will be using date-stamp versioning for the
+whole thing, though individual files will use semantic versioning when it makes
+sense. 
+
+Feel free to poke around, use stuff, learn stuff, teach me stuff, and share alike...
 
 ## Install
 
-Initial ssh keygen:
+Initialize ssh keys:
     
     ssh-keygen -o -t ed25519 -f ~/.ssh/id_ed25519 -C "Non-backward compat base key"
     ssh-keygen -o -t rsa -b 4096 -f ~/.ssh/id_rsa -C "Backward compat base key"
@@ -55,8 +59,34 @@ Initial ssh keygen:
 
 ## Usage
 
-```
-```
+There are a few variables which can (or should) be set:
+
+    ssh_keys (roles/common/defaults/main.yml)
+        If you want to distribute more than the two defaults created in Install.
+
+    git_user (roles/git/defaults/main.yml)
+        Primarily for .gitconfig. Defaults to ansible_user.
+
+    git_email (roles/git/defaults/main.yml)
+        Primarily for .gitconfig. No reasonable default, please set this.
+
+    local_repo (roles/inxi/defaults/main.yml)
+        Location to stage downloads before distributing out. Defaults to ~/.ansible/repo
+
+    system_control (host_vars/localhost and group_vars/all)
+        Anotates whether one (politically) is able to install whatever on a system.
+        Currently the only value used is 'full', which is the default for localhost.
+        The group 'all' defaults to 'user', which may be used in the future.
+        Note: this has no barring on if one is able to 'become' on a system.
+
+    system_devenv (host_vars/localhost and group_vars/all)
+    system_devenv_site (host_vars/localhost and group_vars/all)
+        Used to determine if outside and/or inside development related settings
+        are included (for example, ssh configs for GitHub/Bitbucket). These
+        both default to True for localhost and False for all.
+
+One should keep in mind that playbook group\_vars/host\_vars override ones
+inventory settings. ([See precedence rules here.](http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable))
 
 ## References
 
