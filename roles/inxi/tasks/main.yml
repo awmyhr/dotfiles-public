@@ -13,10 +13,17 @@
     state: directory
     mode: 0755
   with_items:
-    - ~/.inxi
+    - ~/bin
+    - ~/man
+    - ~/man/man1
+    - ~/.config
+    - ~/.local/share/inxi
   
+- name: Inxi install.
+  include: install.yml
+
 - name: Inix Files.
   copy:
-    src: .inxi/
-    dest: ~/.inxi/
+    src: inxi.conf
+    dest: ~/.config/
 
