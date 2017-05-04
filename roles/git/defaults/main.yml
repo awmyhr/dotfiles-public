@@ -2,12 +2,10 @@
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
 # Revised:   2017-05-04
-# Created:   2017-03-27
+# Created:   2017-05-04
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Git Config.
-  template:
-    src: gitconfig.j2
-    dest: ~/.gitconfig
+git_user: "{{ ansible_user }}"
+git_email: "CHANGEME@nowhere.com"
