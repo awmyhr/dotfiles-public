@@ -19,7 +19,6 @@
     state: directory
     mode: 0755
   with_items:
-    - ~/.vim
     - ~/.vim/autoload
 
 - name: Vim Files.

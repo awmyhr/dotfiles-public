@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-01
+# Revised:   2017-05-04
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -13,7 +13,6 @@
     state: directory
     mode: 0755
   with_items:
-    - ~/.config
     - ~/.config/i3
 
 - name: I3 Files.
