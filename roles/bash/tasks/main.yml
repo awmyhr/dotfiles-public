@@ -1,0 +1,35 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-03
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Bash installs.
+  include: install.yml
+  become: True
+  when: system_control == "full"
+
+- name: Bash Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.bashrc.d
+  
+- name: Bash Files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .bash_logout
+    - .bash_profile
+    - .bashrc
+
+- name: BashrcD Files.
+  copy:
+    src: .bashrc.d/
+    dest: ~/.bashrc.d/

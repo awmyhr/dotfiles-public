@@ -1,0 +1,12 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-04
+# Created:   2017-05-04
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+bash_pkgs:
+  - bash
+  - bash-completion

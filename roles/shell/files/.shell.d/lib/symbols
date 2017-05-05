@@ -1,0 +1,119 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: .shell.d/lib/symbols
+#
+#        USAGE: (should be sourced by .shell.d/shellinit)
+#
+#  DESCRIPTION: Sets symbols to represent various things
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.2.1
+#      CREATED: 2016-09-30
+#     REVISION: 2016-10-27
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Special characters cribbed partly from LiquidPrompt
+#--   Fallback to ASCII if the term not Unicode-capable.
+#--   Currently 'fancy' symbols are only set for UTF-8 locale.
+#----------------------------------------------------------------------
+CHARMAP=$(locale -k LC_CTYPE | sed -n 's/^charmap="\(.*\)"/\1/p')
+if stringmatch "UTF-8" "${CHARMAP}"; then
+    #Some unused symbols: '✘' '⚡' '⚙' 'ᐅ' '↓' '⁝' '✹' '➙' '◼' '●' '♺' '❮' '❯'
+                        # '«' '¶' '»' 'Þ' 'Ξ' 'ρ' '∄' '∥' '⎇' '␊' '␤' '▶' '◀'
+                        # '☰' '⭠' '⭡' '⭤' '⮀' '⮁' '⮂' '⮃' 'Ꞩ' '' '' ''
+                        # '' '' '' '' '🔒'
+
+    export s_DARCS='d'
+    export s_FOSSIL='⌘'
+    export s_GIT='±'
+    export s_HG='☿'
+    export s_SVN='‡'
+    export s_NOVCS='○'
+
+    export s_ADDED='✚'
+    export s_AHEAD='⬆'
+    export s_BEHIND='⬇'
+    export s_BRANCH=''
+    export s_CLEAN='✔'
+    export s_COMMIT='➦'
+    export s_COPIED='●'
+    export s_DELETED='✖'
+    export s_DIRTY='✘'
+    export s_DIVERGED='↕'
+    export s_MODIFIED='✱'
+    export s_NEXT='→'
+    export s_RENAMED='➜'
+    export s_STAGED='●'
+    export s_STASHED='✭'
+    export s_UNMERGED='§'
+    export s_UNTRACKED='✭'
+
+    export s_bash='B'
+    export s_csh='C'
+    export s_dash='D'
+    export s_fish='F'
+    export s_ksh='K'
+    export s_mksh='M'
+    export s_posix='P'
+    export s_rc='R'
+    export s_screen='s'
+    export s_tcsh='T'
+    export s_tmux='t'
+    export s_yash='Y'
+    export s_zsh='Z'
+else
+    export s_DARCS='d'
+    export s_FOSSIL='f'
+    export s_GIT='g'
+    export s_HG='m'
+    export s_SVN='s'
+    export s_NONE='0'
+
+    export s_ADDED='+'
+    export s_AHEAD='A'
+    export s_BEHIND='-'
+    export s_BRANCH='B'
+    export s_CLEAN='C'
+    export s_COMMIT='C'
+    export s_COPIED='C'
+    export s_DELETED='X'
+    export s_DIRTY='D'
+    export s_DIVERGED='S'
+    export s_MODIFIED='*'
+    export s_NEXT='>'
+    export s_RENAMED='>'
+    export s_STAGED='S'
+    export s_STASHED='s'
+    export s_UNMERGED='='
+    export s_UNTRACKED='?'
+
+    export s_bash='B'
+    export s_csh='C'
+    export s_dash='D'
+    export s_fish='F'
+    export s_ksh='K'
+    export s_mksh='M'
+    export s_posix='P'
+    export s_rc='R'
+    export s_screen='s'
+    export s_tcsh='T'
+    export s_tmux='t'
+    export s_yash='Y'
+    export s_zsh='Z'
+fi
+
+#===============================================================================
+#----------------------------------------------------------------------
+export ISSET_SYMBOLS=1
+#----------------------------------------------------------------------
+#===============================================================================

@@ -1,0 +1,33 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-04
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Zsh installs.
+  include: install.yml
+  become: True
+  when: system_control == "full"
+
+- name: Zsh Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.zshrc.d
+
+- name: Zsh Files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .zshenv
+
+- name: ZshrcD files.
+  copy:
+    src: .zshrc.d/
+    dest: ~/.zshrc.d/

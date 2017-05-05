@@ -25,7 +25,10 @@ more of a suggestion than anything else...
 - implement said themeing 
 - optimize calling of variables/functions to take advantage of login vs subshells
 - optimize functions for bash and zsh
-- 'build' system, probably using make
+- standardize prompt building accross shells
+- prompt should take queue from vim statusline
+- audit all variables to ensure there is no code in them per [BashFAQ 050](http://mywiki.wooledge.org/BashFAQ/050)
+unless there's a gosh-darned-good reason for it.
 
 ---
 
@@ -41,6 +44,45 @@ more of a suggestion than anything else...
 ### Fixed
 
 ### Security
+
+---
+
+## [2017.05.05]
+### Added
+- project has been transformed into an Ansible project (this is huge)
+- ssh-keycheck will test ssh key strength upon login
+- Bash & Zsh now have a dynamic 'dashboard' for prompts
+- tmux/vim/inxi/ssh/xonsh/CodeClimate config files added
+- loginspeedtest script to test speed of profiles upon login
+- variables to hold default editor/vcs version, and display in greeting
+- list of window roles & types which should float in i3 
+- minorly decorated PS2 for zsh/bash/posix
+- precmd for zsh to display user@host:pwd in terminal tital bar
+
+### Changed
+- project is now Apache 2.0 licensed
+- project has been radically re-organized to fit the Ansible workflow
+- overall project version changed to datestamp versioning
+- alias 'ssu' now requires a user name, use 'ssr' for sudo to root
+- testusers:
+    - added meta info variables
+    - output improved
+    - now tests for too few/too many arguments
+- inputrc overhauled, considered released
+- small tweak to the way branch name in git is found
+- reduced prompt call outs to git down to 1, and only if needed
+- all '.gitdir' have been chenged to '.keepdir'
+- many tweaks to ouput strings/formats
+
+### Removed
+- removed all subtrees, will simply reference them in a doc
+
+### Fixed
+-'type <command>' was not working as expected in zshrc, this has been replaced
+with 'whence -w <command>'. Also, check for existance of command before doing a
+compdef
+- git prompt status fully functional in Bash
+- TIMEFORMAT was messed up
 
 ---
 
@@ -63,11 +105,15 @@ more of a suggestion than anything else...
 - rolled back changes in git package which somehow found their way into the 
 wrong place (i.e., master and develop branches)
 
+---
+
 ## [1.3.1] - 2016-10-14
 ### Fixed
 - splitvar() declared a local variable (not supported in some shells)
 - whereis alias should be set if whereis *doesn't* exist, and the -all flag
 is not supported by some shells, so -a only
+
+---
 
 ## [1.3.0] - 2016-10-13
 ### Added
@@ -99,6 +145,8 @@ is not supported by some shells, so -a only
 exported when declared via 'declare -fx'. POSIX shells will complain, but those
 complaints are sent to /dev/null and will be dealt with there...
 
+---
+
 ## [1.2.0] - 2016-10-07
 ### Added
 - real .zlogin/.zlogout
@@ -112,6 +160,8 @@ complaints are sent to /dev/null and will be dealt with there...
 ### Fixed
 - fixed loading BASHD ancillary scripts
 - put bash login stuff in the bash_login file
+
+---
 
 ## [1.1.0] - 2016-10-06
 ### Added
@@ -132,6 +182,8 @@ complaints are sent to /dev/null and will be dealt with there...
 ### Removed
 - removed (mis-)use of SHELL
 - no longer trying to second-guess system profiles (for PATH, etc)
+
+---
 
 ## [1.0.0] - 2016-10-04
 ### Added

@@ -1,0 +1,34 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-04
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Xonsh Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.config/xonsh
+    - ~/.local/share/xonsh
+  
+- name: Xonsh Files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .xonshrc
+
+- name: Xonsh Config Files.
+  copy:
+    src: .config/xonsh/
+    dest: ~/.config/xonsh/
+
+- name: Xonsh Local Files.
+  copy:
+    src: .local/share/xonsh/
+    dest: ~/.local/share/xonsh/

@@ -1,0 +1,159 @@
+#!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
+#===============================================================================
+#
+#         FILE: .shell.d/packages/git
+#
+#        USAGE: (should be sourced by .shell.d/settings)
+#
+#  DESCRIPTION: Git functions, aliases, etc for use across shells.
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               git (via 'git-core')
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 2.1.0
+#      CREATED: 2016-10-04
+#     REVISION: 2017-03-30
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+alias g='git'
+
+DEFAULT_VCS_VERSION=$(git --version 2>/dev/null | head -1 | tr -d '\r')
+export DEFAULT_VCS_VERSION
+
+#=== FUNCTION ================================================================
+# NAME: _vcs_prompt
+# DESCRIPTION:  parse status of current repo, return string of symbols
+#               (originally from some oh-my-zsh theme files,
+#                however by this point I've totally re-written it)
+# NOTE: this may not work in git versions older than 1.7.2
+# NOTE: Have solved the subshell problem (YAY!) However, may not work in
+#       strict POSIX shell (BOO!). Oh well...
+#===============================================================================
+_vcs_prompt() {
+    IGNORE_SUBMODULES=''
+    IGNORE_UNTRACKED_FILES=''
+    # BUG: Very strange. When git is in a container, and run with exec in
+    #      this function with this command:
+    #      git status -b --porcelain --ignore-submodules
+    #      it will instead ignore untracked files. This does not happen 
+    #      running the same command from the command line (still using exec
+    #      to call it from a container.) No explination I can think of...
+    # [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
+    #                 IGNORE_SUBMODULES=$(printf -- " --ignore-submodules")
+    # [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
+    #                 IGNORE_UNTRACKED_FILES=$(printf -- " --untracked-files=no")
+
+    GITSTAT=0
+    STATUS=''
+
+    # These variables flage if we've already added condition to status line
+    state=0         #  \#\#*  ) Should match first branch info line
+   
+    unstaged_UT=0   # \?\?\ * ) non-staged & untracked
+    unstaged_UM=0   # UU\ *   ) non-staged & unmerged   
+    unstaged_D=0    # \ D\ *  ) non-staged & deleted
+
+    unstaged_M=0    # \ M\ *  ) non-staged & modified
+                    # AM\ *   ) non-staged & modified
+                    # \ T\ *  ) non-staged & modified
+
+    staged_D=0      # D\ \ *  ) staged & deleted
+    staged_R=0      # R*      ) staged & renamed
+    staged_M=0      # M*      ) staged & modified
+    staged_A=0      # A*      ) staged & added
+    staged_C=0      # C*      ) staged & copied
+
+    IFS=$'\n' GIT_OUT=( $(git status -b --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null) )
+    if [ "${ZSH_VERSION}" ]; then
+      GIT_HEAD=${GIT_OUT[1]}
+      GIT_OUT[1]=()
+    else
+      GIT_HEAD=${GIT_OUT[0]}
+      unset GIT_OUT[0]
+    fi
+    
+    GIT_REF=${GIT_HEAD#* }
+    GIT_REF=${GIT_REF%\...*}
+    
+    if [ "${VCS_DETAILED_STATUS}" = "true" ]; then
+      case "${GIT_HEAD}" in
+        *ahead* )    STATUS="${c_DEBUG}${s_AHEAD}${STATUS} " ;;
+        *behind* )   STATUS="${c_CRIT}${s_BEHIND}${STATUS} " ;;
+        *diverged* ) STATUS="${c_EMERG}${s_DIVERGED}${STATUS} "  ;;
+        * ) STATUS="${STATUS}" ;;
+      esac
+      for line in ${GIT_OUT[@]}; do       
+          case "${line}" in
+              \?\?\ * ) [ "${unstaged_UT}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_NOTICE}${s_UNTRACKED}" 
+                        unstaged_UT=$((unstaged_UT+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              UU\ *   ) [ "${unstaged_UM}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_CRIT}${s_UNMERGED}" 
+                        unstaged_UM=$((unstaged_UM+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              \ D\ *  ) [ "${unstaged_D}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_CRIT}${s_DELETED}" 
+                        unstaged_D=$((unstaged_D+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+
+              \ M\ *  ) [ "${unstaged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_WARNING}${s_MODIFIED}" 
+                        unstaged_M=$((unstaged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              AM\ *   ) [ "${unstaged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_WARNING}${s_MODIFIED}" 
+                        unstaged_M=$((unstaged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              \ T\ *  ) [ "${unstaged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_WARNING}${s_MODIFIED}" 
+                        unstaged_M=$((unstaged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+
+              D\ \ *  ) [ "${staged_D}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_DELETED}" 
+                        staged_D=$((staged_D+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              R*      ) [ "${staged_R}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_RENAMED}" 
+                        staged_R=$((staged_R+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              M*      ) [ "${staged_M}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_MODIFIED}" 
+                        staged_M=$((staged_M+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              A*      ) [ "${staged_A}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_ADDED}" 
+                        staged_A=$((staged_A+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              C*      ) [ "${staged_C}" -eq 0 ] && \
+                          STATUS="${STATUS}${c_INFO}${s_COPIED}" 
+                        staged_C=$((staged_C+1))
+                        GITSTAT=$((GITSTAT+1))  ;;
+              *       ) STATUS="${STATUS}" ;;
+          esac
+      done
+    fi
+
+    if [ "${GIT_OUT[1]}" ]; then
+        STATUS="${c_CRIT}${s_DIRTY}${STATUS}"
+    else
+        STATUS="${c_INFO}${s_CLEAN}${STATUS}"
+    fi
+
+    printf "%s" "${c_DEBUG}‹${GIT_REF} ${STATUS}${c_DEBUG}›"
+}
+# command -v declare >/dev/null 2>&1 && declare -fx _vcs_prompt 1>/dev/null 2>/dev/null
+
+#===============================================================================
+#----------------------------------------------------------------------
+export ISSET_GIT=1
+#----------------------------------------------------------------------
+#===============================================================================

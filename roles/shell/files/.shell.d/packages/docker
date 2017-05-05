@@ -1,0 +1,47 @@
+#!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
+#===============================================================================
+#
+#         FILE: .shell.d/packages/docker
+#
+#        USAGE: (should be sourced by .shell.d/settings)
+#
+#  DESCRIPTION: Docker functions, aliases, etc for use across shells.
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               docker (via 'docker')
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.1.0
+#      CREATED: 2017-05-04
+#     REVISION: 2017-03-30
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+alias d='docker'
+alias dimages='d images --format "table {{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"'
+alias dps='d ps --format "table {{.Names}}\t{{.Image}}\t[{{.Label \"org.label-schema.version\"}}]\t{{.Command}}\t{{.Status}}"'
+alias drumit='d run --rm -it'
+
+DOCKER_CLIENT_VERSION=$(docker version --format '{{.Client.Version}}' 2>/dev/null)
+DOCKER_SERVER_VERSION=$(docker version --format '{{.Server.Version}}' 2>/dev/null)
+export DOCKER_CLIENT_VERSION DOCKER_SERVER_VERSION
+
+#=== FUNCTION ================================================================
+# NAME:
+# DESCRIPTION:
+# NOTE:
+#===============================================================================
+# _func() {
+# }
+# command -v declare >/dev/null 2>&1 && declare -fx _func 1>/dev/null 2>/dev/null
+
+#===============================================================================
+#----------------------------------------------------------------------
+export ISSET_DOCKER=1
+#----------------------------------------------------------------------
+#===============================================================================

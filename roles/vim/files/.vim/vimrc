@@ -1,0 +1,136 @@
+"===============================================================================
+"
+"         FILE: .vimrc
+"
+"        USAGE: (automagically loaded by vim)
+"
+"  DESCRIPTION: My personalized vim profile, based on tons of things I've
+"               found/learned over the years.
+"
+"      OPTIONS: ---
+" REQUIREMENTS: vim 7.x
+"               git
+"    OPTIONALS: ---
+"         BUGS: ---
+"        NOTES: ---
+"       AUTHOR: awmyhr, awmyhr@gmail.com
+"      VERSION: 1.0.0-alpha
+"      CREATED: 2016-10-24
+"     REVISION: 2016-10-25
+"===============================================================================
+"----------------------------------------------------------------------
+"-- Notes/known bugs/other issues
+"       Does not fail gracefully
+"       Don't really want to auto-download vim-plug
+"----------------------------------------------------------------------
+
+set nocompatible                " explicitly leave vi-compatibility mode
+                                " (must be first as may impact options below)
+
+" ----------------------------------------------------------------------
+" Setup Plugin Support
+" Download the vim-plug manager if it doesn't exist already
+" ------------------------------------------------------------------
+"if empty(glob('~/.vim/autoload/plug.vim'))
+"  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+"    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"  autocmd VimEnter * PlugInstall | source $MYVIMRC
+"endif
+
+" ----------------------------------------------------------------------
+" Load Plugins
+" ------------------------------------------------------------------
+silent! if plug#begin('~/.vim/plugged')
+
+    " Solarized Color Scheme for Vim
+    " https://github.com/altercation/vim-colors-solarized
+    Plug 'altercation/vim-colors-solarized'
+
+    " fugitive.vim: 'Best' Git wrapper
+    " https://github.com/tpope/vim-fugitive
+    Plug 'tpope/vim-fugitive'
+
+    " A light and configurable statusline/tabline for Vim
+    " https://github.com/itchyny/lightline.vim
+    Plug 'itchyny/lightline.vim'
+
+    " Super simple vim plugin to show the list of buffers in the command bar
+    " https://github.com/bling/vim-bufferline
+    Plug 'bling/vim-bufferline'
+
+    " sensible.vim: universal set of defaults (hopefully) everyone can agree on
+    " https://github.com/tpope/vim-sensible
+    Plug 'tpope/vim-sensible'
+
+    " An extension of sensible-vim
+    " https://github.com/rstacruz/vim-opinion
+    Plug 'rstacruz/vim-opinion'
+
+    " EditorConfig -- only if python support detected;
+    " https://github.com/editorconfig/editorconfig-vim
+    if has('python') ||  has('python3')
+        Plug 'editorconfig/editorconfig-vim'
+    endif
+
+call plug#end()
+endif
+
+" ------------------------------------------------------------------
+" Colors/Syntax
+" ------------------------------------------------------------------
+syntax enable
+
+set background=dark
+colorscheme solarized
+
+" ------------------------------------------------------------------
+" Default Environment
+" (Some of this may be affected by vim-sensible or other plugins)
+" ------------------------------------------------------------------
+set encoding=utf-8      " unicode encoding by default
+set title               " show title in terminal
+set showcmd             " show the command being typed
+set showmode            " show insert, replace, visual mode indicator
+set laststatus=2        " always show the status line
+set ruler               " always show current positions along the bottom
+
+" ------------------------------------------------------------------
+" Temporary/Auxillary Files
+"   Make sure directories exist
+" ------------------------------------------------------------------
+set backupdir=$HOME/.vim/.backup//,.
+set directory=$HOME/.vim/.swap//,.
+if v:version >= 703
+  set undodir=$HOME/.vim/.undo//,.
+endif
+
+" ------------------------------------------------------------------
+" Built-in Status Line Format
+" ------------------------------------------------------------------
+" set statusline=%f\ %h%w%m%r\ %=%(%l,%c%V\ %=\ (%P)%) " close to default
+" set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P     " another close default
+set statusline=%{exists('g:loaded_fugitive')?fugitive#statusline():''}%r\ %n:%<%f%m\ %=[%{&ff}][%{strlen(&fenc)?&fenc:&enc}]%y\ %P%%\ %l:%c
+
+" ------------------------------------------------------------------
+" Lightline Status formats
+" ------------------------------------------------------------------
+"if has('lightline')
+    set noshowmode
+    let g:lightline={
+        \ 'colorscheme': 'solarized',
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ],
+        \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+        \   },
+        \ 'component': {
+        \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
+        \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+        \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+        \   },
+        \ 'component_visible_condition': {
+        \   'readonly': '(&filetype!="help"&& &readonly)',
+        \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+        \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+        \   },
+        \ }
+"endif

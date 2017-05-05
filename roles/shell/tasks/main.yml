@@ -1,0 +1,41 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-02
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Shell Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.profile.d
+    - ~/.shell.d
+
+- name: Profile Files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/
+  with_items:
+    - .inputrc
+    - .profile
+    - .profilerc
+
+- name: ShellD Files.
+  copy:
+    src: .shell.d/
+    dest: ~/.shell.d/
+
+- name: Set execute.
+  file:
+    path: "{{ item }}"
+    mode: 0755
+  with_items:
+    - ~/.shell.d/lib/greeting
+    - ~/.shell.d/lib/promptdash
+    - ~/.shell.d/lib/ssh-keycheck
+

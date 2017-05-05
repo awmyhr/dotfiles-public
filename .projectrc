@@ -1,0 +1,14 @@
+{
+  projectrc_version: '1.0.0',
+  contact_email: 'awmyhr@gmail.com',
+  contact_name: 'awmyhr',
+  email: 'awmyhr@gmail.com',
+  full_name: 'awmyhr',
+  project_home: 'https://github.com/awmyhr/dotfiles-public',
+  project_name: 'DotFiles from *NIXLand',
+  project_slug: 'dotfiles-public',
+  project_abbr: 'dotfiles',
+  project_version: '2017.05.05',
+  software_copyright: '2017 awmyhr',
+  software_license: 'Apache-2.0'
+}

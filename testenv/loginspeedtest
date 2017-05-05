@@ -1,0 +1,137 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: testenv/loginspeedtest
+#
+#        USAGE: sudo loginspeedtest (clean|default|old|test|all)
+#
+#  DESCRIPTION: Should be run as root to profile login time
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#               time (via 'time')
+#               strace (via 'strace')
+#               seq (via 'coreutils')
+#               (test users created via 'testusers' script)
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#===============================================================================
+AUTHOR='awmyhr (awmyhr@gmail.com)'
+VERSION='1.0.0'
+CREATED='2016-10-19'
+REVISION='2016-10-19'
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+LOGFILE='/var/tmp/ShellTest'
+
+#=== FUNCTION ==================================================================
+# NAME: ShellTest
+# DESCRIPTION: Do the actual speed test(s)
+# TIME FORMAT: Test,UserTime,SysTime,RealTime,CPU,MaxMem,MajorPage,MinorPage,Swaps,CS,Wait,FileIn,FileOut
+#===============================================================================
+ShellTest() {
+    TUSER="${1}"
+    printf "%s\n" "Now testing: ${TUSER}"
+    for i in $(seq 1 10); do
+        printf "\t%s\n" "Pass ${i}..."
+        /usr/bin/time -ao "${LOGFILE}".csv -f "${TUSER};%U;%S;%e;%P;%M;%F;%R;%W;%c;%w;%I;%O" -- \
+            su - "${TUSER}" -c exit
+        sleep 2
+    done
+    printf "\t%s\n" "Creating a strace..."
+    strace -o "${LOGFILE}.trace.${TUSER}.$(date +%Y%m%d-%H%M%S)" -cf su - "${TUSER}" -c exit
+    #sudo strace -u <user> -o <file> -E HOME=<user-home> -qcf <command>
+}
+
+#=== FUNCTION ==================================================================
+# NAME: TestGroup
+# DESCRIPTION: Test a group of users
+#===============================================================================
+TestGroup() {
+    GROUP="${1}"
+    printf "%s\n" "Testing group: ${GROUP}"
+    for u in $(/usr/bin/ls /home/"${GROUP}"); do
+        ShellTest "${u}"
+    done
+}
+
+#=== FUNCTION ==================================================================
+# NAME: init
+# DESCRIPTION: Check for requirements
+#===============================================================================
+init() {
+    [ ! "$(id -u)" = 0 ] && printf "%s\n" 'Must execute as root' && exit 77
+    if command -v time >/dev/null 2>&1; then
+        [ "$-" = "*x*" ] && printf "'%s' found.\n" 'time'
+    else 
+        printf "Error: '%s' not found.\n" 'time'
+        exit 69
+    fi
+    if command -v strace >/dev/null 2>&1; then
+        [ "$-" = "*x*" ] && printf "'%s' found\n" 'strace'
+    else 
+        printf "Error: '%s' not found.\n" 'strace'
+        exit 69
+    fi
+}
+
+#=== FUNCTION ==================================================================
+# NAME: usage
+# DESCRIPTION: display usage information
+#===============================================================================
+usage() {
+    printf "%s\n\n" "$0 GROUP"
+    printf "%s\n"   "Where GROUP is one of:"
+    printf "\t%s\n" "clean   Users with no user profiles"
+    printf "\t%s\n" "default Users with system default user profiles"
+    printf "\t%s\n" "old     Users with older user profiles"
+    printf "\t%s\n" "test    Users with current test user profiles"
+    printf "\t%s\n" "all     Test all GROUPs"
+    printf "\n%s\n" "Created: ${CREATED} By: ${AUTHOR}" 
+    printf "%s\n"   "Revised: ${REVISION} Version: ${VERSION}"
+    printf "\n%s\n" "NOTE: script must be executed as root"
+}
+
+
+if [ "$#" -gt 1 ] || [ "$#" -eq 0 ];then
+    printf "%s\n" "Invalid number of arguments"
+    usage
+    exit 64
+fi
+
+case "${1}" in
+    init)       init
+                printf "%s\n" 'init test completed without error.'
+        ;;
+    clean)      init
+                TestGroup clean
+        ;;
+    default)    init
+                TestGroup default
+        ;;
+    old)        init
+                TestGroup old
+        ;;
+    test)       init
+                TestGroup test
+        ;;
+    all)        init
+                TestGroup clean
+                TestGroup default
+                TestGroup old
+                TestGroup test
+        ;;
+    -h|help)    usage
+                exit 0
+        ;;
+    -v|version) printf "%s\n" "Version: $VERSION"
+                exit 0
+        ;;
+    *)          printf "%s\n\n" "${1} is an invalid group."
+                usage
+                exit 64
+        ;;
+esac

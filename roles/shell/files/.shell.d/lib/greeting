@@ -1,0 +1,51 @@
+#!/bin/sh
+# [SublimeLinter shellcheck-exclude:"SC2154" ]
+#===============================================================================
+#
+#         FILE: .shell.d/lib/greeting
+#
+#        USAGE: (should be run by shell login)
+#
+#  DESCRIPTION: Displays some useful/fun info upon login
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ddate (via 'ddate')
+#               fortune (via 'fortune-mod')
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.2.1
+#      CREATED: 2016-10-04
+#     REVISION: 2017-03-30
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Display some useful information
+#----------------------------------------------------------------------
+printf "%s\n" "${c_white}You're logged into ${c_bold}${HOSTNAME}${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}"
+printf "\t%s\n" "${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}"
+printf "\t%s\n" " ${c_white}${c_bold}Shell:${c_norm} ${c_purple}${SHELLSTRING}${c_norm}"
+printf "\t%s\n" " ${c_white}${c_bold}Pager:${c_norm} ${c_purple}${PAGER}${c_norm}"
+printf "\t%s\n" "${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR} (${EDITOR_VERSION})${c_norm}"
+printf "\t%s\n" "   ${c_white}${c_bold}VCS:${c_norm} ${c_purple}${DEFAULT_VCS} (${DEFAULT_VCS_VERSION})${c_norm}"
+
+[ -n "${SYS_VERSION}" ] && printf "%s\n" "${c_white}System self-ids as: ${c_bold}${SYS_VERSION}${c_norm}${c_white}"
+
+# Print the Discordian date.
+command -v ddate >/dev/null 2>&1 && {
+    DDATE=$(ddate +'Today is %{%A, the %e of %B%}, %Y YOLD. %N%nCelebrate %H')
+    printf "\n%s\n" "${c_cyan}${DDATE}${c_norm}"
+    unset DDATE
+}
+
+# Print a random, hopefully interesting, adage.
+command -v fortune >/dev/null 2>&1 && {
+    FORTUNE=$(fortune -s)
+    printf "\n%s\n" "${c_blue}${FORTUNE}${c_norm}"
+    unset FORTUNE
+}
+

@@ -1,0 +1,137 @@
+#!/bin/sh
+#===============================================================================
+#
+#         FILE: .shell.d/lib/aliases
+#
+#        USAGE: (should be sourced by .shell.d/shellinit)
+#
+#  DESCRIPTION: General aliasas which should be compaltible accross platforms.
+#               This may include some command-specific aliases, but if they
+#               start to get more then half a dozen or so, a 'package' should
+#               be created.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: Bourne-compatible shell
+#    OPTIONALS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.3.0
+#      CREATED: 2016-10-10
+#     REVISION: 2017-04-17
+#===============================================================================
+#----------------------------------------------------------------------
+#-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+#-- Common command aliases
+#----------------------------------------------------------------------
+alias    ..='cd ..'
+alias   ...='cd ../..'
+alias  ....='cd ../../..'
+
+alias aliast='alias | grep -i '
+
+alias fname='find . -name '
+
+alias    ls='ls -F $LS_OPTS'
+alias    l.='ls -F $LS_OPTS -d .*'
+alias    l1='ls -F $LS_OPTS -1Ss'
+alias    la='ls -F $LS_OPTS -lA'
+alias    ll='ls -F $LS_OPTS -l'
+alias   lsa='ls -F $LS_OPTS -lA'
+alias   lln='ls -F $LS_OPTS -nA'
+alias  latr='ls -F $LS_OPTS -lAtr'
+
+alias  mkdir='mkdir -p'
+
+alias   psef='ps -ef'
+alias    psa='ps -eo "user,pid,ppid,%cpu,%mem,state,start,time,tty,command"'
+alias    psm='ps -u "${USER}" -o "pid,ppid,%cpu,%mem,state,start,time,tty,command"'
+alias    psg='psa | grep -v "^\${USER} .* \${$} .* grep.*" | grep '
+alias   psgm='psm | grep -v           ".* \${$} .* grep.*" | grep '
+alias  psmem='ps -eo "user,pid,ppid,state,vsz,rss,time,args"   |sort -rk5 | head '
+alias  pscpu='ps -eo "user,pid,ppid,state,%cpu,time,args"  |sort -rk5 | head '
+
+alias      _='${PROG_BECOME}'
+alias    ssr="_ -i"
+alias    ssu="_ -iu"
+
+#----------------------------------------------------------------------
+#-- 'new' command aliases
+#----------------------------------------------------------------------
+alias path="printf -- \${PATH}|tr -s ':' '\n';printf '\n'"
+alias clr='clear;printf "%s\n" "${c_white}Currently logged into ${c_bold}$HOSTNAME${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal on $(tty)${c_norm}"'
+
+#----------------------------------------------------------------------
+#-- Conditional aliases
+#----------------------------------------------------------------------
+if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
+    alias dusort='du -kscx (*|.[a-zA-Z0-9_]*) | sort -n'
+else
+    alias dusort='du -kscx .[[:alnum:]]* * 2>/dev/null |sort -n'
+fi
+
+command -v whereis      >/dev/null 2>&1 || alias whereis='type -a'
+command -v shellcheck   >/dev/null 2>&1 && alias lint-sh='shellcheck'
+command -v phpcs        >/dev/null 2>&1 && alias lint-php='phpcs'
+command -v csslint      >/dev/null 2>&1 && alias lint-css='csslint'
+command -v ping         >/dev/null 2>&1 && alias ping='ping -c 5'
+command -v screenfetch  >/dev/null 2>&1 && alias sf='screenfetch -c 61,33'
+
+if command -v hh        >/dev/null 2>&1 ; then
+    alias h=hh
+    alias gh=hh
+elif command -v history >/dev/null 2>&1 ; then
+    alias h=history
+    alias gh='history | grep'
+fi
+
+if command -v mkpasswd  >/dev/null 2>&1 ; then
+    alias chpass=mkpasswd
+elif command -v passwd  >/dev/null 2>&1 ; then
+    alias chpass=passwd
+fi
+
+if [ -f "${HOME}/.shell.d/lib/greeting" ] ; then
+    alias hi="${HOME}/.shell.d/lib/greeting"
+else
+    alias hi='uname -a'
+fi
+
+if [ -f "${HOME}/.shell.d/lib/promptdash" ] ; then
+    alias promptdash="${HOME}/.shell.d/lib/promptdash | more"
+else
+    alias promptdash='printf "%s\n" "Sorry, promptdash not found."'
+fi
+
+#----------------------------------------------------------------------
+#-- lsof stuff
+#----------------------------------------------------------------------
+command -v lsof         >/dev/null 2>&1 && {
+    alias lsof='_ lsof'                     # automagically execute sudo
+    alias lsock='lsof -i'                   # Display all open sockets (name)
+    alias lsocknum='lsof -i -P'             # Display all open sockets (number)
+    alias lsockU='lsof -nP | grep UDP'      # Display only open UDP sockets
+    alias lsockT='lsof -nP | grep TCP'      # Display only open TCP sockets
+    alias openPorts='lsof -i | grep LISTEN' # All listening connections
+    alias findPid='lsof -t -c'              # find pid(s) of specified process(es)
+}
+
+#----------------------------------------------------------------------
+#-- Perl stuff
+#----------------------------------------------------------------------
+command -v perl         >/dev/null 2>&1 && {
+    alias perlinc='perl -e "print @INC";echo'
+    alias lint-perl='perl -MO=Lint'
+}
+
+#----------------------------------------------------------------------
+#-- Puppet stuff
+#----------------------------------------------------------------------
+command -v puppet       >/dev/null 2>&1 && {
+    alias ppv='puppet parser validate'
+    alias ppl='puppet-lint'
+    alias lint-pup='puppet-lint'
+}

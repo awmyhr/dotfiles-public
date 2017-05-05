@@ -1,0 +1,16 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-03
+# Created:   2017-03-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: GUI items.
+  hosts: gui-hosts
+  become: False
+  roles:
+  - {role: 'i3',         tags: ''}
+  - {role: 'dunst',      tags: 'dunst'}
+  - {role: 'terminator', tags: 'terminator'}
