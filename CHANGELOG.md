@@ -34,6 +34,21 @@ unless there's a gosh-darned-good reason for it.
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+---
+
+## [2017.05.05]
+### Added
 - project has been transformed into an Ansible project (this is huge)
 - ssh-keycheck will test ssh key strength upon login
 - Bash & Zsh now have a dynamic 'dashboard' for prompts
@@ -47,6 +62,7 @@ unless there's a gosh-darned-good reason for it.
 ### Changed
 - project is now Apache 2.0 licensed
 - project has been radically re-organized to fit the Ansible workflow
+- overall project version changed to datestamp versioning
 - alias 'ssu' now requires a user name, use 'ssr' for sudo to root
 - testusers:
     - added meta info variables
@@ -58,8 +74,6 @@ unless there's a gosh-darned-good reason for it.
 - all '.gitdir' have been chenged to '.keepdir'
 - many tweaks to ouput strings/formats
 
-### Deprecated
-
 ### Removed
 - removed all subtrees, will simply reference them in a doc
 
@@ -69,8 +83,6 @@ with 'whence -w <command>'. Also, check for existance of command before doing a
 compdef
 - git prompt status fully functional in Bash
 - TIMEFORMAT was messed up
-
-### Security
 
 ---
 
