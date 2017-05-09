@@ -1,0 +1,21 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-09
+# Created:   2017-05-09
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Ack Download.
+  get_url:
+    url: "https://raw.githubusercontent.com/petdance/ack2/master/ack"
+    dest: "{{ role_path }}/cache/ack"
+  ignore_errors: yes
+  delegate_to: localhost
+
+- name: Ack Script.
+  copy:
+    src: "{{ role_path }}/cache/ack"
+    dest: ~/bin/ack
+    mode: 0755

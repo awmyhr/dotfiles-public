@@ -20,19 +20,10 @@
     src: .config/
     dest: ~/.config/
 
-- name: Ack Download.
-  get_url:
-    url: "https://raw.githubusercontent.com/petdance/ack2/master/ack"
-    dest: "{{ role_path }}/cache/ack"
-  ignore_errors: yes
-  delegate_to: localhost
+- name: Ack.
+  include: install-ack.yml
   tags: ack
 
-- name: Ack Install.
-  file:
-    src: "{{ role_path }}/cache/ack"
-    dest: ~/bin/ack
-    state: file
-    mode: 0755
-  ignore_errors: yes
-  tags: ack
+- name: Screenfetch.
+  include: install-screenfetch.yml
+  tags: screenfetch
