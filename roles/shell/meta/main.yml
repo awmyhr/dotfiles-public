@@ -1,0 +1,11 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-09
+# Created:   2017-03-23
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+dependencies:
+  - {role: common }
