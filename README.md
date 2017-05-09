@@ -57,6 +57,18 @@ Initialize ssh keys:
 
 (Note: -o is not supported in OpenSSH prior to 6.5)
 
+#### Outside Projects
+
+Several outside projects are potentially installed into ~/bin during a play
+run, including:
+
+- [ack2](https://github.com/petdance/ack2/) (In 'misc' role.)
+- [inxi](https://github.com/smxi/inxi/) (In 'inxi' role.)
+- [screenFetch](https://github.com/KittyKatt/screenFetch) (In 'misc' role.)
+
+This is accomplished by downloading the needed files into a cache directory,
+then copying them out to the target system(s).
+
 ## Usage
 
 There are a few variables which can (or should) be set:
@@ -69,9 +81,6 @@ There are a few variables which can (or should) be set:
 
     git_email (roles/git/defaults/main.yml)
         Primarily for .gitconfig. No reasonable default, please set this.
-
-    local_repo (roles/inxi/defaults/main.yml)
-        Location to stage downloads before distributing out. Defaults to ~/.ansible/repo
 
     system_control (host_vars/localhost and group_vars/all)
         Anotates whether one (politically) is able to install whatever on a system.
