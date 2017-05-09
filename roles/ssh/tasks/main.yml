@@ -1,0 +1,67 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-02
+# Created:   2017-05-02
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: SSH Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0700
+  with_items:
+    - ~/.ssh/config.d
+
+# - name: SSH Files.
+#   copy:
+#     src: config.d/
+#     dest: ~/.ssh/config.d
+
+- name: SSH DevEnv Files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/.ssh/config.d
+  when: system_devenv
+  with_items:
+    - config.d/90-github
+    - config.d/91-bitbucket
+
+- name: SSH Site Files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/.ssh/config.d
+  ignore_errors: yes
+  with_items:
+    - "{{ lookup('env', 'HOME') + '/.ssh/config.d/20-site-host' }}"
+    - "{{ lookup('env', 'HOME') + '/.ssh/config.d/40-site-general' }}"
+
+- name: SSH DevEnv Site Files.
+  copy:
+    src: "{{ item }}"
+    dest: ~/.ssh/config.d
+  when: system_devenv_site
+  ignore_errors: yes
+  with_items:
+    - "{{ lookup('env', 'HOME') + '/.ssh/config.d/21-site-devenv' }}"
+
+- name: SSH Variables.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution }}.yml"
+    - "default.yml"
+
+- name: SSH Template Files.
+  template:
+    src: 99-general.j2
+    dest: ~/.ssh/config.d/99-general
+
+- name: SSH Assemble Config.
+  assemble:
+    backup: yes
+    src: ~/.ssh/config.d/
+    dest: ~/.ssh/config

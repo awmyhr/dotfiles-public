@@ -1,0 +1,6 @@
+---
+ansible_connection: local
+system_control: full
+system_devenv: True
+system_devenv_site: True
+

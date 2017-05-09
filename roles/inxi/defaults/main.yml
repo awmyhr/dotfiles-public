@@ -2,20 +2,9 @@
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
 # Revised:   2017-05-04
-# Created:   2017-03-27
+# Created:   2017-05-04
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: I3 Directories.
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0755
-  with_items:
-    - ~/.config/i3
-
-- name: I3 Files.
-  copy:
-    src: .config/i3/
-    dest: ~/.config/i3/
+local_repo: "~/.ansible/repo"

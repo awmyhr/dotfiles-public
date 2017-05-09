@@ -1,20 +1,29 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-04-03
+# Revised:   2017-05-04
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Check for /usr/bin/inxi
-  stat:
-    path: /usr/bin/inxi
-    get_md5: False
-    get_checksum: False
-  register: bin_inxi
+- name: Inix Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/bin
+    - ~/man
+    - ~/man/man1
+    - ~/.config
+    - ~/.local/share/inxi
+  
+- name: Inxi install.
+  include: install.yml
 
-- name: Do inxi Actions.
-  include: actions.yml
-  when: bin_inxi.stat.executable is defined and bin_inxi.stat.executable
+- name: Inix Files.
+  copy:
+    src: inxi.conf
+    dest: ~/.config/
 

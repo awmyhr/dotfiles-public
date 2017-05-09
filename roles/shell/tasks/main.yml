@@ -1,13 +1,13 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-04-17
+# Revised:   2017-05-02
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Verify directories.
+- name: Shell Directories.
   file:
     path: "{{ item }}"
     state: directory
@@ -15,8 +15,8 @@
   with_items:
     - ~/.profile.d
     - ~/.shell.d
-  
-- name: Profile files.
+
+- name: Profile Files.
   copy:
     src: "{{ item }}"
     dest: ~/
@@ -25,16 +25,17 @@
     - .profile
     - .profilerc
 
-- name: ShellD files.
+- name: ShellD Files.
   copy:
     src: .shell.d/
     dest: ~/.shell.d/
 
 - name: Set execute.
-  file: 
+  file:
     path: "{{ item }}"
     mode: 0755
   with_items:
     - ~/.shell.d/lib/greeting
     - ~/.shell.d/lib/promptdash
-   
+    - ~/.shell.d/lib/ssh-keycheck
+

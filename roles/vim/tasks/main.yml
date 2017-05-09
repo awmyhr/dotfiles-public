@@ -1,23 +1,27 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-27
+# Revised:   2017-05-04
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 # Based on:  https://github.com/sloria/dotfiles/blob/master/roles/vim/tasks/main.yml
 #===============================================================================
 ---
-- name: Verify directories.
+- name: Vim installs.
+  include: install.yml
+  become: True
+  when: system_control == "full"
+
+- name: Vim Directories.
   file:
     path: "{{ item }}"
     state: directory
     mode: 0755
   with_items:
-    - ~/.vim
     - ~/.vim/autoload
-  
-- name: Vim files.
+
+- name: Vim Files.
   copy:
     src: .vim/
     dest: ~/.vim/

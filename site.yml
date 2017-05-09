@@ -1,18 +1,20 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-28
+# Revised:   2017-05-03
 # Created:   2017-03-23
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- hosts: all
-  name: Basic Setup.
+- name: Basic Setup.
+  hosts: all
   become: False
   roles:
-  - common
-  - shell
+  - {role: 'common', tags: 'common'}
+  - {role: 'shell',  tags: 'shell'}
 
 - include: cli-hosts.yml
+  tags: 'cli-hosts'
 - include: gui-hosts.yml
+  tags: 'gui-hosts'

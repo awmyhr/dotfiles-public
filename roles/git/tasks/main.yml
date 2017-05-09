@@ -1,15 +1,13 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-27
+# Revised:   2017-05-04
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Git files.
-  copy:
-    src: "{{ item }}"
-    dest: ~/
-  with_items:
-    - .gitconfig
+- name: Git Config.
+  template:
+    src: gitconfig.j2
+    dest: ~/.gitconfig

@@ -11,12 +11,10 @@
 #
 #      OPTIONS: ---
 # REQUIREMENTS: POSIX compatible shell
-#         BUGS: ---
-#        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 3.2.0
+#      VERSION: 3.3.0
+#     REVISION: 2017-05-02
 #      CREATED: ????-??-??
-#     REVISION: 2017-04-18
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -79,6 +77,7 @@ fi
 #-- Display some useful information
 #----------------------------------------------------------------------
 export SHELLSTRING="${SHELL}"
+[ -r "${SHELLD}/lib/ssh-keycheck" ] && "${SHELLD}/lib/ssh-keycheck"
 [ -r "${SHELLD}/lib/greeting" ] && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"

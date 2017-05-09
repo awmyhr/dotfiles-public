@@ -1,22 +1,21 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-03-27
+# Revised:   2017-05-04
 # Created:   2017-03-23
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
-# Based on:  https://gist.github.com/hongqn/62d528116eb5a4a9e4b7
 #===============================================================================
 ---
 - name: Ensure ssh public key.
-  authorized_key: 
-    user: "{{ ansible_user }}" 
-    key: "{{ lookup('file', localkeyfile) }}"
+  authorized_key:
+    user: "{{ ansible_user }}"
+    key: "{{ ssh_keys }}"
     state: present
-    exclusive: no
+    exclusive: True
     manage_dir: yes
 
-- name: Verify directories.
+- name: Common Directories.
   file:
     path: "{{ item }}"
     state: directory
@@ -30,6 +29,5 @@
     - ~/share
     - ~/store
     - ~/tmp
-    - ~/var
     - ~/var/log
     - ~/work
