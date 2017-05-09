@@ -7,15 +7,6 @@
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Misc Directories.
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0755
-  with_items:
-    - ~/bin
-    - ~/.config
-
 - name: Misc dotfiles.
   copy:
     src: "{{ item }}"
@@ -29,9 +20,19 @@
     src: .config/
     dest: ~/.config/
 
-- name: Install Ack.
+- name: Ack Download.
   get_url:
-    url: https://beyondgrep.com/ack-2.18-single-file
+    url: https://github.com/petdance/ack2/blob/master/ack
+    dest: "{{ role_path }}/cache/ack"
+  ignore_errors: yes
+  delegate_to: localhost
+  tags: ack
+
+- name: Ack Install.
+  file:
+    src: "{{ role_path }}/cache/ack"
     dest: ~/bin/ack
+    state: file
     mode: 0755
   ignore_errors: yes
+  tags: ack
