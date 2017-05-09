@@ -22,7 +22,7 @@
 
 - name: Ack Download.
   get_url:
-    url: https://github.com/petdance/ack2/blob/master/ack
+    url: "https://raw.githubusercontent.com/petdance/ack2/master/ack"
     dest: "{{ role_path }}/cache/ack"
   ignore_errors: yes
   delegate_to: localhost
