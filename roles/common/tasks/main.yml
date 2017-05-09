@@ -24,7 +24,9 @@
     - ~/bin
     - ~/etc
     - ~/lib
-    - ~/man
+    - ~/man/man1
+    - ~/man/man3
+    - ~/man/man5
     - ~/projects
     - ~/share
     - ~/store
