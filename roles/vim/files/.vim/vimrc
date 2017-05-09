@@ -14,9 +14,9 @@
 "         BUGS: ---
 "        NOTES: ---
 "       AUTHOR: awmyhr, awmyhr@gmail.com
-"      VERSION: 1.0.0-alpha
+"      VERSION: 1.0.1
+"     REVISION: 2017-05-09
 "      CREATED: 2016-10-24
-"     REVISION: 2016-10-25
 "===============================================================================
 "----------------------------------------------------------------------
 "-- Notes/known bugs/other issues
@@ -81,7 +81,7 @@ endif
 syntax enable
 
 set background=dark
-colorscheme solarized
+silent! colorscheme solarized
 
 " ------------------------------------------------------------------
 " Default Environment
