@@ -63,6 +63,7 @@ Several outside projects are potentially installed into ~/bin during a play
 run, including:
 
 - [ack2](https://github.com/petdance/ack2/) (In 'misc' role.)
+- [dstat](https://github.com/dagwieers/dstat/) (In 'misc' role.)
 - [inxi](https://github.com/smxi/inxi/) (In 'inxi' role.)
 - [ps_mem](https://github.com/pixelb/ps_mem/) (In 'misc' role.)
 - [screenFetch](https://github.com/KittyKatt/screenFetch) (In 'misc' role.)
