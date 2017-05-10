@@ -1,30 +1,27 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-09
+# Revised:   2017-05-10
 # Created:   2017-05-04
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
 - name: Inxi Download.
-  get_url:
-    url: "https://raw.githubusercontent.com/smxi/inxi/master/{{ item }}"
-    dest: "{{ role_path }}/cache/"
+  git:
+    repo: "https://github.com/smxi/inxi.git"
+    dest: "{{ role_path }}/cache/inxi"
   ignore_errors: yes
   delegate_to: localhost
-  with_items:
-    - inxi
-    - inxi.1
 
 - name: Inix Script.
   copy:
-    src: "{{ role_path }}/cache/inxi"
-    dest: ~/bin/
+    src: "{{ role_path }}/cache/inxi/inxi"
+    dest: ~/bin/inxi
     mode: 0755
 
 - name: Inix Man Page.
   copy:
-    src: "{{ role_path }}/cache/inxi.1"
-    dest: ~/man/man1/
+    src: "{{ role_path }}/cache/inxi/inxi.1"
+    dest: ~/man/man1/inxi.1
     mode: 0644
