@@ -1,31 +1,29 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-09
+# Revised:   2017-05-10
 # Created:   2017-05-09
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
 - name: Screenfetch Download.
-  get_url:
-    url: "https://raw.githubusercontent.com/KittyKatt/screenFetch/master/{{ item }}"
-    dest: "{{ role_path }}/cache/"
+  git:
+    repo: "https://github.com/KittyKatt/screenFetch.git"
+    dest: "{{ role_path }}/cache/screenFetch"
   ignore_errors: yes
   delegate_to: localhost
-  with_items:
-    - screenfetch-dev
-    - screenfetch.1
+  run_once: True
 
 - name: Screenfetch Script.
   copy:
-    src: "{{ role_path }}/cache/screenfetch-dev"
+    src: "{{ role_path }}/cache/screenFetch/screenfetch-dev"
     dest: ~/bin/screenfetch
     mode: 0755
 
 - name: Screenfetch Man Page.
   copy:
-    src: "{{ role_path }}/cache/screenfetch.1"
-    dest: ~/man/man1/
+    src: "{{ role_path }}/cache/screenFetch/screenfetch.1"
+    dest: ~/man/man1/screenfetch.1
     mode: 0644
 
