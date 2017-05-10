@@ -1,21 +1,44 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-09
+# Revised:   2017-05-10
 # Created:   2017-05-09
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
 - name: Ack Download.
-  get_url:
-    url: "https://raw.githubusercontent.com/petdance/ack2/master/ack"
-    dest: "{{ role_path }}/cache/ack"
+  git:
+    repo: "https://github.com/petdance/ack2.git"
+    dest: "{{ role_path }}/cache/ack2"
   ignore_errors: yes
   delegate_to: localhost
+  run_once: True
+
+- name: Ack pre-req.
+  include: install-ack-fileNext.yml
+  become: True
+  when: system_control == "full"
+  delegate_to: localhost
+  run_once: True
+
+- name: Ack create Makefile.
+  command: perl Makefile.PL
+  args:
+    chdir: "{{ role_path }}/cache/ack2"
+    creates: "{{ role_path }}/cache/ack2/Makefile"
+  delegate_to: localhost
+  run_once: True
+
+- name: Ack Make.
+  make:
+    chdir: "{{ role_path }}/cache/ack2"
+    target: ack-standalone
+  delegate_to: localhost
+  run_once: True
 
 - name: Ack Script.
   copy:
-    src: "{{ role_path }}/cache/ack"
+    src: "{{ role_path }}/cache/ack2/ack-standalone"
     dest: ~/bin/ack
     mode: 0755
