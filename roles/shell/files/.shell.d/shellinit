@@ -11,7 +11,7 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.11.0
+#      VERSION: 1.11.1
 #     REVISION: 2017-05-10
 #      CREATED: 2016-09-28
 #===============================================================================
@@ -79,11 +79,11 @@ if [ -e "${SHELLD}/etc/manpaths" ]; then
     done <"${SHELLD}/etc/manpaths"
 fi; unset line
 
-if [ -d "${HOME}/lib/perl5"]; then
+if [ -d "${HOME}/lib/perl5" ]; then
     PERL5LIB="${HOME}/lib/perl5:${PERL5LIB}"
 fi
 
-if [ -d "${HOME}/lib/python"]; then
+if [ -d "${HOME}/lib/python" ]; then
     PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
 fi
 
