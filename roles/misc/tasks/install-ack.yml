@@ -42,3 +42,10 @@
     src: "{{ role_path }}/cache/ack2/ack-standalone"
     dest: ~/bin/ack
     mode: 0755
+
+- name: Ack dotfiles.
+  copy:
+    src: .ackrc
+    dest: ~/
+    mode: 0644
+    

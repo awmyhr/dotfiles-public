@@ -1,0 +1,22 @@
+#===============================================================================
+#
+#         FILE: .ackrc
+#
+#  DESCRIPTION: ack2 config file
+#
+# REQUIREMENTS: ack2
+#       AUTHOR: awmyhr, awmyhr@gmail.com
+#      VERSION: 1.0.0
+#     REVISION: 2017-05-10
+#      CREATED: 2017-05-10
+#===============================================================================
+--with-filename
+--sort-files
+--smart-case
+
+--ignore-dir=is:tmp
+--ignore-dir=is:cache
+
+--color-filename=yellow
+--color-match=red
+--color-lineno=reset
