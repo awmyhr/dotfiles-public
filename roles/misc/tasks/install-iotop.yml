@@ -1,0 +1,33 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-10
+# Created:   2017-05-10
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Iotop Download.
+  git:
+    repo: "https://repo.or.cz/iotop.git"
+    dest: "{{ role_path }}/cache/iotop"
+  ignore_errors: yes
+  delegate_to: localhost
+  run_once: True
+
+- name: Iotop Script.
+  copy:
+    src: "{{ role_path }}/cache/iotop/sbin/iotop"
+    dest: ~/sbin/iotop
+    mode: 0755
+
+- name: Iotop Man Page.
+  copy:
+    src: "{{ role_path }}/cache/iotop/iotop.8"
+    dest: ~/man/man8/iotop.8
+    mode: 0644
+
+- name: Iotop Library.
+  copy:
+    src: "{{ role_path }}/cache/iotop/iotop"
+    dest: ~/lib/python/

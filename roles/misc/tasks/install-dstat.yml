@@ -1,0 +1,39 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-10
+# Created:   2017-05-10
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Dstat Download.
+  git:
+    repo: "https://github.com/dagwieers/dstat.git"
+    dest: "{{ role_path }}/cache/dstat"
+  ignore_errors: yes
+  delegate_to: localhost
+  run_once: True
+
+- name: Dstat Directory.
+  file:
+    path: ~/.dstat
+    state: directory
+    mode: 0755
+
+- name: Dstat Script.
+  copy:
+    src: "{{ role_path }}/cache/dstat/dstat"
+    dest: ~/bin/dstat
+    mode: 0755
+
+- name: Dstat Man Page.
+  copy:
+    src: "{{ role_path }}/cache/dstat/docs/dstat.1"
+    dest: ~/man/man1/ps_mem.1
+    mode: 0644
+
+- name: Dstat Library.
+  copy:
+    src: "{{ role_path }}/cache/dstat/plugins/"
+    dest: ~/.dstat
