@@ -11,7 +11,7 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.10.0
+#      VERSION: 1.11.0
 #     REVISION: 2017-05-10
 #      CREATED: 2016-09-28
 #===============================================================================
@@ -52,7 +52,7 @@ command -v pcs >/dev/null 2>&1 && {
 }
 
 #----------------------------------------------------------------------
-#-- Set up PATH/MANPATH/PERL5LIB
+#-- Set up PATH/MANPATH/PERL5LIB/PYTHONPATH
 #----------------------------------------------------------------------
 [ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
 [ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
@@ -80,10 +80,14 @@ if [ -e "${SHELLD}/etc/manpaths" ]; then
 fi; unset line
 
 if [ -d "${HOME}/lib/perl5"]; then
-    PERL5LIB="${PERL5LIB}:${HOME}/lib/perl5"
+    PERL5LIB="${HOME}/lib/perl5:${PERL5LIB}"
 fi
 
-export PATH MANPATH GOPATH PERL5LIB
+if [ -d "${HOME}/lib/python"]; then
+    PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
+fi
+
+export PATH MANPATH GOPATH PERL5LIB PYTHONPATH
 
 #----------------------------------------------------------------------
 #-- Set up sysinfo variables and load in platform specific things
