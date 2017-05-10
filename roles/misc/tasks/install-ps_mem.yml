@@ -18,7 +18,7 @@
 - name: Ps_mem Script.
   copy:
     src: "{{ role_path }}/cache/ps_mem/ps_mem.py"
-    dest: ~/bin/ps_mem
+    dest: ~/sbin/ps_mem
     mode: 0755
 
 - name: Ps_mem Man Page.
