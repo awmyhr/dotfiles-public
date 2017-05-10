@@ -10,15 +10,11 @@
 #               start to get more then half a dozen or so, a 'package' should
 #               be created.
 #
-#      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
-#    OPTIONALS: ---
-#         BUGS: ---
-#        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.3.0
+#      VERSION: 1.4.0
+#     REVISION: 2017-05-10
 #      CREATED: 2016-10-10
-#     REVISION: 2017-04-17
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -105,6 +101,14 @@ if [ -f "${HOME}/.shell.d/lib/promptdash" ] ; then
 else
     alias promptdash='printf "%s\n" "Sorry, promptdash not found."'
 fi
+
+#----------------------------------------------------------------------
+#-- Tools which should be installed in my $HOME
+#----------------------------------------------------------------------
+
+alias ps_mem="_ ${HOME}/sbin/ps_mem"
+alias  psmem="_ ${HOME}/sbin/ps_mem"
+alias  iotop="_ PYTHONPATH=${HOME}/lib/python ${HOME}/sbin/iotop"
 
 #----------------------------------------------------------------------
 #-- lsof stuff
