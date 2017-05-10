@@ -13,6 +13,7 @@
     dest: "{{ role_path }}/cache/inxi"
   ignore_errors: yes
   delegate_to: localhost
+  run_once: True
 
 - name: Inix Script.
   copy:
