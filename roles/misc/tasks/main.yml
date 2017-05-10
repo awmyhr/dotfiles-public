@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-09
+# Revised:   2017-05-10
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -11,6 +11,7 @@
   copy:
     src: "{{ item }}"
     dest: ~/
+    mode: 0644
   with_items:
     - .csslintrc
     - .editorconfig
@@ -27,3 +28,7 @@
 - name: Screenfetch.
   include: install-screenfetch.yml
   tags: screenfetch
+
+- name: Ps_mem.
+  include: install-ps_mem.yml
+  tags: ps_mem
