@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-10
+# Revised:   2017-05-11
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -13,6 +13,7 @@
     dest: ~/
     mode: 0644
   with_items:
+    - .ackrc
     - .csslintrc
     - .editorconfig
 
@@ -20,24 +21,4 @@
   copy:
     src: .config/
     dest: ~/.config/
-
-- name: Ack.
-  include: install-ack.yml
-  tags: ack
-
-- name: Dstat.
-  include: install-dstat.yml
-  tags: dstat
-
-- name: Iotop.
-  include: install-iotop.yml
-  tags: iotop
-
-- name: Ps_mem.
-  include: install-ps_mem.yml
-  tags: ps_mem
-
-- name: Screenfetch.
-  include: install-screenfetch.yml
-  tags: screenfetch
 
