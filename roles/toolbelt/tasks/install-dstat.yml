@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-10
+# Revised:   2017-05-11
 # Created:   2017-05-10
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -30,7 +30,7 @@
 - name: Dstat Man Page.
   copy:
     src: "{{ role_path }}/cache/dstat/docs/dstat.1"
-    dest: ~/man/man1/ps_mem.1
+    dest: ~/man/man1/dstat.1
     mode: 0644
 
 - name: Dstat Library.
