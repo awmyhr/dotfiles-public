@@ -1,17 +1,12 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-04
+# Revised:   2017-05-11
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Tmux installs.
-  include: install.yml
-  become: True
-  when: system_control == "full"
-
 - name: Tmux files.
   copy:
     src: "{{ item }}"

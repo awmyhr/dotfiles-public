@@ -1,18 +1,13 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-09
+# Revised:   2017-05-11
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 # Based on:  https://github.com/sloria/dotfiles/blob/master/roles/vim/tasks/main.yml
 #===============================================================================
 ---
-- name: Vim installs.
-  include: install.yml
-  become: True
-  when: system_control == "full"
-
 - name: Vim Directories.
   file:
     path: "{{ item }}"
