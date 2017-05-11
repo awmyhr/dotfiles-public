@@ -7,6 +7,14 @@
 # License:   Apache-2.0
 #===============================================================================
 ---
+- name: Misc Directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - ~/.local/share/inxi
+
 - name: Misc dotfiles.
   copy:
     src: "{{ item }}"
@@ -21,4 +29,3 @@
   copy:
     src: .config/
     dest: ~/.config/
-

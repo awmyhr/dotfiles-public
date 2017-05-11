@@ -1,23 +1,11 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-09
-# Created:   2017-03-27
+# Revised:   2017-05-11
+# Created:   2017-05-11
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Inix Directories.
-  file:
-    path: "~/.local/share/inxi"
-    state: directory
-    mode: 0755
-  
-- name: Inxi install.
-  include: install.yml
-
-- name: Inix Files.
-  copy:
-    src: inxi.conf
-    dest: ~/.config/
-
+dependencies:
+  - {role: common }

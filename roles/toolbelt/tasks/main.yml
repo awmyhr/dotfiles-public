@@ -15,6 +15,10 @@
   include: install-dstat.yml
   tags: dstat
 
+- name: Inxi install.
+  include: install-inxi.yml
+  tags: inxi
+
 - name: Iotop.
   include: install-iotop.yml
   tags: iotop
