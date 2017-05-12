@@ -47,6 +47,26 @@ unless there's a gosh-darned-good reason for it.
 
 ---
 
+## [2017.05.12]
+### Added
+- Download several tools and push to home directoy
+    (ack2, dircolors-solarized, dstat, inxi, iotop, ps_mem, screenfetch)
+- Now set PERL5LIB and PYTHONPATH
+
+### Changed
+- many roles now depend on common to create base directories
+- login now runs inxi
+
+### Removed
+- No longer installing system-level things unless really necessary
+- inxi no longer its own role, installation moved to toolbelt, 
+  config file moved to misc
+
+### Fixed
+- VIM complained about colorscheme not existing
+
+---
+
 ## [2017.05.05]
 ### Added
 - project has been transformed into an Ansible project (this is huge)
