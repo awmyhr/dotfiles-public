@@ -4,28 +4,24 @@
 #
 #         FILE: .bash_profile
 #
-#        USAGE: (automagically loaded by bash interactive login shell)
-#
 #  DESCRIPTION: My personalized bash profile, based on tons of things I've
 #               found/learned over the years.
 #
-#      OPTIONS: ---
 # REQUIREMENTS: Bash shell
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.1.0
-#     REVISION: 2017-05-02
+#      VERSION: 1.2.1
+#     REVISION: 2017-05-11
 #      CREATED: 2016-10-05
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #----------------------------------------------------------------------
 
-export BASHD="${HOME}/.bashrc.d"  # Bash specific files
-[[ ! -d "${BASHD}" ]]    && mkdir "${BASHD}" && chmod 700 "${BASHD}"
-
 #----------------------------------------------------------------------
 #-- Load shell settings (general and bash)
 #----------------------------------------------------------------------
+export BASHD="${HOME}/.bashrc.d"  # Bash specific files
+[[ ! -d "${BASHD}" ]]       && mkdir "${BASHD}" && chmod 700 "${BASHD}"
 [[ -r "${HOME}/.profile" ]] && source "${HOME}/.profile"
 [[ -r "${HOME}/.bashrc" ]]  && source "${HOME}/.bashrc"
 
@@ -40,6 +36,7 @@ export HISTCONTROL=ignoreboth:erasedups
 #----------------------------------------------------------------------
 export SHELLSTRING="${BASH} (${BASH_VERSION})"
 [[ -r "${SHELLD}/lib/ssh-keycheck" ]] && "${SHELLD}/lib/ssh-keycheck"
-[[ -r "${SHELLD}/lib/greeting" ]] && "${SHELLD}/lib/greeting"
+[[ -r "${HOME}/bin/inxi" ]]           && "${HOME}/bin/inxi" -CI
+[[ -r "${SHELLD}/lib/greeting" ]]     && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"

@@ -1,0 +1,33 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-11
+# Created:   2017-05-11
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Dircolors Download.
+  git:
+    repo: "https://github.com/seebi/dircolors-solarized.git"
+    dest: "{{ role_path }}/cache/dircolors"
+  ignore_errors: yes
+  delegate_to: localhost
+  run_once: True
+
+- name: Dircolors Directory.
+  file:
+    path: ~/.dirColors
+    state: directory
+    mode: 0755
+
+- name: Dircolors Schemas.
+  copy:
+    src: "{{ role_path }}/cache/dircolors/{{ item }}"
+    dest: ~/.dirColors/
+    mode: 0644
+  with_items:
+    - dircolors.256dark
+    - dircolors.ansi-dark
+    - dircolors.ansi-light
+    - dircolors.ansi-universal

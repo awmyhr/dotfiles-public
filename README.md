@@ -52,10 +52,27 @@ Feel free to poke around, use stuff, learn stuff, teach me stuff, and share alik
 
 Initialize ssh keys:
     
-    ssh-keygen -o -t ed25519 -f ~/.ssh/id_ed25519 -C "Non-backward compat base key"
-    ssh-keygen -o -t rsa -b 4096 -f ~/.ssh/id_rsa -C "Backward compat base key"
+    ssh-keygen -o -t ed25519 -f ~/.ssh/id_ed25519 -C "${USER}@${HOSTNAME} secure"
+    ssh-keygen -o -t rsa -b 4096 -f ~/.ssh/id_rsa -C "${USER}@${HOSTNAME} compat"
 
 (Note: -o is not supported in OpenSSH prior to 6.5)
+
+#### Outside Projects
+
+Several outside projects are potentially installed into ~/bin (and other $HOME
+locations) during a play run, including:
+
+- [ack2](https://github.com/petdance/ack2/)
+- [dircolors-solarized](https://github.com/seebi/dircolors-solarized/)
+- [dstat](https://github.com/dagwieers/dstat/)
+- [inxi](https://github.com/smxi/inxi/)
+- [iotop](http://guichaz.free.fr/iotop/)
+- [ps_mem](https://github.com/pixelb/ps_mem/)
+- [screenFetch](https://github.com/KittyKatt/screenFetch)
+
+This is accomplished by downloading the needed files into a cache directory,
+then copying them out to the target system(s). All of these are handled by
+the 'toolbelt' role.
 
 ## Usage
 
@@ -69,9 +86,6 @@ There are a few variables which can (or should) be set:
 
     git_email (roles/git/defaults/main.yml)
         Primarily for .gitconfig. No reasonable default, please set this.
-
-    local_repo (roles/inxi/defaults/main.yml)
-        Location to stage downloads before distributing out. Defaults to ~/.ansible/repo
 
     system_control (host_vars/localhost and group_vars/all)
         Anotates whether one (politically) is able to install whatever on a system.

@@ -8,19 +8,17 @@
 #
 #  DESCRIPTION: Set up working shell environment.
 #
-#      OPTIONS: ---
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
-#    OPTIONALS: ---
-#         BUGS: ---
-#        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.9.0
+#      VERSION: 1.11.1
+#     REVISION: 2017-05-10
 #      CREATED: 2016-09-28
-#     REVISION: 2017-04-18
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
+#----------------------------------------------------------------------
+
 #----------------------------------------------------------------------
 umask 022
 
@@ -54,7 +52,7 @@ command -v pcs >/dev/null 2>&1 && {
 }
 
 #----------------------------------------------------------------------
-#-- Set up PATH/MANPATH
+#-- Set up PATH/MANPATH/PERL5LIB/PYTHONPATH
 #----------------------------------------------------------------------
 [ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
 [ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
@@ -81,7 +79,15 @@ if [ -e "${SHELLD}/etc/manpaths" ]; then
     done <"${SHELLD}/etc/manpaths"
 fi; unset line
 
-export PATH MANPATH GOPATH
+if [ -d "${HOME}/lib/perl5" ]; then
+    PERL5LIB="${HOME}/lib/perl5:${PERL5LIB}"
+fi
+
+if [ -d "${HOME}/lib/python" ]; then
+    PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
+fi
+
+export PATH MANPATH GOPATH PERL5LIB PYTHONPATH
 
 #----------------------------------------------------------------------
 #-- Set up sysinfo variables and load in platform specific things

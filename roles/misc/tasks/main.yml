@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-04
+# Revised:   2017-05-11
 # Created:   2017-03-27
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -13,14 +13,15 @@
     state: directory
     mode: 0755
   with_items:
-    - ~/bin
-    - ~/.config
+    - ~/.local/share/inxi
 
 - name: Misc dotfiles.
   copy:
     src: "{{ item }}"
     dest: ~/
+    mode: 0644
   with_items:
+    - .ackrc
     - .csslintrc
     - .editorconfig
 
@@ -28,10 +29,3 @@
   copy:
     src: .config/
     dest: ~/.config/
-
-- name: Install Ack.
-  get_url:
-    url: https://beyondgrep.com/ack-2.18-single-file
-    dest: ~/bin/ack
-    mode: 0755
-  ignore_errors: yes

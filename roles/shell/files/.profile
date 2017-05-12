@@ -4,16 +4,13 @@
 #
 #         FILE: .profile
 #
-#        USAGE: (automagically loaded by shell)
-#
 #  DESCRIPTION: My personalized shell profile, based on tons of things I've
 #               found/learned over the years.
 #
-#      OPTIONS: ---
 # REQUIREMENTS: POSIX compatible shell
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 3.3.0
-#     REVISION: 2017-05-02
+#      VERSION: 3.4.1
+#     REVISION: 2017-05-11
 #      CREATED: ????-??-??
 #===============================================================================
 #----------------------------------------------------------------------
@@ -78,7 +75,8 @@ fi
 #----------------------------------------------------------------------
 export SHELLSTRING="${SHELL}"
 [ -r "${SHELLD}/lib/ssh-keycheck" ] && "${SHELLD}/lib/ssh-keycheck"
-[ -r "${SHELLD}/lib/greeting" ] && "${SHELLD}/lib/greeting"
+[ -r "${HOME}/bin/inxi" ]           && "${HOME}/bin/inxi" -CI
+[ -r "${SHELLD}/lib/greeting" ]     && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
 

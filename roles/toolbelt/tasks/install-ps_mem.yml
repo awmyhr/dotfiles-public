@@ -1,0 +1,29 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2017-05-10
+# Created:   2017-05-10
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Ps_mem Download.
+  git:
+    repo: "https://github.com/pixelb/ps_mem.git"
+    dest: "{{ role_path }}/cache/ps_mem"
+  ignore_errors: yes
+  delegate_to: localhost
+  run_once: True
+
+- name: Ps_mem Script.
+  copy:
+    src: "{{ role_path }}/cache/ps_mem/ps_mem.py"
+    dest: ~/sbin/ps_mem
+    mode: 0755
+
+- name: Ps_mem Man Page.
+  copy:
+    src: "{{ role_path }}/cache/ps_mem/ps_mem.1"
+    dest: ~/man/man1/ps_mem.1
+    mode: 0644
+

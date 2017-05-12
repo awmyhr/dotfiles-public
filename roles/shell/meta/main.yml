@@ -1,16 +1,11 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-11
-# Created:   2017-03-27
+# Revised:   2017-05-09
+# Created:   2017-03-23
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Tmux files.
-  copy:
-    src: "{{ item }}"
-    dest: ~/
-  with_items:
-    - .tmux.conf
-
+dependencies:
+  - {role: common }
