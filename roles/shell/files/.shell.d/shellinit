@@ -11,8 +11,8 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.11.1
-#     REVISION: 2017-05-10
+#      VERSION: 1.12.0
+#     REVISION: 2017-05-19
 #      CREATED: 2016-09-28
 #===============================================================================
 #----------------------------------------------------------------------
@@ -181,9 +181,8 @@ elif command -v sudo    >/dev/null 2>&1 ; then
 fi
 
 #----------------------------------------------------------------------
-#-- What command handles priviledge elavation
+#-- (Static) Service Check: Are we connected remotely?
 #----------------------------------------------------------------------
-# (Static) Service Check: Are we connected remotely? 
 if [ -n "${SSH_CLIENT}" ]; then
     STAT_SSH='[R]'
 elif [ -n "${SSH_CONNECTION}" ]; then
@@ -194,6 +193,18 @@ else
     STAT_SSH='---'
 fi
 export STAT_SSH
+
+#----------------------------------------------------------------------
+#-- vte.sh workaround for Tilix (and other VTE-based terminals)
+#--     see: https://gnunn1.github.io/tilix-web/manual/vteconfig/
+#----------------------------------------------------------------------
+if [ "${TILIX_ID}" ] || [ "${VTE_VERSION}" ]; then
+    if [ -r "/etc/profile.d/vte.sh" ]; then
+        . "/etc/profile.d/vte.sh"
+    elif [ -r "/etc/profile.d/vte-2.91.sh" ]; then
+        . "/etc/profile.d/vte-2.91.sh"
+    fi
+fi
 
 #===============================================================================
 #----------------------------------------------------------------------
