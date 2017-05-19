@@ -16,9 +16,9 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.8.0
+#      VERSION: 2.9.0
+#     REVISION: 2017-05-19
 #      CREATED: ????-??-??
-#     REVISION: 2017-04-17
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
@@ -50,6 +50,9 @@ _prompt_command() {
     printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
     # screen*
     # printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+    command -v __vte_osc7 >/dev/null 2>&1 && {
+        VTE_PWD_THING=$(__vte_osc7)
+    }
     command -v _vcs_prompt_char >/dev/null 2>&1 && {
         VCS_CHAR=$(_vcs_prompt_char)
     }
