@@ -11,8 +11,8 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.12.0
-#     REVISION: 2017-05-19
+#      VERSION: 1.13.0
+#     REVISION: 2017-06-01
 #      CREATED: 2016-09-28
 #===============================================================================
 #----------------------------------------------------------------------
@@ -123,7 +123,7 @@ elif [ -f /var/run/vmtoolsd.pid ]; then
     STAT_VM='[V]'
 elif [ "${STAT_VM_CHECK}" = 'active' ]; then
     STAT_VM='[V]'
-elif [ "${container}" = 'docker' ]; then
+elif [ -f '/.dockerenv' ]; then
     STAT_VM='[C]'
 elif [ "${UNAMEO}" = 'Msys' ]; then
     STAT_VM='[M]'
