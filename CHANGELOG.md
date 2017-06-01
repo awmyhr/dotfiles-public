@@ -2,33 +2,42 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
-and this project tries to adhere to [Semantic Versioning](http://semver.org/).
-
-Most files will have their own version number, project release numbers are 
-more of a suggestion than anything else...
+and this project tries to adhere to [Semantic Versioning](http://semver.org/)
+for files, but will use date-stamp versioning for the overall project.
 
 ---
 
 ## TODO
-- refactor variables for uniformity
-    - c_  colors
-    - ec_ error codes
-    - f_  file names
-    - t_  terminal request/setting strings (including appropriate escaping)
-    - tc_ terminal color strings           (including appropriate escaping)
-    - s_  single character symbols
-    - v_  version string
-    - IS_ Flag to describe an environment (i.e., IS_BASH)
-    - ISSET_ Flag to confirm a library has been loaded
-    - PROG_  Holds which program to use for a service (i.d., PROG_BECOME='sudo')
+- refactor variables for uniformity & put them in a namespace
+    - DF_       default namespace
+    - DFc_      colors
+    - DFec_     error codes
+    - DFf_      file names
+    - DFmeta_   meta vars
+    - DFos_     OS information vars
+    - DFs_      single character symbols
+    - DFsys_    System (hardware) information vars
+    - DFt_      terminal request/setting strings (including appropriate escaping)
+    - DFtc_     terminal color strings           (including appropriate escaping)
+    - DFv_      version string
+    - DF_IS_    Flag to describe an environment (i.e., IS_BASH)
+    - DF_ISSET_ Flag to confirm a library has been loaded
+    - DF_PROG_  Holds which program to use for a service (i.d., PROG_BECOME='sudo')
 - re-work colors to enable themeing
 - implement said themeing 
+- convert functions to use FPATH in zsh/ksh
+- setup FPATH emulation for bash/etc
 - optimize calling of variables/functions to take advantage of login vs subshells
-- optimize functions for bash and zsh
+- optimize functions for specific shells (esp bash and zsh)
+- optimize various checks based on environment (i.e., don't check for Linuxy things on a Solarisish syste)
 - standardize prompt building accross shells
-- prompt should take queue from vim statusline
+- prompt should(?) take queue from vim statusline
 - audit all variables to ensure there is no code in them per [BashFAQ 050](http://mywiki.wooledge.org/BashFAQ/050)
 unless there's a gosh-darned-good reason for it.
+- setup test (linux) environments using Docker
+- come up with non-linux test environment solution
+- add Ansible playbook to create a skel directory for the useradd command
+- add logging throughout (log to ~/var/log/)
 
 ---
 
