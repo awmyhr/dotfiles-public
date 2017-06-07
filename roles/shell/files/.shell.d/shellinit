@@ -11,8 +11,8 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.13.1
-#     REVISION: 2017-06-01
+#      VERSION: 1.14.0
+#     REVISION: 2017-06-07
 #      CREATED: 2016-09-28
 #===============================================================================
 #----------------------------------------------------------------------
@@ -54,18 +54,11 @@ command -v pcs >/dev/null 2>&1 && {
 #----------------------------------------------------------------------
 #-- Set up PATH/MANPATH/PERL5LIB/PYTHONPATH
 #----------------------------------------------------------------------
-[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
-[ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
-[ -d "${HOME}/projects/go" ] && {
-    GOPATH="${HOME}/projects/go"
-    PATH="${PATH}:${GOPATH}/bin"
-}
-
 if [ -r "${SHELLD}/etc/paths" ]; then
     while read line
     do
         if [ -d "${line}" ]; then
-            pathmunge "${line}" after
+            pathmunge "${line}" before
         fi
     done <"${SHELLD}/etc/paths"
 fi; unset line
@@ -74,7 +67,7 @@ if [ -e "${SHELLD}/etc/manpaths" ]; then
     while read line
     do
         if [ -d "${line}" ]; then
-            manpathmunge "${line}" after
+            manpathmunge "${line}" before
         fi
     done <"${SHELLD}/etc/manpaths"
 fi; unset line
@@ -86,6 +79,13 @@ fi
 if [ -d "${HOME}/lib/python" ]; then
     PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
 fi
+
+[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
+[ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
+[ -d "${HOME}/projects/go" ] && {
+    GOPATH="${HOME}/projects/go"
+    PATH="${PATH}:${GOPATH}/bin"
+}
 
 export PATH MANPATH GOPATH PERL5LIB PYTHONPATH
 
