@@ -11,8 +11,8 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.14.0
-#     REVISION: 2017-06-07
+#      VERSION: 1.14.1
+#     REVISION: 2017-06-23
 #      CREATED: 2016-09-28
 #===============================================================================
 #----------------------------------------------------------------------
@@ -103,11 +103,37 @@ EOF
     export UNAMES UNAMER PLATFORM
     [ -r "${SHELLD}/platform/${UNAMES}" ] && . "${SHELLD}/platform/${UNAMES}"
 }
+# UNAMER formats for Linux kernels:
+# Base Kernel Version <BKV>: K.M.m.c
+#       K: Kernel Version
+#       M: Kernel Major Revision
+#       m: Kernel Minor Revision
+#       c: Kernel Corrections
+# NOTE: this is not the whole story, but Good Enough(TM) for this
+# Some common components:
+#       P: Patch Number
+#       E: Asynchronous Erratum
+#       e: Corrections for Erratum
+# el5:   <BKV>-P.<flavour> 
+# el6/7: <BKV>-P.E.e.<flavour>.<arch>
+# fc24:  <BKV>-P.<flavour>.<arch>
+# Ubuntu: https://wiki.ubuntu.com/Kernel/FAQ#Kernel.2FFAQ.2FGeneralVersionMeaning.What_does_a_specific_Ubuntu_kernel_version_number_mean.3F
+# <BKV>-<ABI number>.<upload number>-<flavour>
 
 unset SYS_VERSION_FILE
+#-- This needs to be improved
+# on el6/el7 this is a symlink to /etc/redhat-release
+# on fc24 this is a symlink to /etc/fedora-release
 [ -f /etc/system-release ] && SYS_VERSION_FILE='/etc/system-release'
+# on fc24 this is a symlink to /etc/fedora-release
 [ -f /etc/redhat-release ] && SYS_VERSION_FILE='/etc/redhat-release'
+# [ -f /etc/centos-release ] && SYS_VERSION_FILE='/etc/centos-release'
 [ -f /etc/fedora-release ] && SYS_VERSION_FILE='/etc/fedora-release'
+# [ -f /etc/debian_version ] && SYS_VERSION_FILE='/etc/debian_version'
+# [ -f /etc/gentoo-release ] && SYS_VERSION_FILE='/etc/gentoo-release'
+# [ -f /etc/SuSE-release ]   && SYS_VERSION_FILE='/etc/SuSE-release'
+# This will exist on systems w/lsb-core packages installed and has a very specific format
+# [ -f /etc/lsb-release ]    && SYS_VERSION_FILE='/etc/lsb-release' # Ubuntu/Mint
 
 [ -n "${SYS_VERSION_FILE}" ] \
     && SYS_VERSION=$(cat "${SYS_VERSION_FILE}" | tr -d '\r\n') \
