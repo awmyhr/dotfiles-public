@@ -108,7 +108,7 @@ EOF
 #       K: Kernel Version
 #       M: Kernel Major Revision
 #       m: Kernel Minor Revision
-#       c: Kernel Corrections
+#       c: Kernel Corrections -- I haven't seen this in testing thus far
 # NOTE: this is not the whole story, but Good Enough(TM) for this
 # Some common components:
 #       P: Patch Number
