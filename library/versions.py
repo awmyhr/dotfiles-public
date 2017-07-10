@@ -62,7 +62,7 @@ if sys.version_info <= (2, 6):
 #===============================================================================
 #-- Variables which are meta for the script should be dunders (__varname__)
 #-- TODO: Update meta vars
-__version__ = '1.1.0' #: current version
+__version__ = '1.2.0' #: current version
 __revised__ = '2017-07-10' #: date of most recent revision
 __contact__ = 'awmyhr <awmyhr@gmail.com>' #: primary contact for support/?'s
 
@@ -287,28 +287,30 @@ def main():
     #-- List of executeables and simple version arg (should be exactly 1 arg)
     ##  This is horrible I know, but so far it works...
     progs = {
-        'bash':    {'args': '--version'},
-        'csh':     {'args': '--version'},
-        'fish':    {'args': '--version'},
-        'git':     {'args': '--version'},
-        'java':    {'args': '-version'},
-        'm-test':  {'args': '--version'},
-        'openssl': {'args': 'version'},
-        'perl':    {'args': '-V:version'},
-        'python':  {'args': '--version'},
-        'python2': {'args': '--version'},
-        'python3': {'args': '--version'},
-        'ruby':    {'args': '--version'},
-        'screen':  {'args': '--version'},
-        'ssh':     {'args': '-V'},
-        'sudo':    {'args': '-V'},
-        'tcsh':    {'args': '--version'},
-        't-test':  {'args': '--version'},
-        'tmux':    {'args': '-V'},
-        'vi':      {'args': '--version'},
-        'vim':     {'args': '--version'},
-        'yash':    {'args': '--version'},
-        'zsh':     {'args': '--version'}
+        'bash':       {'args': '--version'},
+        'csh':        {'args': '--version'},
+        'fish':       {'args': '--version'},
+        'git':        {'args': '--version'},
+        'java':       {'args': '-version'},
+        'm-test':     {'args': '--version'},
+        'openssl':    {'args': 'version'},
+        'perl':       {'args': '-V:version'},
+        'python':     {'args': '--version'},
+        'python2':    {'args': '--version'},
+        'python3':    {'args': '--version'},
+        'ruby':       {'args': '--version'},
+        'screen':     {'args': '--version'},
+        'ssh':        {'args': '-V'},
+        'sudo':       {'args': '-V'},
+        'tcsh':       {'args': '--version'},
+        't-test':     {'args': '--version'},
+        'tmux':       {'args': '-V'},
+        'vi':         {'args': '--version'},
+        'vim':        {'args': '--version'},
+        'yash':       {'args': '--version'},
+        'VBoxClient': {'args': '--version'},
+        'vmtoolsd':   {'args': '--version'},
+        'zsh':        {'args': '--version'}
     }
 
     tree = lambda: defaultdict(tree)
@@ -348,7 +350,7 @@ def main():
                 if module.params['raw']:
                     facts['raw_versions'][prog][path] = output
 
-                output = output.replace('"', ' ').replace("'", ' ')
+                output = ' %s' % output.replace('"', ' ').replace("'", ' ')
                 ver_string = pattern.search(output)
                 facts['versions'][prog][path] = ver_string.group('vers').lstrip()
 
