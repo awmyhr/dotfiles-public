@@ -286,12 +286,26 @@ def main():
     progs = tree()
     progs['bash']['args'] = '--version'
     progs['csh']['args'] = '--version'
-    progs['git']['args'] = '--version'
     progs['fish']['args'] = '--version'
+    progs['git']['args'] = '--version'
     progs['java']['args'] = '-version'
+    progs['m-test']['args'] = '--version'
     progs['openssl']['args'] = 'version'
     progs['perl']['args'] = '-V:version'
-    progs['zoink']['args'] = '-V:version'
+    progs['python']['args'] = '--version'
+    progs['python2']['args'] = '--version'
+    progs['python3']['args'] = '--version'
+    progs['ruby']['args'] = '--version'
+    # progs['screen']['args'] = '--version'
+    progs['ssh']['args'] = '-V'
+    progs['sudo']['args'] = '-V'
+    progs['tcsh']['args'] = '--version'
+    progs['t-test']['args'] = '--version'
+    progs['tmux']['args'] = '-V'
+    progs['vi']['args'] = '--version'
+    progs['vim']['args'] = '--version'
+    progs['yash']['args'] = '--version'
+    progs['zsh']['args'] = '--version'
 
     facts = tree()
     for prog in progs:
