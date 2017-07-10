@@ -62,7 +62,7 @@ if sys.version_info <= (2, 6):
 #===============================================================================
 #-- Variables which are meta for the script should be dunders (__varname__)
 #-- TODO: Update meta vars
-__version__ = '1.0.3' #: current version
+__version__ = '1.1.0' #: current version
 __revised__ = '2017-07-10' #: date of most recent revision
 __contact__ = 'awmyhr <awmyhr@gmail.com>' #: primary contact for support/?'s
 
@@ -263,56 +263,55 @@ def which(program):
 def main():
     """ This is where the action takes place """
     logger.debug('Starting main()')
-    tree = lambda: defaultdict(tree)
     module = AnsibleModule(
         argument_spec=dict(
             enabled=dict(default=True, type='bool'),
             raw=dict(default=False, type='bool')
         )
     )
-    raw = module.params['raw']
     #-- This assumes the actual version number is the first space followed by
     ##  a digit. This is horrible I know, but so far it works...
     pattern = re.compile(r"(?P<vers> \d[\S]*)")
 
-    paths = tree()
-    if os.path.exists('/bin'):
-        paths['os'] = '/bin'
-    if os.path.exists('/usr/bin'):
-        paths['usr'] = '/usr/bin'
-    if os.path.exists('/usr/local/bin'):
-        paths['local'] = '/usr/local/bin'
-    if os.path.exists('/sbin'):
-        paths['os.sys'] = '/sbin'
-    if os.path.exists('/usr/sbin'):
-        paths['usr.sys'] = '/usr/sbin'
-    if os.path.exists('/usr/local/sbin'):
-        paths['local.sys'] = '/usr/local/sbin'
+    #-- List of common paths to check for executeables
+    ##  This is horrible I know, but so far it works...
+    paths = {
+        'os':    '/bin',
+        'usr':   '/usr/bin',
+        'local': '/usr/local/bin',
+        'os.sys':    '/sbin',
+        'usr.sys':   '/usr/sbin',
+        'local.sys': '/usr/local/sbin',
+    }
 
-    progs = tree()
-    progs['bash']['args'] = '--version'
-    progs['csh']['args'] = '--version'
-    progs['fish']['args'] = '--version'
-    progs['git']['args'] = '--version'
-    progs['java']['args'] = '-version'
-    progs['m-test']['args'] = '--version'
-    progs['openssl']['args'] = 'version'
-    progs['perl']['args'] = '-V:version'
-    progs['python']['args'] = '--version'
-    progs['python2']['args'] = '--version'
-    progs['python3']['args'] = '--version'
-    progs['ruby']['args'] = '--version'
-    progs['screen']['args'] = '--version'
-    progs['ssh']['args'] = '-V'
-    progs['sudo']['args'] = '-V'
-    progs['tcsh']['args'] = '--version'
-    progs['t-test']['args'] = '--version'
-    progs['tmux']['args'] = '-V'
-    progs['vi']['args'] = '--version'
-    progs['vim']['args'] = '--version'
-    progs['yash']['args'] = '--version'
-    progs['zsh']['args'] = '--version'
+    #-- List of executeables and simple version arg (should be exactly 1 arg)
+    ##  This is horrible I know, but so far it works...
+    progs = {
+        'bash':    {'args': '--version'},
+        'csh':     {'args': '--version'},
+        'fish':    {'args': '--version'},
+        'git':     {'args': '--version'},
+        'java':    {'args': '-version'},
+        'm-test':  {'args': '--version'},
+        'openssl': {'args': 'version'},
+        'perl':    {'args': '-V:version'},
+        'python':  {'args': '--version'},
+        'python2': {'args': '--version'},
+        'python3': {'args': '--version'},
+        'ruby':    {'args': '--version'},
+        'screen':  {'args': '--version'},
+        'ssh':     {'args': '-V'},
+        'sudo':    {'args': '-V'},
+        'tcsh':    {'args': '--version'},
+        't-test':  {'args': '--version'},
+        'tmux':    {'args': '-V'},
+        'vi':      {'args': '--version'},
+        'vim':     {'args': '--version'},
+        'yash':    {'args': '--version'},
+        'zsh':     {'args': '--version'}
+    }
 
+    tree = lambda: defaultdict(tree)
     facts = tree()
     for prog in progs:
         pwhich = which(prog)
@@ -320,10 +319,13 @@ def main():
             facts['versions'][prog]['which'] = pwhich
 
         for path in paths:
+            # if not os.path.exists(path): next
             command = os.path.join(paths[path], prog)
+            logger.debug('Checking for %s.', command)
             if os.path.isfile(command) and os.access(command, os.X_OK):
                 try:
                     if sys.version_info <= (2, 6, 999):
+                        logger.debug('Python version < 2.7 branch.')
                         proc = subprocess.Popen(
                             [command, progs[prog]['args']],
                             stdout=subprocess.PIPE,
@@ -331,16 +333,19 @@ def main():
                         )
                         output, _ = proc.communicate()
                     else:
+                        logger.debug('Python version 2.7+ branch.')
                         output = subprocess.check_output(
                             [command, progs[prog]['args']],
                             stderr=subprocess.STDOUT
                         )
                 except subprocess.CalledProcessError as cmderr:
+                    logger.debug('Oops, subprocess stderr did not catch something.')
                     output = cmderr.output
                 except Exception:
+                    logger.debug('Had to clear an error.')
                     sys.exc_clear()
 
-                if raw:
+                if module.params['raw']:
                     facts['raw_versions'][prog][path] = output
 
                 # output = output.lower()
