@@ -1,14 +1,6 @@
 #!/usr/bin/python -tt
 #-- NOTE: Tabs and spaces do NOT mix!! '-tt' will flag violations as an error.
 #===============================================================================
-#-- NOTE: default Python versions:
-#--       RHEL4    2.3.4
-#--       RHEL5    2.4.3
-#--       RHEL6.0  2.6.5
-#--       RHEL6.1+ 2.6.6
-#--       REHL7    2.7.5
-#-- Recent Fedora versions (24/25) stay current on 2.7 (2.7.12 as of 20161212)
-#===============================================================================
 """
     :program:`versions.py`
     ============================================================
@@ -45,20 +37,32 @@
 import logging      #: Python's standard logging facilities
 import optparse     #: Argument parsing
 import os           #: Misc. OS interfaces
-import re
-import subprocess
+import re           #: Regular Expressions
+import subprocess   #: Call external programs and capture output
 import sys          #: System-specific parameters & functions
-from collections import defaultdict
+from collections import defaultdict #: easily build an empty dictionary
 # import traceback    #: Print/retrieve a stack traceback
 #===============================================================================
 #-- Third Party Imports
 from ansible.module_utils.basic import AnsibleModule
 #===============================================================================
+#-- Require a minimum Python version
+if sys.version_info <= (2, 6):
+    sys.exit("Minimum Python version: 2.6")
+#-- NOTE: default Python versions:
+#--       RHEL4    2.3.4
+#--       RHEL5    2.4.3
+#--       RHEL6.0  2.6.5
+#--       RHEL6.1+ 2.6.6
+#--       REHL7    2.7.5
+#-- Recent Fedora versions (24/25) stay current on 2.7 (2.7.12 as of 20161212)
+#===============================================================================
+#===============================================================================
 #-- Application Library Imports
 #===============================================================================
 #-- Variables which are meta for the script should be dunders (__varname__)
 #-- TODO: Update meta vars
-__version__ = '1.0.0' #: current version
+__version__ = '1.0.3' #: current version
 __revised__ = '2017-07-10' #: date of most recent revision
 __contact__ = 'awmyhr <awmyhr@gmail.com>' #: primary contact for support/?'s
 
@@ -319,10 +323,20 @@ def main():
             command = os.path.join(paths[path], prog)
             if os.path.isfile(command) and os.access(command, os.X_OK):
                 try:
-                    output = subprocess.check_output(
-                        [command, progs[prog]['args']],
-                        stderr=subprocess.STDOUT
-                    )
+                    if sys.version_info <= (2, 6, 999):
+                        proc = subprocess.Popen(
+                            [command, progs[prog]['args']],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT
+                        )
+                        output, _ = proc.communicate()
+                    else:
+                        output = subprocess.check_output(
+                            [command, progs[prog]['args']],
+                            stderr=subprocess.STDOUT
+                        )
+                except subprocess.CalledProcessError as cmderr:
+                    output = cmderr.output
                 except Exception:
                     sys.exc_clear()
 
