@@ -58,7 +58,7 @@ from ansible.module_utils.basic import AnsibleModule
 #===============================================================================
 #-- Variables which are meta for the script should be dunders (__varname__)
 #-- TODO: Update meta vars
-__version__ = '1.0.0-rc' #: current version
+__version__ = '1.0.0' #: current version
 __revised__ = '2017-07-10' #: date of most recent revision
 __contact__ = 'awmyhr <awmyhr@gmail.com>' #: primary contact for support/?'s
 
@@ -267,6 +267,8 @@ def main():
         )
     )
     raw = module.params['raw']
+    #-- This assumes the actual version number is the first space followed by
+    ##  a digit. This is horrible I know, but so far it works...
     pattern = re.compile(r"(?P<vers> \d[\S]*)")
 
     paths = tree()
@@ -296,7 +298,7 @@ def main():
     progs['python2']['args'] = '--version'
     progs['python3']['args'] = '--version'
     progs['ruby']['args'] = '--version'
-    # progs['screen']['args'] = '--version'
+    progs['screen']['args'] = '--version'
     progs['ssh']['args'] = '-V'
     progs['sudo']['args'] = '-V'
     progs['tcsh']['args'] = '--version'
@@ -316,10 +318,14 @@ def main():
         for path in paths:
             command = os.path.join(paths[path], prog)
             if os.path.isfile(command) and os.access(command, os.X_OK):
-                output = subprocess.check_output(
-                    [command, progs[prog]['args']],
-                    stderr=subprocess.STDOUT
-                )
+                try:
+                    output = subprocess.check_output(
+                        [command, progs[prog]['args']],
+                        stderr=subprocess.STDOUT
+                    )
+                except Exception:
+                    sys.exc_clear()
+
                 if raw:
                     facts['raw_versions'][prog][path] = output
 
