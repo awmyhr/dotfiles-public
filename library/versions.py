@@ -59,7 +59,7 @@ from ansible.module_utils.basic import AnsibleModule
 #-- Variables which are meta for the script should be dunders (__varname__)
 #-- TODO: Update meta vars
 __version__ = '1.0.0-rc' #: current version
-__revised__ = '2017-07-07' #: date of most recent revision
+__revised__ = '2017-07-10' #: date of most recent revision
 __contact__ = 'awmyhr <awmyhr@gmail.com>' #: primary contact for support/?'s
 
 #-- The following few variables should be relatively static over life of script
@@ -291,9 +291,14 @@ def main():
     progs['java']['args'] = '-version'
     progs['openssl']['args'] = 'version'
     progs['perl']['args'] = '-V:version'
+    progs['zoink']['args'] = '-V:version'
 
     facts = tree()
     for prog in progs:
+        pwhich = which(prog)
+        if pwhich is not None:
+            facts['versions'][prog]['which'] = pwhich
+
         for path in paths:
             command = os.path.join(paths[path], prog)
             if os.path.isfile(command) and os.access(command, os.X_OK):
