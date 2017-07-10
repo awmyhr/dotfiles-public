@@ -339,19 +339,16 @@ def main():
                             stderr=subprocess.STDOUT
                         )
                 except subprocess.CalledProcessError as cmderr:
-                    logger.debug('Oops, subprocess stderr did not catch something.')
+                    logger.debug(
+                        '%s exited with non-zero or subprocess stderr did not catch something.',
+                        prog
+                    )
                     output = cmderr.output
-                except Exception:
-                    logger.debug('Had to clear an error.')
-                    sys.exc_clear()
 
                 if module.params['raw']:
                     facts['raw_versions'][prog][path] = output
 
-                # output = output.lower()
-                # output = output.splitlines()[0]
-                output = output.replace('"', ' ')
-                output = output.replace("'", ' ')
+                output = output.replace('"', ' ').replace("'", ' ')
                 ver_string = pattern.search(output)
                 facts['versions'][prog][path] = ver_string.group('vers').lstrip()
 
