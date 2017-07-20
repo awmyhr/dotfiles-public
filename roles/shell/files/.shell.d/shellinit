@@ -11,7 +11,7 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.14.2
+#      VERSION: 1.14.3
 #     REVISION: 2017-07-20
 #      CREATED: 2016-09-28
 #===============================================================================
@@ -203,9 +203,9 @@ fi
 #-- What command handles priviledge elavation
 #----------------------------------------------------------------------
 if [ -z "${CDC_JOINED_DOMAIN}" ]; then
-    export PROG_BECOME=dzdo
-elif
     export PROG_BECOME=sudo
+else
+    export PROG_BECOME=dzdo
 fi
 
 #----------------------------------------------------------------------
