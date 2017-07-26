@@ -1,57 +1,35 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr Andy
-# Revised:   2017-04-03
+# Revised:   2017-07-26
 # Created:   2017-04-03
 # Copyright: 2017 awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- bash:
-    name: bash
-    shell: /bin/bash
-
-- csh:
-    name: csh
-    shell: /bin/csh
-
-- dash:
-    name: dash
-    shell: /bin/dash
-
-- fish:
-    name: fish
-    shell: /usr/bin/fish
-
-- ksh:
-    name: ksh
-    shell: /bin/ksh
-
-- mksh:
-    name: mksh
-    shell: /bin/mksh
-
-- rc:
-    name: rc
-    shell: /bin/rc
-
-- sh:
-    name: sh
-    shell: /bin/sh
-
-- tcsh:
-    name: tcsh
-    shell: /bin/tcsh
-
-- tmux:
-    name: tmux
-    shell: /bin/tmux
-
-- yash:
-    name: yash
-    shell: /bin/yash
-
-- zsh:
-    name: zsh
-    shell: /bin/zsh
+- users:
+    - username: bash
+      shell: /bin/bash
+    - username: csh
+      shell: /bin/csh
+    - username: dash
+      shell: /bin/dash
+    - username: fish
+      shell: /usr/bin/fish
+    - username: ksh
+      shell: /bin/ksh
+    - username: mksh
+      shell: /bin/mksh
+    - username: rc
+      shell: /bin/rc
+    - username: sh
+      shell: /bin/sh
+    - username: tcsh
+      shell: /bin/tcsh
+    - username: tmux
+      shell: /bin/tmux
+    - username: yash
+      shell: /bin/yash
+    - username: zsh
+      shell: /bin/zsh
 
