@@ -9,8 +9,8 @@
 #
 # REQUIREMENTS: POSIX compatible shell
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 3.4.1
-#     REVISION: 2017-05-11
+#      VERSION: 3.4.2
+#     REVISION: 2017-08-02
 #      CREATED: ????-??-??
 #===============================================================================
 #----------------------------------------------------------------------
@@ -75,7 +75,7 @@ fi
 #----------------------------------------------------------------------
 export SHELLSTRING="${SHELL}"
 [ -r "${SHELLD}/lib/ssh-keycheck" ] && "${SHELLD}/lib/ssh-keycheck"
-[ -r "${HOME}/bin/inxi" ]           && "${HOME}/bin/inxi" -CI
+[ -r "${HOME}/bin/inxi" ]           && "${HOME}/bin/inxi" -CI 2>/dev/null
 [ -r "${SHELLD}/lib/greeting" ]     && "${SHELLD}/lib/greeting"
 
 printf "\n%s\n" "${c_purple}May U Live 2 See The Dawn...${c_norm}"
