@@ -44,7 +44,6 @@ from collections import defaultdict #: easily build an empty dictionary
 # import traceback    #: Print/retrieve a stack traceback
 #===============================================================================
 #-- Third Party Imports
-from ansible.module_utils.basic import AnsibleModule
 #===============================================================================
 #-- Require a minimum Python version
 if sys.version_info <= (2, 6):
@@ -62,8 +61,8 @@ if sys.version_info <= (2, 6):
 #===============================================================================
 #-- Variables which are meta for the script should be dunders (__varname__)
 #-- TODO: Update meta vars
-__version__ = '1.2.0' #: current version
-__revised__ = '2017-07-10' #: date of most recent revision
+__version__ = '2.0.0' #: current version
+__revised__ = '2017-07-27' #: date of most recent revision
 __contact__ = 'awmyhr <awmyhr@gmail.com>' #: primary contact for support/?'s
 
 #-- The following few variables should be relatively static over life of script
@@ -263,12 +262,17 @@ def which(program):
 def main():
     """ This is where the action takes place """
     logger.debug('Starting main()')
-    module = AnsibleModule(
-        argument_spec=dict(
-            enabled=dict(default=True, type='bool'),
-            raw=dict(default=False, type='bool')
+    if OPTIONS.ansiblecalled:
+        from ansible.module_utils.basic import AnsibleModule
+        module = AnsibleModule(
+            argument_spec=dict(
+                enabled=dict(default=True, type='bool'),
+                raw=dict(default=False, type='bool')
+            )
         )
-    )
+        if module.params['raw']:
+            OPTIONS.includeraw = True
+
     #-- This assumes the actual version number is the first space followed by
     ##  a digit. This is horrible I know, but so far it works...
     pattern = re.compile(r"(?P<vers> \d[\S]*)")
@@ -347,14 +351,19 @@ def main():
                     )
                     output = cmderr.output
 
-                if module.params['raw']:
+                if OPTIONS.includeraw:
                     facts['raw_versions'][prog][path] = output
 
                 output = ' %s' % output.replace('"', ' ').replace("'", ' ')
                 ver_string = pattern.search(output)
                 facts['versions'][prog][path] = ver_string.group('vers').lstrip()
 
-    module.exit_json(changed=False, ansible_facts=facts)
+    if OPTIONS.ansiblecalled:
+        module.exit_json(changed=False, ansible_facts=facts)
+    else:
+        import pprint
+        pout = pprint.PrettyPrinter(indent=4)
+        pout.pprint({k: dict(v) for k, v in dict(facts).items()})
 
 #===============================================================================
 if __name__ == '__main__':
@@ -373,6 +382,9 @@ if __name__ == '__main__':
                     __cononical_name__, __project_name__, __project_home__
                    )
     )
+    PARSER.add_option('--raw', dest='includeraw', action='store_true',
+                      help='include raw ouput', default=False
+                     )
     #-- 'Hidden' optoins
     PARSER.add_option('--help-rest', dest='helprest', action='store_true',
                       help=optparse.SUPPRESS_HELP, default=False
@@ -394,6 +406,11 @@ if __name__ == '__main__':
                         ) % ('; '.join(__author__))
         PARSER.print_help()
         sys.exit(os.EX_OK)
+
+    if len(ARGS) != 0:
+        PARSER.error('incorrect')
+
+    OPTIONS.ansiblecalled = bool(__basename__.startswith('ansible_module'))
 
     #-- Setup output(s)
     if OPTIONS.debug:
