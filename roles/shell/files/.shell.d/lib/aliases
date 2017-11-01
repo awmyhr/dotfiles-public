@@ -12,8 +12,8 @@
 #
 # REQUIREMENTS: Bourne-compatible shell
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.4.0
-#     REVISION: 2017-05-10
+#      VERSION: 1.5.0
+#     REVISION: 2017-10-31
 #      CREATED: 2016-10-10
 #===============================================================================
 #----------------------------------------------------------------------
@@ -75,6 +75,8 @@ command -v phpcs        >/dev/null 2>&1 && alias lint-php='phpcs'
 command -v csslint      >/dev/null 2>&1 && alias lint-css='csslint'
 command -v ping         >/dev/null 2>&1 && alias ping='ping -c 5'
 command -v screenfetch  >/dev/null 2>&1 && alias sf='screenfetch -c 61,33'
+command -v sar          >/dev/null 2>&1 && alias sar='LANG=C sar'
+command -v mpstat       >/dev/null 2>&1 && alias mpstat='LANG=C mpstat'
 
 if command -v hh        >/dev/null 2>&1 ; then
     alias h=hh

@@ -16,8 +16,8 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.2.1
-#      CREATED: 2016-09-28
+#      VERSION: 1.3.0
+#      CREATED: 2016-10-31
 #     REVISION: 2017-04-04
 #===============================================================================
 #----------------------------------------------------------------------
@@ -34,6 +34,7 @@ export RSYNC_RSH='ssh'                      # set rsync transport
 export HISTSIZE=500                         # In-memory history
 export HISTFILESIZE=5000                    # On-disk history
 export SAVEHIST="${HISTFILESIZE}"           # Alt On-disk history
+export S_TIME_FORMAT='ISO'                  # ISO timestamps for sysutils
 if [ "${ZSH_NAME}" = zsh ]; then            # zsh has a slightly different format
     export HISTIGNORE='(&|[ ]*|exit|ls|history|[bf]g|reset|clear|cd|cd ..|cd..|fc *)'
     # format for time, ex:
