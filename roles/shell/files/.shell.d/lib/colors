@@ -1,5 +1,5 @@
 #!/bin/sh
-#===============================================================================
+#==============================================================================
 #
 #         FILE: .shell.d/lib/colors
 #
@@ -14,11 +14,11 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
+#     REVISION: 2017-11-07
 #      CREATED: 2016-10-03
-#     REVISION: 2016-10-07
-#===============================================================================
-#----------------------------------------------------------------------
+#==============================================================================
+#------------------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #--     Detecting how many colors the terminal can really, truely support
 #--         is a bit of a dark magic to me at this point. Simply relying
@@ -29,115 +29,94 @@
 #--         (However, a I do use it in a bit of code I took from Fedora's
 #--         TERM initilization, see below).
 #--         Will revist this when I'm learned...
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
-#----------------------------------------------------------------------
-#-- if tput doesn't exist, ncurses probably isn't installed,
-#--     so just give up cuz life is too short.
+#------------------------------------------------------------------------------
+#-- If tput doesn't exist, ncurses probably isn't installed, so just give up
+#--     cuz life is too short. Still set vars (as empty) so scripts don't choke.
 #--     NOTE: this assumes PATH was set to a sane default upon login.
-#----------------------------------------------------------------------
-command -v tput >/dev/null 2>&1 || return
+#------------------------------------------------------------------------------
+if command -v tput >/dev/null 2>&1 ; then
+    #--------------------------------------------------------------------------
+    #-- Detect how many colors the terminal supports
+    #--------------------------------------------------------------------------
+    #   if no TERM force the terminal to initilize itself
+    [ -z "${TERM}" ] && command -v tset >/dev/null 2>&1 && eval "$(tset -s -Q)"
 
-#----------------------------------------------------------------------
-#-- Detect how many colors the terminal supports
-#----------------------------------------------------------------------
-#   if no TERM force the terminal to initilize itself
-[ -z "${TERM}" ] && command -v tset >/dev/null 2>&1 && eval "$(tset -s -Q)"
+    #   From /etc/profile.d/256term.sh
+    # Terminals with any of the following set, support 256 colors (and are local)
+    local256="${COLORTERM}${XTERM_VERSION}${ROXTERM_ID}${KONSOLE_DBUS_SESSION}"
 
-#   From /etc/profile.d/256term.sh
-# Terminals with any of the following set, support 256 colors (and are local)
-local256="${COLORTERM}${XTERM_VERSION}${ROXTERM_ID}${KONSOLE_DBUS_SESSION}"
+    if [ -n "${local256}" ] || [ -n "${SEND_256_COLORS_TO_REMOTE}" ]; then
 
-if [ -n "${local256}" ] || [ -n "${SEND_256_COLORS_TO_REMOTE}" ]; then
+      case "$TERM" in
+        'xterm')  TERM=xterm-256color;;
+        'screen') TERM=screen-256color;;
+        'Eterm')  TERM=Eterm-256color;;
+      esac
+      export TERM
 
-  case "$TERM" in
-    'xterm')  TERM=xterm-256color;;
-    'screen') TERM=screen-256color;;
-    'Eterm')  TERM=Eterm-256color;;
-  esac
-  export TERM
+      if [ -n "${TERMCAP}" ] && [ "${TERM}" = 'screen-256color' ]; then
+        TERMCAP=$(echo "${TERMCAP}" | sed -e 's/Co#8/Co#256/g')
+        export TERMCAP
+      fi
+    fi; unset local256
+    #   End From /etc/profile.d/256term.sh
 
-  if [ -n "${TERMCAP}" ] && [ "${TERM}" = 'screen-256color' ]; then
-    TERMCAP=$(echo "${TERMCAP}" | sed -e 's/Co#8/Co#256/g')
-    export TERMCAP
-  fi
-fi; unset local256
-#   End From /etc/profile.d/256term.sh
+    #--------------------------------------------------------------------------
+    #-- Detect how many colors the terminal supports
+    #--------------------------------------------------------------------------
+    TERM_NUMCOLORS=$(tput colors) && export TERM_NUMCOLORS
 
-#----------------------------------------------------------------------
-#-- Detect how many colors the terminal supports
-#----------------------------------------------------------------------
-TERM_NUMCOLORS=$(tput colors) && export TERM_NUMCOLORS
+    #--------------------------------------------------------------------------
+    #-- Colors for echo/printf. 'setaf' sets these with ANSI escape
+    #--------------------------------------------------------------------------
+    if [ "${TERM_NUMCOLORS}" -ge 256 ]; then
+        c_BASE03=$(tput setaf 234) ; c_BASE02=$(tput setaf 235)
+        c_BASE01=$(tput setaf 240) ; c_BASE00=$(tput setaf 241)
+        c_BASE0=$(tput setaf 244)  ; c_BASE1=$(tput setaf 245)
+        c_BASE2=$(tput setaf 254)  ; c_BASE3=$(tput setaf 230)
+        c_blue=$(tput setaf 33)    ; c_cyan=$(tput setaf 37)
+        c_green=$(tput setaf 64)   ; c_magenta=$(tput setaf 125)
+        c_orange=$(tput setaf 166) ; c_purple=$(tput setaf 61)
+        c_red=$(tput setaf 160)    ; c_yellow=$(tput setaf 136)
+    elif [ "${TERM_NUMCOLORS}" -ge 16 ]; then
+        c_BASE03=$(tput setaf 8)   ; c_BASE02=$(tput setaf 0)
+        c_BASE01=$(tput setaf 10)  ; c_BASE00=$(tput setaf 11)
+        c_BASE0=$(tput setaf 12)   ; c_BASE1=$(tput setaf 14)
+        c_BASE2=$(tput setaf 7)    ; c_BASE3=$(tput setaf 15)
+        c_blue=$(tput setaf 4)     ; c_cyan=$(tput setaf 6)
+        c_green=$(tput setaf 2)    ; c_magenta=$(tput setaf 5)
+        c_orange=$(tput setaf 9)   ; c_purple=$(tput setaf 13)
+        c_red=$(tput setaf 1)      ; c_yellow=$(tput setaf 3)
+    else
+        c_BASE03=$(tput setaf 4)   ; c_BASE02=$(tput setaf 4)
+        c_BASE01=$(tput setaf 7)   ; c_BASE00=$(tput setaf 7)
+        c_BASE0=$(tput setaf 6)    ; c_BASE1=$(tput setaf 4)
+        c_BASE2=$(tput setaf 7)    ; c_BASE3=$(tput setaf 7)
+        c_orange=$(tput setaf 3)   ; c_magenta=$(tput setaf 5)
+        c_yellow=$(tput setaf 3)   ; c_red=$(tput setaf 1)
+        c_purple=$(tput setaf 5)   ; c_blue=$(tput setaf 4)
+        c_cyan=$(tput setaf 6)     ; c_green=$(tput setaf 2)
+    fi
 
-#----------------------------------------------------------------------
-#-- Set the color variables
-#----------------------------------------------------------------------
-if [ "${TERM_NUMCOLORS}" -ge 256 ]; then
-    c_BASE03=$(tput setaf 234)
-    c_BASE02=$(tput setaf 235)
-    c_BASE01=$(tput setaf 240)
-    c_BASE00=$(tput setaf 241)
-    c_BASE0=$(tput setaf 244)
-    c_BASE1=$(tput setaf 245)
-    c_BASE2=$(tput setaf 254)
-    c_BASE3=$(tput setaf 230)
-    c_blue=$(tput setaf 33)
-    c_cyan=$(tput setaf 37)
-    c_green=$(tput setaf 64)
-    c_magenta=$(tput setaf 125)
-    c_orange=$(tput setaf 166)
-    c_purple=$(tput setaf 61)
-    c_red=$(tput setaf 160)
-    c_yellow=$(tput setaf 136)
-elif [ "${TERM_NUMCOLORS}" -ge 16 ]; then
-    c_BASE03=$(tput setaf 8)
-    c_BASE02=$(tput setaf 0)
-    c_BASE01=$(tput setaf 10)
-    c_BASE00=$(tput setaf 11)
-    c_BASE0=$(tput setaf 12)
-    c_BASE1=$(tput setaf 14)
-    c_BASE2=$(tput setaf 7)
-    c_BASE3=$(tput setaf 15)
-    c_blue=$(tput setaf 4)
-    c_cyan=$(tput setaf 6)
-    c_green=$(tput setaf 2)
-    c_magenta=$(tput setaf 5)
-    c_orange=$(tput setaf 9)
-    c_purple=$(tput setaf 13)
-    c_red=$(tput setaf 1)
-    c_yellow=$(tput setaf 3)
+    c_bold=$(tput bold)     ; c_norm=$(tput sgr0)   ; c_undr=$(tput smul)
+    c_hide=$(tput invis)    ; c_blik=$(tput blink)  ; c_revr=$(tput smso)
 else
-    c_BASE03=$(tput setaf 4)
-    c_BASE02=$(tput setaf 4)
-    c_BASE01=$(tput setaf 7)
-    c_BASE00=$(tput setaf 7)
-    c_BASE0=$(tput setaf 6)
-    c_BASE1=$(tput setaf 4)
-    c_BASE2=$(tput setaf 7)
-    c_BASE3=$(tput setaf 7)
-    c_orange=$(tput setaf 3)
-    c_magenta=$(tput setaf 5)
-    c_yellow=$(tput setaf 3)
-    c_red=$(tput setaf 1)
-    c_purple=$(tput setaf 5)
-    c_blue=$(tput setaf 4)
-    c_cyan=$(tput setaf 6)
-    c_green=$(tput setaf 2)
+    c_BASE03='' ; c_BASE02=''   ; c_BASE01=''  ; c_BASE00=''
+    c_BASE0=''  ; c_BASE1=''    ; c_BASE2=''   ; c_BASE3=''
+    c_black=''  ; c_white=''    ; c_orange=''  ; c_magenta=''
+    c_yellow='' ; c_red=''      ; c_purple=''  ; c_blue=''
+    c_cyan=''   ; c_green=''    ; c_bold=''    ; c_norm=''
+    c_undr=''   ; c_hide=''     ; c_blik=''    ; c_revr=''
 fi
-
-c_bold=$(tput bold)
-c_norm=$(tput sgr0)
-c_undr=$(tput smul)
-c_hide=$(tput invis)
-c_blik=$(tput blink)
-c_revr=$(tput smso)
 
 c_white="${c_BASE3}"
 c_black="${c_BASE03}"
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- export all the colors
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 export c_BASE03 c_BASE02  c_BASE01 c_BASE00
 export c_BASE0  c_BASE1   c_BASE2  c_BASE3
 export c_orange c_magenta c_yellow c_red
@@ -145,9 +124,9 @@ export c_purple c_blue    c_cyan   c_green
 export c_white  c_black   c_bold   c_norm
 export c_undr   c_hide    c_blik   c_revr
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- Combos for various alert based on kernel alert levels
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 export c_EMERG="${c_bold}${c_magenta}"
 export c_ALERT="${c_bold}${c_red}"
 export c_CRIT="${c_red}"
@@ -157,11 +136,11 @@ export c_NOTICE="${c_white}"
 export c_INFO="${c_green}"
 export c_DEBUG="${c_blue}"
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- colors for ls
 #--     Originally/loosely based on Fedora 24's /etc/profile.d/colorls.sh
 # --    NOTE: this could result in a non-256 TERM getting 256 color file
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 unset cfile
 command -v dircolors >/dev/null 2>&1 && {
     if [ "${TERM_NUMCOLORS}" = 8 ]; then    
@@ -189,17 +168,17 @@ command -v dircolors >/dev/null 2>&1 && {
     unset config cfile
 }
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- colors for grep/xzgrep/zgrep
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- enable color for other programs
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 export GCC_COLORS=1                         # Color in gcc
 
-#===============================================================================
-#----------------------------------------------------------------------
+#==============================================================================
+#------------------------------------------------------------------------------
 export ISSET_COLORS=1
-#----------------------------------------------------------------------
-#===============================================================================
+#------------------------------------------------------------------------------
+#==============================================================================
