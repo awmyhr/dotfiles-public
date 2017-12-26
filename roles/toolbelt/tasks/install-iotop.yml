@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-10
+# Revised:   2017-12-26
 # Created:   2017-05-10
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -9,7 +9,7 @@
 ---
 - name: Iotop Download.
   git:
-    repo: "https://repo.or.cz/iotop.git"
+    repo: "http://repo.or.cz/iotop.git"
     dest: "{{ role_path }}/cache/iotop"
   ignore_errors: yes
   delegate_to: localhost
