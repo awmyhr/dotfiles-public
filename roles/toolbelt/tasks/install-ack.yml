@@ -1,7 +1,7 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-11
+# Revised:   2017-12-26
 # Created:   2017-05-09
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
@@ -16,11 +16,14 @@
   run_once: True
 
 - name: Ack pre-req.
-  include: install-ack-fileNext.yml
+  include: "{{ item }}"
   become: True
   when: system_control == "full"
   delegate_to: localhost
   run_once: True
+  with_items:
+    - install-ack-fileNext.yml
+    - install-ack-extutilsMakeMaker.yml
 
 - name: Ack create Makefile.
   command: perl Makefile.PL
@@ -43,4 +46,4 @@
     dest: ~/bin/ack
     mode: 0755
 
-    
+
