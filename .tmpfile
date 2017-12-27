@@ -1,0 +1,21 @@
+docker run -itd \
+    --cpuset-cpus=1 \
+    --memory=100m \
+    --name monero \
+    kannix/monero-miner -a cryptonight \
+        -o stratum+tcp://xmr-usa.dwarfpool.com:8005 \
+        -u 468aaTzBNTGQ4NEKof7qEMM835JdPkTtaK5Rm3GS8AzqY5hKiJuWAbthuJN64WBgAwW32cExDfntXTjfV6M9kPSJCybV4eB.awmrh \
+        -p x --threads 1
+docker logs -f monero
+
+docker run -itd \
+    --cpuset-cpus=1 \
+    --memory=100m \
+    --name aeon \
+    -e POOL_URL='pool.aeonminingpool.com:3333' \
+    -e POOL_USER='WmsoMLyARSzDhgtJEzJXqtaPyub2JBkLtaJDRcexXuzsPXRdXPTqA4y6yYQvJmd8WaJ4xyEicbcu8BC4ZrQ7ve4T33LhxCkGt' \
+    -e POOL_PW='awmrh' \
+    -e MAX_CPU='100' \
+    masterroshi/aeon-miner
+docker logs -f aeon
+
