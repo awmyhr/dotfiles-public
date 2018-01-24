@@ -128,4 +128,4 @@ PRs will be reviewed.
 
 ## License
 
-Apache-2.0 © 2017, awmyhr
+Apache-2.0 © 2018, awmyhr
