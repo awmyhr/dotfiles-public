@@ -169,8 +169,15 @@ command -v dircolors >/dev/null 2>&1 && {
 }
 
 #------------------------------------------------------------------------------
-#-- colors for grep/xzgrep/zgrep
+#-- colors for less
 #------------------------------------------------------------------------------
+export LESS_TERMCAP_mb="${c_bold}${c_red}"   # begin blinking
+export LESS_TERMCAP_md="${c_bold}${c_blue}"  # begin bold
+export LESS_TERMCAP_me="${c_norm}"           # end mode
+export LESS_TERMCAP_se="${c_norm}"           # end standout-mode
+export LESS_TERMCAP_so="${c_cyan}"           # begin standout-mode - info box
+export LESS_TERMCAP_ue="${c_norm}"           # end underline
+export LESS_TERMCAP_us="${c_undr}${c_green}" # begin underline
 
 #------------------------------------------------------------------------------
 #-- enable color for other programs
