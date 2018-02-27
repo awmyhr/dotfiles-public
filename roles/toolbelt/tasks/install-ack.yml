@@ -1,48 +1,25 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-12-26
+# Revised:   20180227-111906
 # Created:   2017-05-09
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
+#-- Building ack is too much of a PIA for this project, so just download the file
+#   However, in some (corportate) environments, we need to specify the cipher,
+#   which cannot be done with Ansible's get_url, thus fall back to running
+#   curl manually like an animal...
 - name: Ack Download.
-  git:
-    repo: "https://github.com/petdance/ack2.git"
-    dest: "{{ role_path }}/cache/ack2"
+  command: curl -L --ciphers TLSv1 "https://beyondgrep.com/ack-2.22-single-file" -o "{{ role_path }}/cache/ack"
   ignore_errors: yes
-  delegate_to: localhost
-  run_once: True
-
-- name: Ack pre-req.
-  include: "{{ item }}"
-  become: True
-  when: system_control == "full"
-  delegate_to: localhost
-  run_once: True
-  with_items:
-    - install-ack-fileNext.yml
-    - install-ack-extutilsMakeMaker.yml
-
-- name: Ack create Makefile.
-  command: perl Makefile.PL
-  args:
-    chdir: "{{ role_path }}/cache/ack2"
-    creates: "{{ role_path }}/cache/ack2/Makefile"
-  delegate_to: localhost
-  run_once: True
-
-- name: Ack Make.
-  make:
-    chdir: "{{ role_path }}/cache/ack2"
-    target: ack-standalone
   delegate_to: localhost
   run_once: True
 
 - name: Ack Script.
   copy:
-    src: "{{ role_path }}/cache/ack2/ack-standalone"
+    src: "{{ role_path }}/cache/ack"
     dest: ~/bin/ack
     mode: 0755
 
