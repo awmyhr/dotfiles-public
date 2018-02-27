@@ -1,0 +1,24 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   20180227-111906
+# Created:   2018-02-27
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Slit Download.
+  get_url:
+    url: https://github.com/tigrawap/slit/releases/download/1.1.6/slit_linux_amd64
+    dest: "{{ role_path }}/cache/slit"
+  ignore_errors: yes
+  delegate_to: localhost
+  run_once: True
+
+- name: Slit Command.
+  copy:
+    src: "{{ role_path }}/cache/slit"
+    dest: ~/bin/slit
+    mode: 0755
+
+

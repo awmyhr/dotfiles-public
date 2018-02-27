@@ -35,3 +35,7 @@
   include: install-screenfetch.yml
   tags: screenfetch
 
+- name: Slit.
+  include: install-slit.yml
+  tags: slit
+
