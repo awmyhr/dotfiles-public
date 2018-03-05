@@ -57,3 +57,4 @@
 /usr/local/mysql/bin
 /opt/pbis/bin
 "${HOME}"/.gem/ruby/2.0.0/bin
+"${HOME}"/.local/bin
