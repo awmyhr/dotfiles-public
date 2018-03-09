@@ -12,8 +12,8 @@
 #
 # REQUIREMENTS: Bourne-compatible shell
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.5.0
-#     REVISION: 2017-10-31
+#      VERSION: 1.6.0
+#     REVISION: 2018-03-09
 #      CREATED: 2016-10-10
 #===============================================================================
 #----------------------------------------------------------------------
@@ -140,4 +140,11 @@ command -v puppet       >/dev/null 2>&1 && {
     alias ppv='puppet parser validate'
     alias ppl='puppet-lint'
     alias lint-pup='puppet-lint'
+}
+
+#----------------------------------------------------------------------
+#-- Python stuff
+#----------------------------------------------------------------------
+command -v python       >/dev/null 2>&1 && {
+    alias genid="python -c 'import uuid; print(uuid.uuid4())'"
 }
