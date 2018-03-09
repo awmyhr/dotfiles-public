@@ -23,9 +23,15 @@
 #----------------------------------------------------------------------
 
 alias d='docker'
-alias dimages='d images --format "table {{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"'
-alias dps='d ps --format "table {{.Names}}\t{{.Image}}\t[{{.Label \"org.label-schema.version\"}}]\t{{.Command}}\t{{.Status}}"'
-alias drumit='d run --rm -it'
+alias dimages='docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"'
+alias dps='docker ps --format "table {{.Names}}\t{{.Image}}\t[{{.Label \"org.label-schema.version\"}}]\t{{.Command}}\t{{.Status}}"'
+alias drumit='docker run --rm -it'
+alias dtail='docker logs'
+alias dkillall='docker kill $(docker ps -q)'
+alias drmall='docker rm -v $(docker ps -aq)'
+alias drmiall='docker rmi $(docker images -f "dangling=true" -q)'
+alias drmvall='docker volume rm $(docker volume ls -f dangling=true -q)'
+alias dcleanall='drmall; drmvall; drmiall'
 
 DOCKER_CLIENT_VERSION=$(docker version --format '{{.Client.Version}}' 2>/dev/null)
 DOCKER_SERVER_VERSION=$(docker version --format '{{.Server.Version}}' 2>/dev/null)
