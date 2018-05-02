@@ -1,0 +1,89 @@
+# EditorConfig [http://EditorConfig.org] - Enforce consistant sytle
+# INI formated, requires your editor has a plug-in
+
+################################################################################
+### General settings
+[*]
+# top-most EditorConfig file
+root = true
+charset = utf-8
+# Unix-style newlines with a newline ending every file
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+################################################################################
+### Markdown Files
+[*.md]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+################################################################################
+### YAML files
+[*.yml]
+indent_size = 2
+
+################################################################################
+### HTML files
+[*.html]
+indent_size = 2
+
+################################################################################
+### CSS files
+[*.{css,styl,scss,less,sass}]
+indent_size = 2
+
+################################################################################
+### Ruby files
+[{*.rb,Rakefile,Gemfile*,config.ru}]
+indent_size = 2
+
+################################################################################
+### JSON files
+[*.json]
+indent_size = 2
+insert_final_newline = ignore
+
+################################################################################
+### Minified JavaScript files
+[**.min.js]
+indent_style = ignore
+insert_final_newline = ignore
+
+################################################################################
+### Go files
+[*.go]
+indent_style = tab
+indent_size = 4
+
+################################################################################
+### Makefiles
+[{Makefile,*.mk}]
+indent_style = tab
+indent_size = ignore
+trim_trailing_whitespace = false
+
+################################################################################
+### Patch files
+[*.patch.*]
+trim_trailing_whitespace = false
+
+################################################################################
+### Batch files
+[*.bat]
+indent_style = tab
+indent_size = ignore
+# Since batch files are typically Windows
+end_of_line = crlf
+
+################################################################################
+### Try not to mess with other peoples files
+[{deps,tools}/**]
+charset = ignore
+end_of_line = ignore
+indent_size = ignore
+indent_style = ignore
+insert_final_newline = ignore
+trim_trailing_whitespace = ignore
