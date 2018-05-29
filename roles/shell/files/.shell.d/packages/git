@@ -14,7 +14,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 2.1.0
+#      VERSION: 2.1.1
 #      CREATED: 2016-10-04
 #     REVISION: 2017-03-30
 #===============================================================================
@@ -37,18 +37,18 @@ export DEFAULT_VCS_VERSION
 #       strict POSIX shell (BOO!). Oh well...
 #===============================================================================
 _vcs_prompt() {
-    IGNORE_SUBMODULES=''
-    IGNORE_UNTRACKED_FILES=''
+    IGNORE_SUBMODULES='all'
+    IGNORE_UNTRACKED_FILES='all'
     # BUG: Very strange. When git is in a container, and run with exec in
     #      this function with this command:
     #      git status -b --porcelain --ignore-submodules
     #      it will instead ignore untracked files. This does not happen 
     #      running the same command from the command line (still using exec
     #      to call it from a container.) No explination I can think of...
-    # [ "${VCS_IGNORE_SUBMODULES}" = "true" ]      && \
-    #                 IGNORE_SUBMODULES=$(printf -- " --ignore-submodules")
+    # [ "${VCS_IGNORE_SUBMODULES}" = "false" ]      && \
+    #                 IGNORE_SUBMODULES='none'
     # [ "${VCS_IGNORE_UNTRACKED_FILES}" = "true" ] && \
-    #                 IGNORE_UNTRACKED_FILES=$(printf -- " --untracked-files=no")
+    #                 IGNORE_UNTRACKED_FILES='no'
 
     GITSTAT=0
     STATUS=''
@@ -70,7 +70,7 @@ _vcs_prompt() {
     staged_A=0      # A*      ) staged & added
     staged_C=0      # C*      ) staged & copied
 
-    IFS=$'\n' GIT_OUT=( $(git status -b --porcelain "${IGNORE_SUBMODULES}" "${IGNORE_UNTRACKED_FILES}" 2>/dev/null) )
+    IFS=$'\n' GIT_OUT=( $(git status -b --porcelain --ignore-submodules="${IGNORE_SUBMODULES}" --untracked-files="${IGNORE_UNTRACKED_FILES}" 2>/dev/null) )
     if [ "${ZSH_VERSION}" ]; then
       GIT_HEAD=${GIT_OUT[1]}
       GIT_OUT[1]=()
