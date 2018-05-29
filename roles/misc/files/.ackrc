@@ -6,9 +6,9 @@
 #
 # REQUIREMENTS: ack2
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.0.0
+#      VERSION: 1.1.0
 #     REVISION: 2017-05-10
-#      CREATED: 2017-05-10
+#      CREATED: 2018-04-26
 #===============================================================================
 --with-filename
 --sort-files
@@ -16,6 +16,7 @@
 
 --ignore-dir=is:tmp
 --ignore-dir=is:cache
+--ignore-file=is:ansible.log
 
 --color-filename=yellow
 --color-match=red
