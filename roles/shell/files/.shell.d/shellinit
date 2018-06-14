@@ -11,8 +11,8 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.14.3
-#     REVISION: 2017-07-20
+#      VERSION: 1.15.0
+#     REVISION: 2018-06-14
 #      CREATED: 2016-09-28
 #===============================================================================
 #----------------------------------------------------------------------
@@ -120,29 +120,45 @@ EOF
 # Ubuntu: https://wiki.ubuntu.com/Kernel/FAQ#Kernel.2FFAQ.2FGeneralVersionMeaning.What_does_a_specific_Ubuntu_kernel_version_number_mean.3F
 # <BKV>-<ABI number>.<upload number>-<flavour>
 
-unset SYS_VERSION_FILE
 #-- This needs to be improved
-# on el6/el7 this is a symlink to /etc/redhat-release
-# on fc24 this is a symlink to /etc/fedora-release
-[ -f /etc/system-release ] && SYS_VERSION_FILE='/etc/system-release'
-# on fc24 this is a symlink to /etc/fedora-release
-[ -f /etc/redhat-release ] && SYS_VERSION_FILE='/etc/redhat-release'
-# [ -f /etc/centos-release ] && SYS_VERSION_FILE='/etc/centos-release'
-[ -f /etc/fedora-release ] && SYS_VERSION_FILE='/etc/fedora-release'
-# [ -f /etc/debian_version ] && SYS_VERSION_FILE='/etc/debian_version'
-# [ -f /etc/gentoo-release ] && SYS_VERSION_FILE='/etc/gentoo-release'
-# [ -f /etc/SuSE-release ]   && SYS_VERSION_FILE='/etc/SuSE-release'
+#   Ubuntu has no equivlent. Thus far no example of Gentoo or SuSE
+unset SYS_RELEASE_FILE
+if [ -f /etc/fedora-release ]; then
+    SYS_RELEASE_FILE='/etc/fedora-release'
+elif [ -f /etc/centos-release ]; then
+    SYS_RELEASE_FILE='/etc/centos-release'
+elif [ -f /etc/redhat-release ]; then
+    # CentOS link-> /etc/centos-release 
+    # Fedora link-> /etc/fedora-release
+    SYS_RELEASE_FILE='/etc/redhat-release'
+elif [ -f /etc/solus-release ]; then
+    SYS_RELEASE_FILE='/etc/solus-release'
+elif [ -f /etc/alpine-release ]; then
+    # only has version number
+    SYS_RELEASE_FILE='/etc/alpine-release'
+elif [ -f /etc/debian_version ]; then
+    # only has version number
+    SYS_RELEASE_FILE='/etc/debian_version'
+else [ -f /etc/system-release ]; then
+    # CentOS link-> /etc/centos-release 
+    # Fedora link-> /etc/fedora-release
+    # RHEL link-> /etc/redhat-release
+    SYS_RELEASE_FILE='/etc/system-release'
+fi
 # This will exist on systems w/lsb-core packages installed and has a very specific format
-# [ -f /etc/lsb-release ]    && SYS_VERSION_FILE='/etc/lsb-release' # Ubuntu/Mint
+# [ -f /etc/lsb-release ]    && LSB_RELEASE_FILE='/etc/lsb-release' # Ubuntu/Mint
 
-[ -n "${SYS_VERSION_FILE}" ] \
-    && SYS_VERSION=$(cat "${SYS_VERSION_FILE}" | tr -d '\r\n') \
-    && export SYS_VERSION
+[ -n "${SYS_RELEASE_FILE}" ] \
+    && SYS_RELEASE=$(cat "${SYS_RELEASE_FILE}" | tr -d '\r\n') \
+    && export SYS_RELEASE
 
 # (Static) Service Check: Is this a VM/Container? 
 command -v systemctl >/dev/null 2>&1 && {
     STAT_VM_CHECK=$(systemctl is-active vmtoolsd 2>/dev/null)
 }
+if [ -f /sys/devices/virtual/dmi/id/product_name ]; then
+    PRODUCT_NAME=$(cat /sys/devices/virtual/dmi/id/product_name | tr -d '\r\n')
+fi
 if [ -f /var/run/vboxadd-service.sh ]; then
     STAT_VM='[V]'
 elif [ -f /var/run/vmtoolsd.pid ]; then
@@ -229,6 +245,8 @@ export STAT_SSH
 if [ "${TILIX_ID}" ] || [ "${VTE_VERSION}" ]; then
     if [ -r "/etc/profile.d/vte.sh" ]; then
         . "/etc/profile.d/vte.sh"
+    elif [ -r "/usr/share/defaults/etc/profile.d/vte.sh" ]; then
+        . "/usr/share/defaults/etc/profile.d/vte.sh"
     elif [ -r "/etc/profile.d/vte-2.91.sh" ]; then
         . "/etc/profile.d/vte-2.91.sh"
     fi
