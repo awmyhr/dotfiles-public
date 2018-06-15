@@ -1,10 +1,10 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-04-03
+# Revised:   2018-06-15
 # Created:   2017-04-03
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-path_bash: /usr/bin/bash
+path_bash: /bin/bash
