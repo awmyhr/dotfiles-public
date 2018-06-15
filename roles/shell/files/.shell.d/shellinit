@@ -11,7 +11,7 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.16.0
+#      VERSION: 1.17.0
 #     REVISION: 2018-06-15
 #      CREATED: 2016-09-28
 #===============================================================================
@@ -187,10 +187,12 @@ elif [ -f /var/run/vboxadd-service.sh ]; then
     HYPERVISOR='VirtualBox'
 fi
 
-if [ "${container}" = 'docker' ]; then
+if [ -f '/.dockerenv' ]; then
     STAT_VM='[C]'
-elif [ -f '/.dockerenv' ]; then
+    HYPERVISOR="${HYPERVISOR} / Docker"
+elif [ "${container}" = 'docker' ]; then
     STAT_VM='[C]'
+    HYPERVISOR="${HYPERVISOR} / Docker"
 elif [ "${STAT_VM_CHECK}" = 'virtual' ]; then
     STAT_VM='[V]'
 elif [ "${UNAMEO}" = 'Msys' ]; then
