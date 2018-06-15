@@ -11,7 +11,7 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.18.0
+#      VERSION: 1.19.0
 #     REVISION: 2018-06-15
 #      CREATED: 2016-09-28
 #===============================================================================
@@ -157,57 +157,61 @@ fi
 
 #------------------------------------------------------------------------------
 #-- (Static) Service Check: Is this a VM/Container? 
-#   Notes: For OpenVZ check for /proc/user_beancounters (not inc as I have no test)
-#          Small problem w/systemd-detect-virt: it will identify 'docker' as the
-#              hypervisor for containers. We want the *actual* hypervisor, so
-#              let's do the /sys file check first.
+#   Notes: Small problem w/systemd-detect-virt: it's not 100% reliable...
 #          Other commands: virt-what, lspci, facter
+#   Reference: https://www.freedesktop.org/software/systemd/man/systemd-detect-virt.html
 #------------------------------------------------------------------------------
-if [ -r /sys/devices/virtual/dmi/id/product_name ]; then
-    PRODUCT_NAME="$(head -1 /sys/devices/virtual/dmi/id/product_name)"
-elif $(command -v systemd-detect-virt >/dev/null 2>&1); then
-    case "$(systemd-detect-virt)" in
-        docker )    PRODUCT_NAME='Docker'                   ;;
+if $(command -v systemd-detect-virt >/dev/null 2>&1); then
+    case "$(systemd-detect-virt --vm)" in
         oracle )    PRODUCT_NAME='VirtualBox'               ;;
         vmware )    PRODUCT_NAME='VMWare Virtual Platform'  ;;
-        microsoft ) PRODUCT_NAME='Virtual Machine'          ;;
+        microsoft ) PRODUCT_NAME='MSVirtual Machine'        ;;
+        kvm)        PRODUCT_NAME='KVM'                      ;;
+        qemu)       PRODUCT_NAME='QEMU'                     ;;
+        bochs)      PRODUCT_NAME='Bochs'                    ;;
         * )         PRODUCT_NAME='unknown virtual system'   ;;
     esac
+elif [ -r /sys/devices/virtual/dmi/id/product_name ]; then
+    PRODUCT_NAME="$(head -1 /sys/devices/virtual/dmi/id/product_name)"
 elif [ -f /var/run/vmtoolsd.pid ]; then
     PRODUCT_NAME='VMWare Virtual Platform'
 elif [ -f /var/run/vboxadd-service.sh ]; then
     PRODUCT_NAME='VirtualBox'
 fi
 
-STAT_VM_CHECK=''
-HYPERVISOR=''
 if [ -n "${PRODUCT_NAME}" ] ; then
     case "${PRODUCT_NAME}" in
-        VM[wW]are*   )  STAT_VM_CHECK='virtual'
-                        HYPERVISOR='VMWare'     ;;
-        VirtualBox   )  STAT_VM_CHECK='virtual' 
-                        HYPERVISOR='VirtualBox' ;;
-        KVM          )  STAT_VM_CHECK='virtual' 
-                        HYPERVISOR='KVM'        ;;
-        HVM*         )  STAT_VM_CHECK='virtual' 
-                        HYPERVISOR='Xen'        ;;
-        Bochs        )  STAT_VM_CHECK='virtual' 
-                        HYPERVISOR='QEMU'       ;;
-        *[vV]irtual* )  STAT_VM_CHECK='virtual'
-                        HYPERVISOR='Other'
+        VM[wW]are*   )  HYPERVISOR='VMWare'     ;;
+        VirtualBox   )  HYPERVISOR='VirtualBox' ;;
+        KVM          )  HYPERVISOR='KVM'        ;;
+        HVM*         )  HYPERVISOR='Xen'        ;;
+        QEMU         )  HYPERVISOR='QEMU'       ;;
+        Bochs        )  HYPERVISOR='Bochs Emu'  ;;
+        MSVirtual*   )  HYPERVISOR='Hyper-V'
                         if $(command -v systemctl >/dev/null 2>&1); then
                             if systemctl -q is-active waagent ; then
                                 HYPERVISOR='Azure'
                             fi
                         fi                      ;;
+        *[vV]irtual* )  HYPERVISOR='Other'      ;;
         *            )                          ;;
     esac
 fi
+[ -n "${HYPERVISOR}" ] && STAT_VM_CHECK='virtual'
 
 if $(grep -q '/docker' /proc/self/cgroup) ; then
-    STAT_VM_CHECK='container'
-    HYPERVISOR="${HYPERVISOR} / Docker"
+    CONTAINER="Docker"
+elif $(command -v systemd-detect-virt >/dev/null 2>&1); then
+    case "$(systemd-detect-virt --container)" in
+        docker )        CONTAINER="Docker"      ;;
+        openvz )        CONTAINER="OpenVZ"      ;;
+        lxc-libvirt )   CONTAINER="libvirtLXC"  ;;
+        lxc )           CONTAINER="LXC"         ;;
+        rkt )           CONTAINER="rkt"         ;;
+        * )             CONTAINER='unknown container system'   ;;
+    esac
 fi
+[ -n "${CONTAINER}" ] && STAT_VM_CHECK='container'
 
 if [ "${STAT_VM_CHECK}" = 'container' ]; then
     STAT_VM='[C]'

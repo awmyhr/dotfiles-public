@@ -15,7 +15,7 @@
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.4.0
+#      VERSION: 1.5.0
 #     REVISION: 2018-06-15
 #      CREATED: 2016-10-04
 #===============================================================================
@@ -29,6 +29,7 @@
 printf "%s\n" "${c_white}You're logged into ${c_bold}${HOSTNAME}${c_norm}${c_white} in a(n) ${c_bold}$TERM${c_norm}${c_white} terminal with:${c_norm}"
 printf "%s\n" "      ${c_white}${c_bold}System:${c_norm} ${c_purple}${UNAMES} (${UNAMER})${c_norm}"
 [ -n "${HYPERVISOR}" ] && printf "%s\n" "  ${c_white}${c_bold}Hypervisor:${c_norm} ${c_purple}${HYPERVISOR}${c_norm}"
+[ -n "${CONTAINER}" ]  && printf "%s\n" "   ${c_white}${c_bold}Container:${c_norm} ${c_purple}${CONTAINER}${c_norm}"
 printf "%s\n" "       ${c_white}${c_bold}Shell:${c_norm} ${c_purple}${SHELLSTRING}${c_norm}"
 printf "%s\n" "       ${c_white}${c_bold}Pager:${c_norm} ${c_purple}${PAGER}${c_norm}"
 printf "%s\n" "      ${c_white}${c_bold}Editor:${c_norm} ${c_purple}${EDITOR} (${EDITOR_VERSION})${c_norm}"
