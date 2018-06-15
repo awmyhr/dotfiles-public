@@ -11,20 +11,20 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.15.0
-#     REVISION: 2018-06-14
+#      VERSION: 1.16.0
+#     REVISION: 2018-06-15
 #      CREATED: 2016-09-28
 #===============================================================================
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- Notes/known bugs/other issues
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 umask 022
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- Load settings, functions, symbols, and others
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 [ -r "${SHELLD}/etc/settings" ]   && . "${SHELLD}/etc/settings"
 [ -r "${SHELLD}/lib/functions" ]  && . "${SHELLD}/lib/functions"
 [ -r "${SHELLD}/lib/symbols" ]    && . "${SHELLD}/lib/symbols"
@@ -32,9 +32,9 @@ umask 022
 [ -r "${SHELLD}/lib/colors" ]     && . "${SHELLD}/lib/colors"
 [ -r "${SHELLD}/lib/aliases" ]    && . "${SHELLD}/lib/aliases"
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- Load packages
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #   Default VCS pacakge
 [ "${DEFAULT_VCS}" ] && command -v "${DEFAULT_VCS}" >/dev/null 2>&1 && {
     [ -r "${SHELLD}/packages/${DEFAULT_VCS}" ] && \
@@ -51,9 +51,9 @@ command -v pcs >/dev/null 2>&1 && {
        . "${SHELLD}/packages/pcs"
 }
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- Set up PATH/MANPATH/PERL5LIB/PYTHONPATH
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 if [ -r "${SHELLD}/etc/paths" ]; then
     while read line
     do
@@ -89,9 +89,9 @@ fi
 
 export PATH MANPATH GOPATH PERL5LIB PYTHONPATH
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- Set up sysinfo variables and load in platform specific things
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 command -v uname >/dev/null 2>&1 && {
     read -r -- UNAMES SYSNAME UNAMER PLATFORM <<EOF
     $(uname -nprs)
@@ -121,7 +121,7 @@ EOF
 # <BKV>-<ABI number>.<upload number>-<flavour>
 
 #-- This needs to be improved
-#   Ubuntu has no equivlent. Thus far no example of Gentoo or SuSE
+#   Ubuntu has no equivlent.
 unset SYS_RELEASE_FILE
 if [ -f /etc/fedora-release ]; then
     SYS_RELEASE_FILE='/etc/fedora-release'
@@ -139,7 +139,10 @@ elif [ -f /etc/alpine-release ]; then
 elif [ -f /etc/debian_version ]; then
     # only has version number
     SYS_RELEASE_FILE='/etc/debian_version'
-else [ -f /etc/system-release ]; then
+elif [ -f /etc/SuSE-release ]; then
+    # This file has multiple lines and is deprecated in favor of os-release
+    SYS_RELEASE_FILE="$(head -1 /etc/SuSE-release 2>/dev/null)"
+elif [ -f /etc/system-release ]; then
     # CentOS link-> /etc/centos-release 
     # Fedora link-> /etc/fedora-release
     # RHEL link-> /etc/redhat-release
@@ -149,26 +152,47 @@ fi
 # [ -f /etc/lsb-release ]    && LSB_RELEASE_FILE='/etc/lsb-release' # Ubuntu/Mint
 
 [ -n "${SYS_RELEASE_FILE}" ] \
-    && SYS_RELEASE=$(cat "${SYS_RELEASE_FILE}" | tr -d '\r\n') \
+    && SYS_RELEASE="$(head -1 "${SYS_RELEASE_FILE}")" \
     && export SYS_RELEASE
 
-# (Static) Service Check: Is this a VM/Container? 
-command -v systemctl >/dev/null 2>&1 && {
-    STAT_VM_CHECK=$(systemctl is-active vmtoolsd 2>/dev/null)
-}
+#------------------------------------------------------------------------------
+#-- (Static) Service Check: Is this a VM/Container? 
+#------------------------------------------------------------------------------
+STAT_VM_CHECK=''
+HYPERVISOR=''
 if [ -f /sys/devices/virtual/dmi/id/product_name ]; then
-    PRODUCT_NAME=$(cat /sys/devices/virtual/dmi/id/product_name | tr -d '\r\n')
-fi
-if [ -f /var/run/vboxadd-service.sh ]; then
-    STAT_VM='[V]'
+    PRODUCT_NAME="$(head -1 /sys/devices/virtual/dmi/id/product_name)"
+    case "${PRODUCT_NAME}" in
+        VMware*      ) STAT_VM_CHECK='virtual'
+                       HYPERVISOR='VMware'     ;;
+        VirtualBox   ) STAT_VM_CHECK='virtual' 
+                       HYPERVISOR='VirtualBox' ;;
+        *[vV]irtual* ) STAT_VM_CHECK='virtual'
+                       HYPERVISOR='Other'      ;;
+        *            )                         ;;
+    esac
+elif [ $(command -v systemctl >/dev/null 2>&1) ]; then
+    if systemctl -q is-active vmtoolsd ; then
+        STAT_VM_CHECK='virtual'
+        HYPERVISOR='VMware'
+    elif systemctl -q is-active vboxservice ; then
+        STAT_VM_CHECK='virtual'
+        HYPERVISOR='VirtualBox'
+    fi
 elif [ -f /var/run/vmtoolsd.pid ]; then
-    STAT_VM='[V]'
-elif [ "${STAT_VM_CHECK}" = 'active' ]; then
-    STAT_VM='[V]'
-elif [ "${container}" = 'docker' ]; then
+    STAT_VM_CHECK='virtual'
+    HYPERVISOR='VMware'
+elif [ -f /var/run/vboxadd-service.sh ]; then
+    STAT_VM_CHECK='virtual'
+    HYPERVISOR='VirtualBox'
+fi
+
+if [ "${container}" = 'docker' ]; then
     STAT_VM='[C]'
 elif [ -f '/.dockerenv' ]; then
     STAT_VM='[C]'
+elif [ "${STAT_VM_CHECK}" = 'virtual' ]; then
+    STAT_VM='[V]'
 elif [ "${UNAMEO}" = 'Msys' ]; then
     STAT_VM='[M]'
 elif [ "${UNAMEO}" = 'Cygwin' ]; then
@@ -178,13 +202,13 @@ elif [ "${UNAMES}" = 'Interix' ]; then
 else
     STAT_VM='---'
 fi
-export STAT_VM
+export STAT_VM HYPERVISOR
 
 [ -r "${SHELLD}/location/${HOSTNAME}" ]    && . "${SHELLD}/location/${HOSTNAME}"
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- Set up editor & pager variables
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 if command -v nvim >/dev/null 2>&1 ; then
     EDITOR='nvim'
     VISUAL='nvim'
@@ -215,18 +239,18 @@ elif command -v more >/dev/null 2>&1 ; then
     export PAGER="more -s"
 fi
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- What command handles priviledge elavation
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 if [ -z "${CDC_JOINED_DOMAIN}" ]; then
     export PROG_BECOME=sudo
 else
     export PROG_BECOME=dzdo
 fi
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- (Static) Service Check: Are we connected remotely?
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 if [ -n "${SSH_CLIENT}" ]; then
     STAT_SSH='[R]'
 elif [ -n "${SSH_CONNECTION}" ]; then
@@ -238,10 +262,10 @@ else
 fi
 export STAT_SSH
 
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #-- vte.sh workaround for Tilix (and other VTE-based terminals)
 #--     see: https://gnunn1.github.io/tilix-web/manual/vteconfig/
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 if [ "${TILIX_ID}" ] || [ "${VTE_VERSION}" ]; then
     if [ -r "/etc/profile.d/vte.sh" ]; then
         . "/etc/profile.d/vte.sh"
@@ -253,7 +277,7 @@ if [ "${TILIX_ID}" ] || [ "${VTE_VERSION}" ]; then
 fi
 
 #===============================================================================
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 export ISSET_SHELLINIT=1
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #===============================================================================
