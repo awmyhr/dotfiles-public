@@ -11,7 +11,7 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.17.0
+#      VERSION: 1.18.0
 #     REVISION: 2018-06-15
 #      CREATED: 2016-09-28
 #===============================================================================
@@ -123,33 +123,33 @@ EOF
 #-- This needs to be improved
 #   Ubuntu has no equivlent.
 unset SYS_RELEASE_FILE
-if [ -f /etc/fedora-release ]; then
+if [ -r /etc/fedora-release ]; then
     SYS_RELEASE_FILE='/etc/fedora-release'
-elif [ -f /etc/centos-release ]; then
+elif [ -r /etc/centos-release ]; then
     SYS_RELEASE_FILE='/etc/centos-release'
-elif [ -f /etc/redhat-release ]; then
+elif [ -r /etc/redhat-release ]; then
     # CentOS link-> /etc/centos-release 
     # Fedora link-> /etc/fedora-release
     SYS_RELEASE_FILE='/etc/redhat-release'
-elif [ -f /etc/solus-release ]; then
+elif [ -r /etc/solus-release ]; then
     SYS_RELEASE_FILE='/etc/solus-release'
-elif [ -f /etc/alpine-release ]; then
+elif [ -r /etc/alpine-release ]; then
     # only has version number
     SYS_RELEASE_FILE='/etc/alpine-release'
-elif [ -f /etc/debian_version ]; then
+elif [ -r /etc/debian_version ]; then
     # only has version number
     SYS_RELEASE_FILE='/etc/debian_version'
-elif [ -f /etc/SuSE-release ]; then
+elif [ -r /etc/SuSE-release ]; then
     # This file has multiple lines and is deprecated in favor of os-release
     SYS_RELEASE_FILE="$(head -1 /etc/SuSE-release 2>/dev/null)"
-elif [ -f /etc/system-release ]; then
+elif [ -r /etc/system-release ]; then
     # CentOS link-> /etc/centos-release 
     # Fedora link-> /etc/fedora-release
     # RHEL link-> /etc/redhat-release
     SYS_RELEASE_FILE='/etc/system-release'
 fi
 # This will exist on systems w/lsb-core packages installed and has a very specific format
-# [ -f /etc/lsb-release ]    && LSB_RELEASE_FILE='/etc/lsb-release' # Ubuntu/Mint
+# [ -r /etc/lsb-release ]    && LSB_RELEASE_FILE='/etc/lsb-release' # Ubuntu/Mint
 
 [ -n "${SYS_RELEASE_FILE}" ] \
     && SYS_RELEASE="$(head -1 "${SYS_RELEASE_FILE}")" \
@@ -157,42 +157,60 @@ fi
 
 #------------------------------------------------------------------------------
 #-- (Static) Service Check: Is this a VM/Container? 
+#   Notes: For OpenVZ check for /proc/user_beancounters (not inc as I have no test)
+#          Small problem w/systemd-detect-virt: it will identify 'docker' as the
+#              hypervisor for containers. We want the *actual* hypervisor, so
+#              let's do the /sys file check first.
+#          Other commands: virt-what, lspci, facter
 #------------------------------------------------------------------------------
-STAT_VM_CHECK=''
-HYPERVISOR=''
-if [ -f /sys/devices/virtual/dmi/id/product_name ]; then
+if [ -r /sys/devices/virtual/dmi/id/product_name ]; then
     PRODUCT_NAME="$(head -1 /sys/devices/virtual/dmi/id/product_name)"
-    case "${PRODUCT_NAME}" in
-        VMware*      ) STAT_VM_CHECK='virtual'
-                       HYPERVISOR='VMware'     ;;
-        VirtualBox   ) STAT_VM_CHECK='virtual' 
-                       HYPERVISOR='VirtualBox' ;;
-        *[vV]irtual* ) STAT_VM_CHECK='virtual'
-                       HYPERVISOR='Other'      ;;
-        *            )                         ;;
+elif $(command -v systemd-detect-virt >/dev/null 2>&1); then
+    case "$(systemd-detect-virt)" in
+        docker )    PRODUCT_NAME='Docker'                   ;;
+        oracle )    PRODUCT_NAME='VirtualBox'               ;;
+        vmware )    PRODUCT_NAME='VMWare Virtual Platform'  ;;
+        microsoft ) PRODUCT_NAME='Virtual Machine'          ;;
+        * )         PRODUCT_NAME='unknown virtual system'   ;;
     esac
-elif [ $(command -v systemctl >/dev/null 2>&1) ]; then
-    if systemctl -q is-active vmtoolsd ; then
-        STAT_VM_CHECK='virtual'
-        HYPERVISOR='VMware'
-    elif systemctl -q is-active vboxservice ; then
-        STAT_VM_CHECK='virtual'
-        HYPERVISOR='VirtualBox'
-    fi
 elif [ -f /var/run/vmtoolsd.pid ]; then
-    STAT_VM_CHECK='virtual'
-    HYPERVISOR='VMware'
+    PRODUCT_NAME='VMWare Virtual Platform'
 elif [ -f /var/run/vboxadd-service.sh ]; then
-    STAT_VM_CHECK='virtual'
-    HYPERVISOR='VirtualBox'
+    PRODUCT_NAME='VirtualBox'
 fi
 
-if [ -f '/.dockerenv' ]; then
-    STAT_VM='[C]'
+STAT_VM_CHECK=''
+HYPERVISOR=''
+if [ -n "${PRODUCT_NAME}" ] ; then
+    case "${PRODUCT_NAME}" in
+        VM[wW]are*   )  STAT_VM_CHECK='virtual'
+                        HYPERVISOR='VMWare'     ;;
+        VirtualBox   )  STAT_VM_CHECK='virtual' 
+                        HYPERVISOR='VirtualBox' ;;
+        KVM          )  STAT_VM_CHECK='virtual' 
+                        HYPERVISOR='KVM'        ;;
+        HVM*         )  STAT_VM_CHECK='virtual' 
+                        HYPERVISOR='Xen'        ;;
+        Bochs        )  STAT_VM_CHECK='virtual' 
+                        HYPERVISOR='QEMU'       ;;
+        *[vV]irtual* )  STAT_VM_CHECK='virtual'
+                        HYPERVISOR='Other'
+                        if $(command -v systemctl >/dev/null 2>&1); then
+                            if systemctl -q is-active waagent ; then
+                                HYPERVISOR='Azure'
+                            fi
+                        fi                      ;;
+        *            )                          ;;
+    esac
+fi
+
+if $(grep -q '/docker' /proc/self/cgroup) ; then
+    STAT_VM_CHECK='container'
     HYPERVISOR="${HYPERVISOR} / Docker"
-elif [ "${container}" = 'docker' ]; then
+fi
+
+if [ "${STAT_VM_CHECK}" = 'container' ]; then
     STAT_VM='[C]'
-    HYPERVISOR="${HYPERVISOR} / Docker"
 elif [ "${STAT_VM_CHECK}" = 'virtual' ]; then
     STAT_VM='[V]'
 elif [ "${UNAMEO}" = 'Msys' ]; then
@@ -224,10 +242,9 @@ elif command -v vi >/dev/null 2>&1 ; then
     VISUAL='vi'
 fi
 
-command -v sublime_text >/dev/null 2>&1 && {
-    VISUAL='sublime_text'
-    EDITOR='sublime_text -w '
-    alias st='sublime_text'
+command -v subl >/dev/null 2>&1 && {
+    VISUAL='subl'
+    EDITOR='subl -w '
 }
 
 EDITOR_VERSION=$(${EDITOR} --version 2>/dev/null | head -1)
