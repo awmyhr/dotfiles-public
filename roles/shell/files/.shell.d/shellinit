@@ -11,7 +11,7 @@
 # REQUIREMENTS: Bourne-compatible shell
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.19.0
+#      VERSION: 1.19.1
 #     REVISION: 2018-06-15
 #      CREATED: 2016-09-28
 #===============================================================================
@@ -114,7 +114,7 @@ EOF
 #       P: Patch Number
 #       E: Asynchronous Erratum
 #       e: Corrections for Erratum
-# el5:   <BKV>-P.<flavour> 
+# el5:   <BKV>-P.<flavour>
 # el6/7: <BKV>-P.E.e.<flavour>.<arch>
 # fc24:  <BKV>-P.<flavour>.<arch>
 # Ubuntu: https://wiki.ubuntu.com/Kernel/FAQ#Kernel.2FFAQ.2FGeneralVersionMeaning.What_does_a_specific_Ubuntu_kernel_version_number_mean.3F
@@ -128,7 +128,7 @@ if [ -r /etc/fedora-release ]; then
 elif [ -r /etc/centos-release ]; then
     SYS_RELEASE_FILE='/etc/centos-release'
 elif [ -r /etc/redhat-release ]; then
-    # CentOS link-> /etc/centos-release 
+    # CentOS link-> /etc/centos-release
     # Fedora link-> /etc/fedora-release
     SYS_RELEASE_FILE='/etc/redhat-release'
 elif [ -r /etc/solus-release ]; then
@@ -143,7 +143,7 @@ elif [ -r /etc/SuSE-release ]; then
     # This file has multiple lines and is deprecated in favor of os-release
     SYS_RELEASE_FILE="$(head -1 /etc/SuSE-release 2>/dev/null)"
 elif [ -r /etc/system-release ]; then
-    # CentOS link-> /etc/centos-release 
+    # CentOS link-> /etc/centos-release
     # Fedora link-> /etc/fedora-release
     # RHEL link-> /etc/redhat-release
     SYS_RELEASE_FILE='/etc/system-release'
@@ -156,13 +156,14 @@ fi
     && export SYS_RELEASE
 
 #------------------------------------------------------------------------------
-#-- (Static) Service Check: Is this a VM/Container? 
+#-- (Static) Service Check: Is this a VM/Container?
 #   Notes: Small problem w/systemd-detect-virt: it's not 100% reliable...
 #          Other commands: virt-what, lspci, facter
 #   Reference: https://www.freedesktop.org/software/systemd/man/systemd-detect-virt.html
 #------------------------------------------------------------------------------
-if $(command -v systemd-detect-virt >/dev/null 2>&1); then
+if command -v systemd-detect-virt >/dev/null 2>&1; then
     case "$(systemd-detect-virt --vm)" in
+        none )      ;;
         oracle )    PRODUCT_NAME='VirtualBox'               ;;
         vmware )    PRODUCT_NAME='VMWare Virtual Platform'  ;;
         microsoft ) PRODUCT_NAME='MSVirtual Machine'        ;;
@@ -188,7 +189,7 @@ if [ -n "${PRODUCT_NAME}" ] ; then
         QEMU         )  HYPERVISOR='QEMU'       ;;
         Bochs        )  HYPERVISOR='Bochs Emu'  ;;
         MSVirtual*   )  HYPERVISOR='Hyper-V'
-                        if $(command -v systemctl >/dev/null 2>&1); then
+                        if command -v systemctl >/dev/null 2>&1; then
                             if systemctl -q is-active waagent ; then
                                 HYPERVISOR='Azure'
                             fi
@@ -197,12 +198,13 @@ if [ -n "${PRODUCT_NAME}" ] ; then
         *            )                          ;;
     esac
 fi
-[ -n "${HYPERVISOR}" ] && STAT_VM_CHECK='virtual'
+[ -n "${HYPERVISOR}" ] && STAT_VM_CHECK='virtual' && export HYPERVISOR
 
-if $(grep -q '/docker' /proc/self/cgroup) ; then
+if grep -q '/docker' /proc/self/cgroup ; then
     CONTAINER="Docker"
-elif $(command -v systemd-detect-virt >/dev/null 2>&1); then
+elif command -v systemd-detect-virt >/dev/null 2>&1; then
     case "$(systemd-detect-virt --container)" in
+        none )          ;;
         docker )        CONTAINER="Docker"      ;;
         openvz )        CONTAINER="OpenVZ"      ;;
         lxc-libvirt )   CONTAINER="libvirtLXC"  ;;
@@ -211,7 +213,7 @@ elif $(command -v systemd-detect-virt >/dev/null 2>&1); then
         * )             CONTAINER='unknown container system'   ;;
     esac
 fi
-[ -n "${CONTAINER}" ] && STAT_VM_CHECK='container'
+[ -n "${CONTAINER}" ] && STAT_VM_CHECK='container' && export CONTAINER
 
 if [ "${STAT_VM_CHECK}" = 'container' ]; then
     STAT_VM='[C]'
@@ -226,7 +228,7 @@ elif [ "${UNAMES}" = 'Interix' ]; then
 else
     STAT_VM='---'
 fi
-export STAT_VM HYPERVISOR
+export STAT_VM
 
 [ -r "${SHELLD}/location/${HOSTNAME}" ]    && . "${SHELLD}/location/${HOSTNAME}"
 
