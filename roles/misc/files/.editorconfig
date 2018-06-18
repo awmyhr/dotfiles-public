@@ -1,12 +1,10 @@
 # EditorConfig [http://EditorConfig.org] - Enforce consistant sytle
 # INI formated, requires your editor has a plug-in
-
-# top-most EditorConfig file
-root = true
-
 ################################################################################
 ### General settings
 [*]
+# top-most EditorConfig file
+root = true
 charset = utf-8
 # Unix-style newlines with a newline ending every file
 end_of_line = lf
