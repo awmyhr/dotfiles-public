@@ -198,7 +198,7 @@ if [ -n "${PRODUCT_NAME}" ] ; then
                             fi
                         fi                      ;;
         *[vV]irtual* )  HYPERVISOR='Other'      ;;
-        Windows.Sub* )  HYPERVISOR='WinSubsys'  ;;
+        Windows*Sub* )  HYPERVISOR='WinSubsys'  ;;
         *            )                          ;;
     esac
 fi
