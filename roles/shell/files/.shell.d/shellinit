@@ -12,7 +12,7 @@
 #               uname (via 'coreutils')
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 1.19.1
-#     REVISION: 2018-06-15
+#     REVISION: 2018-07-10
 #      CREATED: 2016-09-28
 #===============================================================================
 #------------------------------------------------------------------------------
@@ -178,6 +178,8 @@ elif [ -f /var/run/vmtoolsd.pid ]; then
     PRODUCT_NAME='VMWare Virtual Platform'
 elif [ -f /var/run/vboxadd-service.sh ]; then
     PRODUCT_NAME='VirtualBox'
+elif [ -f /dev/lxss ]; then
+    PRODUCT_NAME='Windows Subsystem for Linux'
 fi
 
 if [ -n "${PRODUCT_NAME}" ] ; then
@@ -195,6 +197,7 @@ if [ -n "${PRODUCT_NAME}" ] ; then
                             fi
                         fi                      ;;
         *[vV]irtual* )  HYPERVISOR='Other'      ;;
+        Windows.Sub* )  HYPERVISOR='WinSubsys'  ;;
         *            )                          ;;
     esac
 fi
