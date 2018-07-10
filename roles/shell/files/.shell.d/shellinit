@@ -1,6 +1,6 @@
 #!/bin/sh
 # [SublimeLinter shellcheck-exclude:"SC2039" ]
-#===============================================================================
+#==============================================================================
 #
 #         FILE: .shell.d/shellinit
 #
@@ -14,7 +14,7 @@
 #      VERSION: 1.19.1
 #     REVISION: 2018-07-10
 #      CREATED: 2016-09-28
-#===============================================================================
+#==============================================================================
 #------------------------------------------------------------------------------
 #-- Notes/known bugs/other issues
 #------------------------------------------------------------------------------
@@ -178,7 +178,8 @@ elif [ -f /var/run/vmtoolsd.pid ]; then
     PRODUCT_NAME='VMWare Virtual Platform'
 elif [ -f /var/run/vboxadd-service.sh ]; then
     PRODUCT_NAME='VirtualBox'
-elif [ -f /dev/lxss ]; then
+elif [ -f /proc/version ] && grep -q Microsoft /proc/version; then
+    # NOTE: checking /dev/lxss doesn't work as it always errors
     PRODUCT_NAME='Windows Subsystem for Linux'
 fi
 
@@ -203,7 +204,7 @@ if [ -n "${PRODUCT_NAME}" ] ; then
 fi
 [ -n "${HYPERVISOR}" ] && STAT_VM_CHECK='virtual' && export HYPERVISOR
 
-if grep -q '/docker' /proc/self/cgroup ; then
+if [ -f /proc/self/cgroup ] && grep -q '/docker' /proc/self/cgroup ; then
     CONTAINER="Docker"
 elif command -v systemd-detect-virt >/dev/null 2>&1; then
     case "$(systemd-detect-virt --container)" in
@@ -304,8 +305,8 @@ if [ "${TILIX_ID}" ] || [ "${VTE_VERSION}" ]; then
     fi
 fi
 
-#===============================================================================
+#==============================================================================
 #------------------------------------------------------------------------------
 export ISSET_SHELLINIT=1
 #------------------------------------------------------------------------------
-#===============================================================================
+#==============================================================================
