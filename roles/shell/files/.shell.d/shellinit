@@ -252,10 +252,10 @@ elif command -v vi >/dev/null 2>&1 ; then
     VISUAL='vi'
 fi
 
-command -v subl >/dev/null 2>&1 && {
+if command -v subl >/dev/null 2>&1 ; then
     VISUAL='subl'
     EDITOR='subl -w '
-}
+fi
 
 EDITOR_VERSION=$(${EDITOR} --version 2>/dev/null | head -1)
 

@@ -17,12 +17,12 @@
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 2.9.0
-#     REVISION: 2018-06-15
+#     REVISION: 2018-07-10
 #      CREATED: ????-??-??
 #===============================================================================
 #----------------------------------------------------------------------
 #-- Notes/known bugs/other issues
-#       Exporting functions for sub-shell usage can throw errors once 
+#       Exporting functions for sub-shell usage can throw errors once
 #       the sub-shell is entered in some circumstances.
 #----------------------------------------------------------------------
 
@@ -168,5 +168,6 @@ done; unset i
 #-- Conditional keybinds
 #----------------------------------------------------------------------
 # bind hh to Ctrl-r
-[[ $(type -t hh) == file ]] && bind '"\C-r": "\C-a hh \C-j"'
-
+if command -v hh >/dev/null 2>&1; then
+    bind '"\C-r": "\C-a hh \C-j"'
+fi
