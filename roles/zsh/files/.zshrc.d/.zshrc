@@ -15,7 +15,7 @@
 #        NOTES: ---
 #       AUTHOR: awmyhr, awmyhr@gmail.com
 #      VERSION: 2.10.0
-#     REVISION: 2017-05-19
+#     REVISION: 2018-07-12
 #      CREATED: ????-??-??
 #===============================================================================
 #----------------------------------------------------------------------
@@ -223,3 +223,10 @@ LOGCHECK=30                       # check for above every 30 seconds
 # format for watch/log, ex:
 # amyhr@:0 has logged on [pts/0] at 2016-10-07 18:14
 WATCHFMT="%(a:${c_blue}:${c_cyan})%n@%m has %B%a%b%(a:${c_blue}:${c_cyan}) [%l] at 20%D %T${c_norm}"
+
+#----------------------------------------------------------------------
+#-- Source ZSH syntax highlighting if it exists
+#   Note: this *must* be done after all other 'zle -n; compinit' commands
+#----------------------------------------------------------------------
+ZSH_SYN_HI='/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+[ -r "${ZSH_SYN_HI}" ] && source "${ZSH_SYN_HI}"
