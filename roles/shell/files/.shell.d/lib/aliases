@@ -12,8 +12,8 @@
 #
 # REQUIREMENTS: Bourne-compatible shell
 #       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.6.0
-#     REVISION: 2018-03-09
+#      VERSION: 1.7.0
+#     REVISION: 2018-07-13
 #      CREATED: 2016-10-10
 #===============================================================================
 #----------------------------------------------------------------------
@@ -31,14 +31,38 @@ alias aliast='alias | grep -i '
 
 alias fname='find . -name '
 
-alias    ls='ls -F $LS_OPTS'
-alias    l.='ls -F $LS_OPTS -d .*'
-alias    l1='ls -F $LS_OPTS -1Ss'
-alias    la='ls -F $LS_OPTS -lA'
-alias    ll='ls -F $LS_OPTS -l'
-alias   lsa='ls -F $LS_OPTS -lA'
-alias   lln='ls -F $LS_OPTS -nA'
-alias  latr='ls -F $LS_OPTS -lAtr'
+if [ -x "$(command -v exa)" ]; then
+    alias     l='exa'
+    alias    ls='exa -F'
+    alias    l.='exa -F -d .*'
+    alias    l1='exa -F -1Ss'
+    alias    la='exa -F --git -lHga'
+    alias    ll='exa -F --git -lHg'
+    alias   lsa='exa -F --git -lHga'
+    alias   lln='ls  -F $LS_OPTS -nA'
+    alias  latr='exa -F --git -lHga -snew'
+    alias  tree='exa -T'
+elif [ "$(ls -h 2>/dev/null)" ] ; then
+    alias     l='ls'
+    alias    ls='ls -F $LS_OPTS'
+    alias    l.='ls -F $LS_OPTS -d .*'
+    alias    l1='ls -F $LS_OPTS -1Ssh'
+    alias    la='ls -F $LS_OPTS -lAh'
+    alias    ll='ls -F $LS_OPTS -lh'
+    alias   lsa='ls -F $LS_OPTS -lAh'
+    alias   lln='ls -F $LS_OPTS -nAh'
+    alias  latr='ls -F $LS_OPTS -lAtrh'
+else
+    alias     l='ls'
+    alias    ls='ls -F $LS_OPTS'
+    alias    l.='ls -F $LS_OPTS -d .*'
+    alias    l1='ls -F $LS_OPTS -1Ss'
+    alias    la='ls -F $LS_OPTS -lA'
+    alias    ll='ls -F $LS_OPTS -l'
+    alias   lsa='ls -F $LS_OPTS -lA'
+    alias   lln='ls -F $LS_OPTS -nA'
+    alias  latr='ls -F $LS_OPTS -lAtr'
+fi
 
 alias  mkdir='mkdir -p'
 
