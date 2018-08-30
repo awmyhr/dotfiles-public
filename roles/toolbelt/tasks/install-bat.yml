@@ -1,0 +1,32 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   20180227-111906
+# Created:   2018-08-29
+# Copyright: 2017, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+---
+- name: Bat Download.
+  unarchive:
+    src: https://github.com/sharkdp/bat/releases/download/v0.6.0/bat-v0.6.0-x86_64-unknown-linux-gnu.tar.gz
+    dest: "{{ role_path }}/cache/"
+    remote_src: True
+    extra_opts: '-C bat --strip-components=1'
+  ignore_errors: yes
+  delegate_to: localhost
+  run_once: True
+
+- name: Slit Command.
+  copy:
+    src: "{{ role_path }}/cache/bat/bat"
+    dest: ~/bin/bat
+    mode: 0755
+
+- name: Slit Man Pate.
+  copy:
+    src: "{{ role_path }}/cache/ba*/bat.1"
+    dest: ~/man/man1/bat.1
+    mode: 0644
+
+

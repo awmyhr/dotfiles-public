@@ -11,6 +11,10 @@
   include: install-ack.yml
   tags: ack
 
+- name: Bat.
+  include: install-bat.yml
+  tags: bat
+
 - name: Dircolors.
   include: install-dircolors.yml
   tags: dircolors
