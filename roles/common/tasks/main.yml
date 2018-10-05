@@ -1,19 +1,19 @@
 #===============================================================================
 # Project:   awmyhr DotFiles (Public)
 # Author:    Myhr, Andy
-# Revised:   2017-05-10
+# Revised:   20181005-093757
 # Created:   2017-03-23
 # Copyright: 2017, awmyhr
 # License:   Apache-2.0
 #===============================================================================
 ---
-- name: Ensure ssh public key.
-  authorized_key:
-    user: "{{ ansible_user }}"
-    key: "{{ ssh_keys }}"
-    state: present
-    exclusive: True
-    manage_dir: yes
+# - name: Ensure ssh public key.
+#   authorized_key:
+#     user: "{{ ansible_user }}"
+#     key: "{{ ssh_keys }}"
+#     state: present
+#     exclusive: True
+#     manage_dir: yes
 
 - name: Common Directories.
   file:
