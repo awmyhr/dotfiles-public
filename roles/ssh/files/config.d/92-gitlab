@@ -1,0 +1,21 @@
+#===============================================================================
+# Project:   awmyhr DotFiles (Public)
+# Author:    Myhr, Andy
+# Revised:   2018-11-26
+# Created:   2018-11-26
+# Copyright: 2018, awmyhr
+# License:   Apache-2.0
+#===============================================================================
+#-- NOTE: OpenSSH version 7.3+ has an Include directive
+#-- This will be very useful once EL distros catch up...
+
+Host gitlab.com
+    ControlMaster no
+    IdentityFile ~/.ssh/gitlab_id_ed25519
+    #-- Github needs diffie-hellman-group-exchange-sha1 some of the time but not always.
+    KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
+    PreferredAuthentications publickey
+    User git
+    Hostname gitlab.com
+    Port 22
+
