@@ -4,7 +4,7 @@
 # File:     $HOME/.shell.d/shellinit
 # Type:     Shell setup
 # Author:   awmyhr <awmyhr@gmail.com>
-# Version:  1.21.0
+# Version:  1.21.1
 # Revised:  20190123-130812
 # Created:  2016-09-28
 #==============================================================================
@@ -45,8 +45,6 @@ fi
 #------------------------------------------------------------------------------
 #-- Set up PATH/MANPATH/PERL5LIB/PYTHONPATH
 #------------------------------------------------------------------------------
-[ -d "${HOME}/projects/go" ] && GOPATH="${HOME}/projects/go"
-
 [ -d "/usr/platform/${PLATFORM}/bin" ]  && pathmunge "/usr/platform/${PLATFORM}/bin" before
 [ -d "/usr/platform/${PLATFORM}/sbin" ] && pathmunge "/usr/platform/${PLATFORM}/sbin" before
 
@@ -78,15 +76,9 @@ if [ -e "${SHELLD}/etc/manpaths" ]; then
     done <"${SHELLD}/etc/manpaths"
 fi; unset line
 
-if [ -d "${HOME}/lib/perl5" ]; then
-    PERL5LIB="${HOME}/lib/perl5:${PERL5LIB}"
-fi
-
-if [ -d "${HOME}/lib/python" ]; then
-    PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
-fi
-
-[ -d "${GOPATH}/bin" ] && pathmunge "${GOPATH}/bin" before
+[ -d "${HOME}/.go" ]        && GOPATH="${HOME}/.go"
+[ -d "${HOME}/lib/perl5" ]  && PERL5LIB="${HOME}/lib/perl5:${PERL5LIB}"
+[ -d "${HOME}/lib/python" ] && PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
 
 export PATH MANPATH GOPATH PERL5LIB PYTHONPATH
 

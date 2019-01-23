@@ -87,4 +87,5 @@ sbin
 perl5/bin
 .local/bin
 .local/sbin
+.go/bin
 .cargo/bin
