@@ -1,0 +1,57 @@
+# =============================================================================
+# Management: Ansible
+# Role:       vars/main.yml
+# Type:       Vars
+# Author:     awmyhr <awmyhr@gmail.com>
+# Revised:    20190123-140640
+# Created:    2019-01-23
+# =============================================================================
+---
+packages_fedora:
+  - vim-common
+  - vim-minimal
+  - vim-enhanced
+  - vim-fugitive
+  - vim-toml
+
+packages_fedora_syntastic:
+  - vim-syntastic-ansible
+  - vim-syntastic-asciidoc
+  - vim-syntastic-c
+  - vim-syntastic-cabal
+  - vim-syntastic-cpp
+  - vim-syntastic-css
+  - vim-syntastic-erlang
+  - vim-syntastic-eruby
+  - vim-syntastic-go
+  - vim-syntastic-help
+  - vim-syntastic-html
+  - vim-syntastic-java
+  - vim-syntastic-javascript
+  - vim-syntastic-json
+  - vim-syntastic-less
+  - vim-syntastic-lex
+  - vim-syntastic-lua
+  - vim-syntastic-objc
+  - vim-syntastic-objcpp
+  - vim-syntastic-perl
+  - vim-syntastic-perl6
+  - vim-syntastic-php
+  - vim-syntastic-pod
+  - vim-syntastic-puppet
+  - vim-syntastic-python
+  - vim-syntastic-rst
+  - vim-syntastic-ruby
+  - vim-syntastic-sh
+  - vim-syntastic-spec
+  - vim-syntastic-tcl
+  - vim-syntastic-tex
+  - vim-syntastic-texinfo
+  - vim-syntastic-text
+  - vim-syntastic-trig
+  - vim-syntastic-vim
+  - vim-syntastic-xhtml
+  - vim-syntastic-xml
+  - vim-syntastic-xslt
+  - vim-syntastic-yaml
+  - vim-syntastic-zsh
