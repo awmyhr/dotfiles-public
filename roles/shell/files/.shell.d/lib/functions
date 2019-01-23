@@ -1,63 +1,51 @@
 #!/bin/sh
 # [SublimeLinter shellcheck-exclude:"SC2039" ]
-#===============================================================================
-#
-#         FILE: .shell.d/lib/functions
-#
-#        USAGE: (should be sourced by .shell.d/shellinit)
-#
-#  DESCRIPTION: General functions for use across shells.
-#
-#      OPTIONS: ---
-# REQUIREMENTS: Bourne-compatible shell
-#    OPTIONALS: (various vcs commands - git, hg)
-#         BUGS: ---
-#        NOTES: ---
-#       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.6.0
-#      CREATED: ????-??-??
-#     REVISION: 2018-03-09
-#===============================================================================
-#----------------------------------------------------------------------
+#==============================================================================
+# File:     $HOME/.shell.d/lib/functions
+# Type:     Library file for shell functions
+# Author:   awmyhr <awmyhr@gmail.com>
+# Version:  1.6.1
+# Revised:  20190123-123547
+# Created:  ????-??-??
+#==============================================================================
 #-- Notes/known bugs/other issues
-#----------------------------------------------------------------------
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: timestamp
-# DESCRIPTION: Return currant date/time in user-defined format for appending to 
+# DESCRIPTION: Return currant date/time in user-defined format for appending to
 #               a filename (or some other similar thing)
 #    REQUIRED: Environment variable DEFAULT_TIMESTAMP containing format string
 #               for date command.
-#===============================================================================
+#==============================================================================
 timestamp() {
     date "${DEFAULT_TIMESTAMP}"
 }
 command -v declare >/dev/null 2>&1 && declare -fx timestamp >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: stringmatch
 # DESCRIPTION: return true if second string contains first string, false if not
 #       USAGE: stringmatch needle heystack
-#===============================================================================
+#==============================================================================
 # Originally found here: http://www.etalabs.net/sh_tricks.html
 stringmatch() {
-    case "${2}" in 
-        *${1}*) 
-            return 0 
-            ;; 
-        *) 
-            return 1 
-            ;; 
+    case "${2}" in
+        *${1}*)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
     esac ;
     return 1        # This should never execute
 }
 command -v declare >/dev/null 2>&1 && declare -fx stringmatch >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: pathmunge
 # DESCRIPTION: Add a directory to PATH
 #       USAGE: pathmunge /new/path [after]
-#===============================================================================
+#==============================================================================
 # This was originally taken from /etc/profile on Fedora 24
 pathmunge() {
     case ":${PATH}:" in
@@ -72,11 +60,11 @@ pathmunge() {
     esac
 }
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: manpathmunge
 # DESCRIPTION: Add a directory to MANPATH
 #       USAGE: manpathmunge /new/man/path [after]
-#===============================================================================
+#==============================================================================
 # Until I figure out how to use a variable to assing a value to another variable
 manpathmunge() {
     case ":${MANPATH}:" in
@@ -91,22 +79,22 @@ manpathmunge() {
     esac
 }
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: rtrav
 # DESCRIPTION: reverse traverse directory structure looking for a file/directory
 #               originally from http://stackoverflow.com/questions/3585169/how-do-you-climb-up-the-parent-directory-structure-of-a-bash-script
 #       USAGE: rtrav [file|directory] [start_path]
-#===============================================================================
+#==============================================================================
 rtrav() {
     test -e $2/$1 && echo $2 || { test $2 != / && rtrav $1 `dirname $2`;};
 }
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: _vcs_prompt_char
 # DESCRIPTION: This will detect the presence of a vcs command, check if the
 #               current directory is a repo for that command, and return
 #               a symbol (defined in shell.d/lib/symbols)
-#===============================================================================
+#==============================================================================
 _vcs_prompt_char() {
     command -v git >/dev/null 2>&1 && {
         #[ "$(git rev-parse --is-inside-work-tree)" = 'true' ]
@@ -128,22 +116,22 @@ _vcs_prompt_char() {
 }
 command -v declare >/dev/null 2>&1 && declare -fx _vcs_prompt_char >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: _return_code
 # DESCRIPTION: This will detect if the last command had a non-zero return code.
 #               If so, it will return that code for prompt display
-#===============================================================================
-_return_code() { 
+#==============================================================================
+_return_code() {
     exit_code="${?}"
     [ "${exit_code}" -ne 0 ] && printf -- "¡${exit_code}¡"
 }
 command -v declare >/dev/null 2>&1 && declare -fx _return_code >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: getip
 # DESCRIPTION: Return IP address for a hostname
 #    OPTIONAL: Hostname. If none given, use $HOSTNAME
-#===============================================================================
+#==============================================================================
 getip() {
     if command -v gethostip >/dev/null 2>&1; then
         gethostip -d "${1:-$HOSTNAME}"
@@ -160,31 +148,31 @@ getip() {
 }
 command -v declare >/dev/null 2>&1 && declare -fx getip >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: psz
 # DESCRIPTION: list only zombie processes
-#===============================================================================
+#==============================================================================
 psz() {
     ps -el | awk '{ if (\$2 == \"Z\") {print \$4}}'
 }
 command -v declare >/dev/null 2>&1 && declare -fx psz >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: mymemuse
 # DESCRIPTION: list memory used by currant user
 #               Not sure where I found this, but it was named 'memtotaller'
-#===============================================================================
+#==============================================================================
 mymemuse() {
     /bin/ps -u $(whoami) -o pid,rss,command | awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
 }
 command -v declare >/dev/null 2>&1 && declare -fx mymemuse >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: extract
 # DESCRIPTION: one command alias to several different unarchivers
 #              originally from: https://gist.github.com/825ad8643dfe4a8f54e4+&cd=3&hl=en&ct=clnk&gl=us
 #    REQURIED: name of archive
-#===============================================================================
+#==============================================================================
 extract () {
     if [ -z "${1}" ]; then
         printf "%s\n" 'Must provide archive name!'
@@ -212,12 +200,12 @@ extract () {
 }
 command -v declare >/dev/null 2>&1 && declare -fx extract >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: mans
 # DESCRIPTION: search a term in a manpage
 #              originally from: https://gist.github.com/825ad8643dfe4a8f54e4+&cd=3&hl=en&ct=clnk&gl=us
 #    REQURIED: manpage name & search term
-#===============================================================================
+#==============================================================================
 mans () {
     if [ "${#}" -ne 2 ]; then
         printf "%s\n" 'Usage: mans <manpage> <searchterm>'
@@ -227,17 +215,17 @@ mans () {
 }
 command -v declare >/dev/null 2>&1 && declare -fx mans >/dev/null 2>&1
 
-#=== FUNCTION ==================================================================
+#=== FUNCTION =================================================================
 # NAME: mcd
 # DESCRIPTION: Make a dir, then cd into it
 #    REQURIED: mkdir & cd
-#===============================================================================
+#==============================================================================
 mcd () {
     mkdir -p "${1}" && cd "${1}"
 }
 
-#===============================================================================
+#==============================================================================
 #----------------------------------------------------------------------
 export ISSET_FUNCTIONS=1
 #----------------------------------------------------------------------
-#===============================================================================
+#==============================================================================
