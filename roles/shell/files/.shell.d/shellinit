@@ -1,23 +1,14 @@
 #!/bin/sh
 # [SublimeLinter shellcheck-exclude:"SC2039" ]
 #==============================================================================
-#
-#         FILE: .shell.d/shellinit
-#
-#        USAGE: (should be sourced by interactive shell logins)
-#
-#  DESCRIPTION: Set up working shell environment.
-#
-# REQUIREMENTS: Bourne-compatible shell
-#               uname (via 'coreutils')
-#       AUTHOR: awmyhr, awmyhr@gmail.com
-#      VERSION: 1.20.0
-#     REVISION: 2018-07-12
-#      CREATED: 2016-09-28
+# File:     $HOME/.shell.d/shellinit
+# Type:     Shell setup
+# Author:   awmyhr <awmyhr@gmail.com>
+# Version:  1.21.0
+# Revised:  20190123-130812
+# Created:  2016-09-28
 #==============================================================================
-#------------------------------------------------------------------------------
 #-- Notes/known bugs/other issues
-#------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 umask 022
@@ -54,9 +45,19 @@ fi
 #------------------------------------------------------------------------------
 #-- Set up PATH/MANPATH/PERL5LIB/PYTHONPATH
 #------------------------------------------------------------------------------
+[ -d "${HOME}/projects/go" ] && GOPATH="${HOME}/projects/go"
+
+[ -d "/usr/platform/${PLATFORM}/bin" ]  && pathmunge "/usr/platform/${PLATFORM}/bin" before
+[ -d "/usr/platform/${PLATFORM}/sbin" ] && pathmunge "/usr/platform/${PLATFORM}/sbin" before
+
 if [ -r "${SHELLD}/etc/paths" ]; then
     while read line
     do
+        case "${line}" in
+            \#*) line='' ;;
+            \/*) line="${line}" ;;
+            *)   line="${HOME}/${line}" ;;
+        esac
         if [ -d "${line}" ]; then
             pathmunge "${line}" before
         fi
@@ -66,6 +67,11 @@ fi; unset line
 if [ -e "${SHELLD}/etc/manpaths" ]; then
     while read line
     do
+        case "${line}" in
+            \#*) line='' ;;
+            \/*) line="${line}" ;;
+            *)   line="${HOME}/${line}" ;;
+        esac
         if [ -d "${line}" ]; then
             manpathmunge "${line}" before
         fi
@@ -80,12 +86,7 @@ if [ -d "${HOME}/lib/python" ]; then
     PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
 fi
 
-[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
-[ -d "${HOME}/man" ] && MANPATH="${MANPATH}:${HOME}/man"
-[ -d "${HOME}/projects/go" ] && {
-    GOPATH="${HOME}/projects/go"
-    PATH="${PATH}:${GOPATH}/bin"
-}
+[ -d "${GOPATH}/bin" ] && pathmunge "${GOPATH}/bin" before
 
 export PATH MANPATH GOPATH PERL5LIB PYTHONPATH
 
