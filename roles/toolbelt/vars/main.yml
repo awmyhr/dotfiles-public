@@ -3,7 +3,7 @@
 # Role:       vars/main.yml
 # Type:       Vars
 # Author:     awmyhr <awmyhr@gmail.com>
-# Revised:    2019-01-23
+# Revised:    20190123-152402
 # Created:    2019-01-23
 # =============================================================================
 ---
@@ -18,3 +18,14 @@ packages_fedora:
   - ps_mem
   - ripgrep
   - screenfetch
+
+# pertinent files/dirs:
+# /home/amyhr/.config/containers/storage.conf
+# /home/amyhr/.local/share/containers/storage
+packages_fedora_docker:
+  - buildah
+  - cri-o
+  - cri-tools
+  - podman
+  - podman-docker
+  - skopeo
