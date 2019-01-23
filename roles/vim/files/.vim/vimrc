@@ -14,8 +14,8 @@
 "         BUGS: ---
 "        NOTES: ---
 "       AUTHOR: awmyhr, awmyhr@gmail.com
-"      VERSION: 1.0.1
-"     REVISION: 2017-05-09
+"      VERSION: 1.0.2
+"     REVISION: 2019-01-23
 "      CREATED: 2016-10-24
 "===============================================================================
 "----------------------------------------------------------------------
@@ -48,7 +48,7 @@ silent! if plug#begin('~/.vim/plugged')
 
     " fugitive.vim: 'Best' Git wrapper
     " https://github.com/tpope/vim-fugitive
-    Plug 'tpope/vim-fugitive'
+    " Plug 'tpope/vim-fugitive'
 
     " A light and configurable statusline/tabline for Vim
     " https://github.com/itchyny/lightline.vim
