@@ -1,0 +1,20 @@
+# =============================================================================
+# Management: Ansible
+# Role:       vars/main.yml
+# Type:       Vars
+# Author:     awmyhr <awmyhr@gmail.com>
+# Revised:    2019-01-23
+# Created:    2019-01-23
+# =============================================================================
+---
+# dstat is in pcp-system-tools
+packages_fedora:
+  - ack
+  - bat
+  - exa
+  - inxi
+  - iotop
+  - pcp-system-tools
+  - ps_mem
+  - ripgrep
+  - screenfetch
