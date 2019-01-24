@@ -3,7 +3,7 @@
 # Role:       vars/main.yml
 # Type:       Vars
 # Author:     awmyhr <awmyhr@gmail.com>
-# Revised:    20190123-152402
+# Revised:    20190124-143715
 # Created:    2019-01-23
 # =============================================================================
 ---
@@ -12,12 +12,15 @@ packages_fedora:
   - ack
   - bat
   - exa
+  - fd-find
+  - fzf
   - inxi
   - iotop
   - pcp-system-tools
   - ps_mem
   - ripgrep
   - screenfetch
+  - tokei
 
 # pertinent files/dirs:
 # /home/amyhr/.config/containers/storage.conf
@@ -29,3 +32,7 @@ packages_fedora_docker:
   - podman
   - podman-docker
   - skopeo
+# ctop:
+# wget https://github.com/bcicen/ctop/releases/download/v0.7.1/ctop-0.7.1-linux-amd64 -O ~/bin/ctop
+# has support for runc, but doesn't appear to work well
+# RUNC_ROOT=/run/user/$(id -u)/runc ctop --connector runc
