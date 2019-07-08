@@ -2,7 +2,7 @@
 # File:     $HOME/.shell.d/etc/paths
 # Type:     Config file
 # Author:   awmyhr <awmyhr@gmail.com>
-# Revised:  20190123
+# Revised:  20190708
 # Created:  ????-??-??
 #==============================================================================
 #-- Simple list of paths to add to PATH. If line does not start
@@ -86,6 +86,7 @@ bin
 sbin
 perl5/bin
 .local/bin
+.local/libexec
 .local/sbin
 .go/bin
 .cargo/bin

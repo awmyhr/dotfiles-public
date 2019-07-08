@@ -2,7 +2,7 @@
 # File:     $HOME/.shell.d/etc/manpaths
 # Type:     Config file
 # Author:   awmyhr <awmyhr@gmail.com>
-# Revised:  20190123
+# Revised:  20190708
 # Created:  ????-??-??
 #==============================================================================
 #-- Simple list of paths to add to PATH. If line does not start
@@ -69,3 +69,4 @@
 #-- HOME paths
 man
 perl5/man
+.local/share/man
