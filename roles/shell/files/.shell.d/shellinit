@@ -5,7 +5,7 @@
 # Type:     Shell setup
 # Author:   awmyhr <awmyhr@gmail.com>
 # Version:  1.22.0
-# Revised:  20190708-124304
+# Revised:  20190708-125913
 # Created:  2016-09-28
 #==============================================================================
 #-- Notes/known bugs/other issues
@@ -79,9 +79,9 @@ fi; unset line
 [ -d "${HOME}/.go" ]               && GOPATH="${HOME}/.go"
 [ -d "${HOME}/lib/perl5" ]         && PERL5LIB="${HOME}/lib/perl5:${PERL5LIB}"
 [ -d "${HOME}/lib/python" ]        && PYTHONPATH="${HOME}/lib/python:${PYTHONPATH}"
-[ -d "${HOME}/.local/share/bats" ] && BATS_PREFIX="${HOME}/.local/share/bats"
+[ -d "${HOME}/.local/share/bats" ] && BATS_INSTALL="${HOME}/.local/share/bats"
 
-export PATH MANPATH GOPATH PERL5LIB PYTHONPATH BATS_PREFIX
+export PATH MANPATH GOPATH PERL5LIB PYTHONPATH BATS_INSTALL
 
 #------------------------------------------------------------------------------
 #-- Set up sysinfo variables and load in platform specific things
