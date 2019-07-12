@@ -5,7 +5,7 @@
 # Type:     Shell setup
 # Author:   awmyhr <awmyhr@gmail.com>
 # Version:  1.22.0
-# Revised:  20190708-125913
+# Revised:  20190712-133754
 # Created:  2016-09-28
 #==============================================================================
 #-- Notes/known bugs/other issues
@@ -181,6 +181,7 @@ if [ -n "${PRODUCT_NAME}" ] ; then
     case "${PRODUCT_NAME}" in
         VM[wW]are*   )  HYPERVISOR='VMWare'     ;;
         VirtualBox   )  HYPERVISOR='VirtualBox' ;;
+        Google*      )  HYPERVISOR='KVM'        ;;
         KVM          )  HYPERVISOR='KVM'        ;;
         HVM*         )  HYPERVISOR='Xen'        ;;
         QEMU         )  HYPERVISOR='QEMU'       ;;
