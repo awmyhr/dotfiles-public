@@ -17,16 +17,18 @@
   delegate_to: localhost
   run_once: True
 
-- name: Slit Command.
+- name: Bat Command.
   copy:
     src: "{{ role_path }}/cache/bat/bat"
     dest: ~/bin/bat
     mode: 0755
+  ignore_errors: yes
 
-- name: Slit Man Pate.
+- name: Bat Man Page.
   copy:
     src: "{{ role_path }}/cache/ba*/bat.1"
     dest: ~/man/man1/bat.1
     mode: 0644
+  ignore_errors: yes
 
 

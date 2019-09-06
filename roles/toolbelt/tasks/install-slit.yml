@@ -21,3 +21,4 @@
     src: "{{ role_path }}/cache/slit"
     dest: ~/bin/slit
     mode: 0755
+  ignore_errors: yes
