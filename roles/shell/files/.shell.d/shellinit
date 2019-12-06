@@ -5,7 +5,7 @@
 # Type:     Shell setup
 # Author:   awmyhr <awmyhr@gmail.com>
 # Version:  1.22.0
-# Revised:  20190712-133754
+# Revised:  20191206-132817
 # Created:  2016-09-28
 #==============================================================================
 #-- Notes/known bugs/other issues
@@ -168,6 +168,8 @@ if [ -x "$(command -v systemd-detect-virt)" ] ; then
     esac
 elif [ -r /sys/devices/virtual/dmi/id/product_name ]; then
     PRODUCT_NAME="$(head -1 /sys/devices/virtual/dmi/id/product_name)"
+    #-- need to verify:
+    # if "grep -qi amazon /sys/devices/virtual/dmi/id/bios_version" then AWS instance
 elif [ -f /var/run/vmtoolsd.pid ]; then
     PRODUCT_NAME='VMWare Virtual Platform'
 elif [ -f /var/run/vboxadd-service.sh ]; then
