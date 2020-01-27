@@ -4,8 +4,8 @@
 # File:     $HOME/.shell.d/shellinit
 # Type:     Shell setup
 # Author:   awmyhr <awmyhr@gmail.com>
-# Version:  1.22.0
-# Revised:  20191206-132817
+# Version:  1.22.1
+# Revised:  20200127-151821
 # Created:  2016-09-28
 #==============================================================================
 #-- Notes/known bugs/other issues
@@ -148,6 +148,9 @@ fi
 [ -n "${SYS_RELEASE_FILE}" ] \
     && SYS_RELEASE="$(head -1 "${SYS_RELEASE_FILE}")" \
     && export SYS_RELEASE
+
+# Check if system booted UEFI or BIOS (this could use further work...)
+[ -d /sys/firemware/efi ] && FRMWARE=UEFI || FRMWARE=BIOS
 
 #------------------------------------------------------------------------------
 #-- (Static) Service Check: Is this a VM/Container?
