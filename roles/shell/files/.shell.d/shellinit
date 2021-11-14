@@ -159,6 +159,7 @@ fi
 #   Reference: https://www.freedesktop.org/software/systemd/man/systemd-detect-virt.html
 #------------------------------------------------------------------------------
 if [ -x "$(command -v systemd-detect-virt)" ] ; then
+    # NOTE: not entirely accurate (Nutanix was detected as Microsoft)
     case "$(systemd-detect-virt --vm)" in
         none )      ;;
         oracle )    PRODUCT_NAME='VirtualBox'               ;;
@@ -199,6 +200,7 @@ if [ -n "${PRODUCT_NAME}" ] ; then
                         fi                      ;;
         *[vV]irtual* )  HYPERVISOR='Other'      ;;
         Windows*Sub* )  HYPERVISOR='WinSubsys'  ;;
+        AHV          )  HYPERVISOR='Nutanix'    ;;
         *            )                          ;;
     esac
 fi
