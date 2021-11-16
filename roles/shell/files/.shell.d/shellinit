@@ -254,10 +254,10 @@ elif [ -x "$(command -v vi)" ] ; then
     VISUAL='vi'
 fi
 
-if [ -x "$(command -v subl)" ] ; then
-    VISUAL='subl'
-    EDITOR='subl -w '
-fi
+#if [ -x "$(command -v subl)" ] ; then
+#    VISUAL='subl'
+#    EDITOR='subl -w '
+#fi
 
 EDITOR_VERSION=$(${EDITOR} --version 2>/dev/null | head -1)
 
