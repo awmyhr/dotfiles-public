@@ -11,7 +11,7 @@
 
 Host github.com
     ControlMaster no
-    IdentityFile ~/.ssh/github_id_rsa
+    IdentityFile ~/.ssh/githab_id_ed25519
     #-- Github needs diffie-hellman-group-exchange-sha1 some of the time but not always.
     KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
     PreferredAuthentications publickey
