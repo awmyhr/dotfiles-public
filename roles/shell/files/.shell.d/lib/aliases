@@ -31,17 +31,17 @@ alias aliast='alias | grep -i '
 
 alias fname='find . -name '
 
-if [ -x "$(command -v exa)" ]; then
-    alias     l='exa'
-    alias    ls='exa -F'
-    alias    l.='exa -F -d .*'
-    alias    l1='exa -F -1Ss'
-    alias    la='exa -F --git -lHga'
-    alias    ll='exa -F --git -lHg'
-    alias   lsa='exa -F --git -lHga'
-    alias   lln='ls  -F $LS_OPTS -nA'
-    alias  latr='exa -F --git -lHga -snew'
-    alias  tree='exa -T'
+if [ -x "$(command -v eza)" ]; then
+    alias     l='eza'
+    alias    ls='eza -F auto'
+    alias    l.='eza -F auto -d .*'
+    alias    l1='eza -F auto -1Ss'
+    alias    la='eza -F auto --git -lHga'
+    alias    ll='eza -F auto --git -lHg'
+    alias   lsa='eza -F auto --git -lHga'
+    alias   lln='ls  -F auto $LS_OPTS -nA'
+    alias  latr='eza -F auto --git -lHga -snew'
+    alias  tree='eza -T'
 elif [ "$(ls -h 2>/dev/null)" ] ; then
     alias     l='ls'
     alias    ls='ls -F $LS_OPTS'

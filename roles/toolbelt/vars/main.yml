@@ -3,7 +3,7 @@
 # Role:       vars/main.yml
 # Type:       Vars
 # Author:     awmyhr <awmyhr@gmail.com>
-# Revised:    20190124-143715
+# Revised:    20231031
 # Created:    2019-01-23
 # =============================================================================
 ---
@@ -11,7 +11,7 @@
 packages_fedora:
   - ack
   - bat
-  - exa
+  - eza
   - fd-find
   - fzf
   - inxi
